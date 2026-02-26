@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAY CHAN | Selected Albums</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #2997ff;
+            --easing: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            user-select: none; /* 防止拖拽时选中文字 */
+        }
+
+        /* 动态模糊背景 */
+        .ambient-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            filter: blur(80px) brightness(0.35);
+            z-index: -1;
+            transition: background-image 0.6s ease;
+            transform: scale(1.2);
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            padding: 40px 10%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+        }
+        .back-btn {
+            color: #fff; text-decoration: none; font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;
+            transition: opacity 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .back-btn:hover { opacity: 1; }
+
+        /* --- 1. 核心区域：3D 物理引擎轮播 --- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: grab;
+            perspective: 1200px; /* 3D 镜头透视感 */
+        }
+        .carousel-container:active { cursor: grabbing; }
+
+        /* 外层包裹器：负责平移、缩放和 3D 旋转 (完全由 JS 连续接管) */
+        .vinyl-wrapper {
+            position: absolute;
+            left: 50%; top: 50%;
+            margin-left: -150px; margin-top: -150px;
+            width: 300px; height: 300px;
+            display: flex; justify-content: center; align-items: center;
+            will-change: transform; /* 开启硬件加速保证丝滑 */
+        }
+
+        /* 内层黑胶：负责自身的自转、阴影和高斯模糊 */
+        .vinyl-item {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(#111, #111 4px, #1a1a1a 5px, #111 6px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.15);
+            display: flex; justify-content: center; align-items: center;
+            position: relative;
+        }
+
+        .vinyl-label {
+            width: 150px; height: 150px; /* 把原来 110px 调大，您可以根据喜好继续增加数值 */
+            border-radius: 50%; object-fit: cover; border: 2px solid #000;
+
+            /* 新增这两行，彻底禁止浏览器默认的图片拖拽行为 */
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+
+        .vinyl-hole {
+            position: absolute; width: 12px; height: 12px;
+            background: #000; border-radius: 50%;
+        }
+
+        /* 正中央激活的黑胶自动旋转 */
+        .vinyl-wrapper.active .vinyl-item {
+            animation: spin 6s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- 2. 专辑信息区 --- */
+        .info-section {
+            text-align: center;
+            padding: 10px 20px 30px 20px;
+            z-index: 10;
+        }
+        .album-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; letter-spacing: 2px; }
+        .album-meta { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; letter-spacing: 1px;}
+
+        .netease-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 30px; border-radius: 30px;
+            font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .netease-btn:hover {
+            background: #e60026;
+            border-color: #e60026;
+            transform: translateY(-2px); box-shadow: 0 10px 20px rgba(230,0,38,0.3);
+        }
+
+        /* --- 3. 底部曲目列表区 --- */
+        .tracklist-container {
+            max-width: 800px; width: 90%; margin: 0 auto 100px auto;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px; padding: 40px; z-index: 10;
+        }
+
+        .track-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
+        }
+        .track-item:last-child { border-bottom: none; }
+        .track-item:hover { background: rgba(255,255,255,0.02); padding-left: 10px; padding-right: 10px; border-radius: 8px;}
+
+        .track-name { font-size: 1.05rem; color: #777; transition: color 0.3s;}
+        .track-item.highlighted .track-name { color: #fff; font-weight: 500; }
+
+        .track-role {
+            font-size: 0.75rem; padding: 4px 12px; border-radius: 20px;
+            background: rgba(255,255,255,0.1); color: #fff; letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-container { height: 350px; }
+            .vinyl-wrapper { width: 220px; height: 220px; margin-left: -110px; margin-top: -110px; }
+            .vinyl-label { width: 110px; height: 110px; }
+            .album-title { font-size: 1.8rem; }
+            .tracklist-container { padding: 20px; }
+            .track-name { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ambient-bg" id="ambientBg"></div>
+
+<div class="top-nav">
+    <a href="index.html" class="back-btn">← Back to Profile</a>
+    <span style="color: #666; font-size: 0.8rem; letter-spacing: 2px;">DISCOGRAPHY</span>
+</div>
+
+<div class="carousel-container" id="carouselArea"></div>
+
+<div class="info-section">
+    <h1 class="album-title" id="albumTitle">...</h1>
+    <p class="album-meta" id="albumMeta">...</p>
+    <a href="#" target="_blank" class="netease-btn" id="neteaseLink">在网易云音乐收听</a>
+</div>
+
+<div class="tracklist-container" id="tracklistArea"></div>
+
+<script>
+    // ==========================================
+    // 核心数据 (补足为 7 张，实现密集的层叠感)
+    // ==========================================
+    const albumsData = [
+        {
+            id: 'nsh1', title: '逆水寒·九光寒林', meta: 'Original Game Soundtrack / 2024',
+            cover: 'images/album1.jpg', neteaseUrl: '#',
+            tracks: [
+                { name: "01. 九光千载 (九光寒林)", role: "音频编辑", highlight: true },
+                { name: "02. 天阙万钧 (九光寒林·战斗)", role: "音频编辑", highlight: true },
+                { name: "03. 寒林清光 (马头琴) (九光寒林·寒林洞天)", role: "音频编辑", highlight: true },
+                { name: "04. 寒翩雪霁 (九光寒林·青鸾境)", role: "音频编辑", highlight: true },
+                { name: "05. 流霞漱玉 (九光寒林·瑶台飞瀑)", role: "音频编辑", highlight: true },
+                { name: "06. 青鸾落羽 (九光寒林·三青鸟)", role: "音频编辑", highlight: true },
+                { name: "07. 瑶林仙踪 (九光寒林·三青鸟)", role: "音频编辑", highlight: true },
+                { name: "08. 九光千载 (人声版) (九光寒林)", role: "音频编辑", highlight: true },
+                { name: "09. 悬霜漱雪 (九光寒林·瑶台飞瀑)", role: "音频编辑", highlight: true },
+                { name: "10. 天威难测 (九光寒林·穆天子座)", role: "音频编辑", highlight: true },
+                { name: "11. 锋刃之誓 (九光寒林·姜却)", role: "音频编辑", highlight: true },
+                { name: "12. 穆天威仪 (九光寒林·穆天子座)", role: "音频编辑", highlight: true },
+                { name: "13. 剑胆英魂 (九光寒林·姜却)", role: "音频编辑", highlight: true },
+                { name: "14. 寒林清光 (人声版) (九光寒林·寒林洞天)", role: "音频编辑", highlight: true },
+                { name: "15. 狂械掣雷 (九光寒林·墨不逆)", role: "音频编辑", highlight: true },
+                { name: "16. 妄谛难辨 (九光寒林·公输荒)", role: "音频编辑", highlight: true },
+                { name: "17. 瑶光遗韵 (人声版) (九光寒林·西华圣殿)", role: "音频编辑", highlight: true },
+                { name: "18. 暖羽沐霞 (九光寒林·青鸾境)", role: "音频编辑", highlight: true },
+                { name: "19. 寒林清光 (箫) (九光寒林·寒林洞天)", role: "音频编辑", highlight: true },
+                { name: "20. 幽渊秘语 (九光寒林·黑袍女子/幽烛侍者)", role: "音频编辑", highlight: true },
+                { name: "21. 祀祷颂歌 (九光寒林·黑袍女子/幽烛侍者)", role: "音频编辑", highlight: true },
+                { name: "22. 圣祭咏叹 (九光寒林·黑袍女子/幽烛侍者)", role: "音频编辑", highlight: true },
+                { name: "23. 瑶光遗韵 (九光寒林·西华圣殿)", role: "音频编辑", highlight: true },
+                { name: "24. 蛊铃迷音 (九光寒林·野利白妙/霜啸)", role: "音频编辑", highlight: true },
+                { name: "25. 巫雷乱云 (九光寒林·圣巫)", role: "音频编辑", highlight: true },
+                { name: "26. 白云谣 (三年为期)", role: "音频编辑", highlight: true }
+            ]
+        },
+        {
+            id: 'nsh2', title: '逆水寒·新声集', meta: 'Original Game Soundtrack / 2024',
+            cover: 'images/album2.jpg', neteaseUrl: '#',
+            tracks: [
+                { name: "01. 深海回声", role: "录音/混音", highlight: true },
+                { name: "02. 潮汐之舞", role: "", highlight: false }
+            ]
+        },
+        {
+            id: 'random', title: '逆水寒·澜海千声', meta: 'Electronic / Live at West Bund Museum / 2024',
+            cover: 'images/album3.jpg', neteaseUrl: '#',
+            tracks: [
+                { name: "01. 碎片 (Fragment)", role: "作曲/声音设计", highlight: true },
+                { name: "02. 虚空 (Void)", role: "", highlight: false }
+            ]
+        },
+        {
+            id: 'yanyun', title: '逆水寒·万屿纪航', meta: 'Game Soundtrack / 2024',
+            cover: 'images/album4.jpg', neteaseUrl: '#',
+            tracks: [{ name: "01. 狂沙怒号", role: "音频制作", highlight: true }]
+        },
+        {
+            id: 'jiuyou', title: '逆水寒·无忧礼赞', meta: 'Symphony Concert / 2024',
+            cover: 'images/album5.jpg', neteaseUrl: '#',
+            tracks: [{ name: "01. 音乐会序曲", role: "交响编配", highlight: true }]
+        },
+        {
+            id: 'tianwen', title: '逆水寒·千载尘音', meta: 'Original Orchestral / 2024',
+            cover: 'images/album6.jpg', neteaseUrl: '#',
+            tracks: [{ name: "01. 天问 (Tianwen)", role: "作曲", highlight: true }]
+        },
+    ];
+
+    // 引入“无限滚动”系统
+    let targetIndex = 0;   // 鼠标想要滑去的目标位置 (可以是无限大或负数)
+    let currentIndex = 0;  // 物理引擎当前所在的平滑位置
+    let lastInfoIndex = -1;
+
+    const totalAlbums = albumsData.length;
+    const ui = {
+        carousel: document.getElementById('carouselArea'),
+        ambientBg: document.getElementById('ambientBg'),
+        title: document.getElementById('albumTitle'),
+        meta: document.getElementById('albumMeta'),
+        link: document.getElementById('neteaseLink'),
+        tracklist: document.getElementById('tracklistArea')
+    };
+
+    // 1. 初始化 DOM
+    function initCarousel() {
+        albumsData.forEach((album, i) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'vinyl-wrapper';
+            // 点击直接跳转
+            wrapper.onclick = () => {
+                if(!isDragging) {
+                    // 寻找离当前视角最近的路径
+                    let diff = i - (Math.round(targetIndex) % totalAlbums);
+                    if (diff > totalAlbums / 2) diff -= totalAlbums;
+                    if (diff < -totalAlbums / 2) diff += totalAlbums;
+                    targetIndex += diff;
+                }
+            };
+            wrapper.innerHTML = `
+                    <div class="vinyl-item">
+                        <img src="${album.cover}" alt="cover" class="vinyl-label">
+                        <div class="vinyl-hole"></div>
+                    </div>
+                `;
+            ui.carousel.appendChild(wrapper);
+        });
+        requestAnimationFrame(render);
+    }
+
+    // 2. 更新底部文字信息 (处理无限索引)
+    function updateInfo(index) {
+        // 将无限增加或减小的 index 安全地转换为 0 到 6 的数组索引
+        let wrappedIndex = ((index % totalAlbums) + totalAlbums) % totalAlbums;
+
+        if (wrappedIndex === lastInfoIndex) return;
+        lastInfoIndex = wrappedIndex;
+        const data = albumsData[wrappedIndex];
+
+        ui.ambientBg.style.backgroundImage = `url('${data.cover}')`;
+        ui.title.textContent = data.title;
+        ui.meta.textContent = data.meta;
+        ui.link.href = data.neteaseUrl;
+
+        ui.tracklist.innerHTML = '';
+        data.tracks.forEach(track => {
+            const roleTag = track.highlight ? `<span class="track-role">${track.role}</span>` : '';
+            const highlightClass = track.highlight ? 'highlighted' : '';
+            ui.tracklist.innerHTML += `
+                    <div class="track-item ${highlightClass}">
+                        <span class="track-name">${track.name}</span>
+                        ${roleTag}
+                    </div>
+                `;
+        });
+    }
+
+    // 3. 核心物理引擎 (修复不对称断层，实现连续平滑排列)
+    function render() {
+        // Lerp 缓动算法：带来极为跟手和柔软的回弹反馈
+        currentIndex += (targetIndex - currentIndex) * 0.12;
+
+        const wrappers = document.querySelectorAll('.vinyl-wrapper');
+        wrappers.forEach((wrapper, i) => {
+            let offset = i - currentIndex;
+
+            // --- 完美无限循环折叠计算 ---
+            const halfTotal = totalAlbums / 2;
+            while (offset > halfTotal) offset -= totalAlbums;
+            while (offset < -halfTotal) offset += totalAlbums;
+
+            let absOffset = Math.abs(offset);
+            let sign = offset === 0 ? 0 : Math.sign(offset);
+
+            // --- 全新连续数学模型 (解决不对称和跳跃问题) ---
+            // offset * 22 决定了密集的基础排列，25 则是专为中间主视图留出的空隙
+            let translateX = offset * 22 + sign * Math.min(absOffset, 1) * 25;
+
+            // 缩放曲线：中间放大到 1.1，两侧迅速缩小增强景深
+            let scale = 1.1 - Math.min(absOffset, 1) * 0.25 - Math.max(0, absOffset - 1) * 0.08;
+            scale = Math.max(0.4, scale);
+
+            // Y轴偏转：让两侧的唱片形成向内翻阅的弧度
+            let rotateY = sign * -35 * Math.min(absOffset, 1);
+
+            // 景深控制
+            let zIndex = 100 - Math.round(absOffset * 10);
+            let brightness = 1 - Math.min(absOffset, 1) * 0.4 - Math.max(0, absOffset - 1) * 0.1;
+            brightness = Math.max(0.1, brightness);
+            let blur = absOffset * 4;
+
+            // 应用到 DOM
+            wrapper.style.transform = `translateX(${translateX}%) scale(${scale}) rotateY(${rotateY}deg)`;
+            wrapper.style.zIndex = zIndex;
+            wrapper.querySelector('.vinyl-item').style.filter = `brightness(${brightness}) blur(${blur}px)`;
+
+            // 只有最中心的才允许自转，容差设为极小值避免闪烁
+            if (absOffset < 0.05) {
+                wrapper.classList.add('active');
+            } else {
+                wrapper.classList.remove('active');
+            }
+        });
+
+        // 实时更新文字（以当前四舍五入的整数位为准）
+        updateInfo(Math.round(currentIndex));
+
+        requestAnimationFrame(render);
+    }
+
+    // ==========================================
+    // 4. 极致跟手拖拽事件 (支持解除边界限制的无限滑)
+    // ==========================================
+    let isDragging = false;
+    let startX = 0;
+    let initialTarget = 0;
+
+    const handleDragStart = (x) => {
+        isDragging = true;
+        startX = x;
+        initialTarget = targetIndex;
+        ui.carousel.style.cursor = 'grabbing';
+    };
+
+    const handleDragMove = (x) => {
+        if (!isDragging) return;
+        const diff = x - startX;
+        // 降低阻尼，让手机和 PC 的拖拽手感更轻盈灵敏
+        const sensitivity = window.innerWidth < 768 ? 150 : 250;
+        targetIndex = initialTarget - (diff / sensitivity);
+    };
+
+    const handleDragEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        ui.carousel.style.cursor = 'grab';
+        // 松手时，如磁吸般自动回正到最近的整数专辑位
+        targetIndex = Math.round(targetIndex);
+    };
+
+    // PC端鼠标事件
+    ui.carousel.addEventListener('mousedown', e => handleDragStart(e.pageX));
+    window.addEventListener('mousemove', e => handleDragMove(e.pageX));
+    window.addEventListener('mouseup', handleDragEnd);
+    ui.carousel.addEventListener('mouseleave', handleDragEnd);
+
+    // 移动端触摸事件
+    ui.carousel.addEventListener('touchstart', e => handleDragStart(e.touches[0].pageX), {passive: true});
+    window.addEventListener('touchmove', e => handleDragMove(e.touches[0].pageX), {passive: true});
+    window.addEventListener('touchend', handleDragEnd);
+
+    // 启动系统
+    initCarousel();
+</script>
+</body>
+</html>
