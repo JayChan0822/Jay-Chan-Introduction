@@ -919,66 +919,79 @@
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // ==========================================
-    // 2. 真实波形渲染逻辑 (WaveSurfer)
+    // 2. 全局媒体控制 & 真实波形渲染 (WaveSurfer)
     // ==========================================
+
+    // 获取页面上所有的视频元素
+    const videos = document.querySelectorAll('video');
     const tracks = document.querySelectorAll('.track');
     let activeSurfer = null; // 记录当前正在播放的音频
 
+    // --- 核心：全局暂停函数 ---
+    // 传入 currentMedia，暂停除了 currentMedia 之外的所有音频和视频
+    const pauseAllMedia = (currentMedia) => {
+        // 1. 暂停其他音频
+        if (activeSurfer && activeSurfer !== currentMedia && activeSurfer.isPlaying()) {
+            activeSurfer.pause();
+        }
+        // 2. 暂停其他视频
+        videos.forEach(video => {
+            if (video !== currentMedia && !video.paused) {
+                video.pause();
+            }
+        });
+    };
+
+    // --- 监听所有视频的播放事件 ---
+    videos.forEach(video => {
+        video.addEventListener('play', () => {
+            // 当任何视频开始播放时，暂停其他所有媒体
+            pauseAllMedia(video);
+        });
+    });
+
+    // --- WaveSurfer 音频逻辑 ---
     tracks.forEach(track => {
         const waveformEl = track.querySelector('.waveform');
-
-        // 【新增这一行防错代码】如果这首歌没有波形容器，直接跳过，不报错
         if (!waveformEl) return;
 
         const playBtn = track.querySelector('.play-btn');
         const audioUrl = waveformEl.getAttribute('data-src');
-
-        // 如果没有配置音频路径，则跳过
         if (!audioUrl) return;
 
-        // 为这首歌曲创建一个 WaveSurfer 实例
         const wavesurfer = WaveSurfer.create({
             container: waveformEl,
-            waveColor: '#444444',     // 波形未播放时的颜色（深灰）
-            progressColor: '#ffffff', // 波形已播放部分的颜色（纯白）
+            waveColor: '#444444',
+            progressColor: '#ffffff',
             url: audioUrl,
             height: 40,
-            barWidth: 2,              // 柱状图的宽度
-            barGap: 2,                // 柱状图之间的间距
-            barRadius: 2,             // 柱状图的圆角
-            cursorColor: 'transparent',// 隐藏默认的播放指针，保持极简
-            dragToSeek: true          // 【关键新增】开启长按鼠标拖动波形改变进度功能
+            barWidth: 2,
+            barGap: 2,
+            barRadius: 2,
+            cursorColor: 'transparent',
+            dragToSeek: true
         });
 
-        // 当音频准备就绪可以播放时
         wavesurfer.on('ready', () => {
-            // 点击播放按钮的逻辑
             const toggle = () => {
-                if (activeSurfer && activeSurfer !== wavesurfer) {
-                    activeSurfer.pause();
+                // 如果当前准备播放（即目前是暂停状态），则触发全局暂停其他媒体
+                if (!wavesurfer.isPlaying()) {
+                    pauseAllMedia(wavesurfer);
                 }
                 wavesurfer.playPause();
-                activeSurfer = wavesurfer;
             };
-
             playBtn.addEventListener('click', toggle);
         });
 
-        // 【关键修改】使用 WaveSurfer 原生的 interaction 事件代替点击事件
-        // 这样无论是“单次点击”还是“长按拖动”，都能完美捕获
         wavesurfer.on('interaction', () => {
-            // 如果拖动/点击了另外一首歌，先暂停原来那首
-            if (activeSurfer && activeSurfer !== wavesurfer) {
-                activeSurfer.pause();
-            }
-            activeSurfer = wavesurfer;
-
-            // 交互后自动开始播放（让拖动体验更顺滑）
+            // 用户拖动波形时，触发全局暂停，并播放当前音频
+            pauseAllMedia(wavesurfer);
             wavesurfer.play();
         });
 
-        // 监听播放状态更新按钮 UI
+        // 状态监听更新 UI
         wavesurfer.on('play', () => {
+            activeSurfer = wavesurfer; // 更新当前活动的音频实例
             playBtn.innerHTML = '||';
             track.classList.add('playing');
         });
@@ -988,11 +1001,12 @@
             track.classList.remove('playing');
         });
 
-        // 播放完毕重置
         wavesurfer.on('finish', () => {
             playBtn.innerHTML = '▶';
+            track.classList.remove('playing');
         });
     });
+
     // --- 苹果风格滚动动画触发器 ---
     document.addEventListener("DOMContentLoaded", () => {
         // 创建一个观察器选项
