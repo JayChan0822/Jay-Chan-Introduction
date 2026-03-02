@@ -115,13 +115,14 @@
         .hero-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* [替换] 放入您最酷的一张演出或工作照 */
-            background-image: url('https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=2070&auto=format&fit=crop');
+            /* 替换为新的科技感音乐图片链接 */
+            background-image: url('images/hero-bg.jpg');
             background-size: cover;
             background-position: center;
+            /* 保持这个透明度 0.3，配合你的胶片噪点层，文字会非常清晰 */
             opacity: 0.3;
             transform: scale(1.1);
-            transition: transform 0.2s ease-out; /* JS控制视差 */
+            transition: transform 0.2s ease-out;
         }
 
         /* --- Hero Section 排版优化 --- */
@@ -630,6 +631,69 @@
         .delay-3 { transition-delay: 0.45s; }
         .delay-4 { transition-delay: 0.6s; }  /* 新增 */
         .delay-5 { transition-delay: 0.75s; } /* 新增 */
+
+        /* --- Contact & Footer Section (联系方式与页脚) --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+            padding-bottom: 60px;
+        }
+
+        .contact-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .contact-item p, .contact-item a {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block; /* 让链接占满整行方便点击 */
+        }
+
+        .contact-item a:hover {
+            color: #fff;
+        }
+
+        /* 重新设计底部 Copyright 区域 */
+        footer {
+            padding: 40px 10%;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .footer-left { width: 30%; text-align: left; }
+        .footer-center { width: 40%; text-align: center; }
+        .footer-right { width: 30%; text-align: right; }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr; /* 移动端变为单列垂直排列 */
+                gap: 30px;
+            }
+            footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .footer-left, .footer-center, .footer-right {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -640,9 +704,9 @@
 <nav>
     <ul>
         <li class="hover-trigger"><a href="#about">PROFILE</a></li>
-        <li class="hover-trigger"><a href="#portfolio">SONIC</a></li>
+        <li class="hover-trigger"><a href="#portfolio">SOUND</a></li>
         <li class="hover-trigger"><a href="#visual">VISUAL</a></li>
-        <li class="hover-trigger"><a href="#work">PROJECTS</a></li>
+        <li class="hover-trigger"><a href="#work">PROJECT</a></li>
     </ul>
 </nav>
 
@@ -666,34 +730,36 @@
             </h2>
 
             <p class="text-body apple-animate from-left delay-1" style="font-size: 1.05rem; line-height: 1.8; color: #eeeeee; text-align: justify;">
-                我是<span class="highlight">陈俊</span>，上海音乐学院电影音乐制作专业研究生，师从秦诗乐副教授。曾获<strong>丹尼奖国际电子音乐大赛</strong>游戏配乐组银奖；管弦作品《水乡记忆》由苏州交响乐团首演；深度参与<strong>《逆水寒》</strong>等头部游戏大作及陈致逸音乐会音频制作。致力于融合传统管弦与前沿科技，重塑沉浸式听觉体验。
+                我是<span class="highlight">陈俊</span>，上海音乐学院电影音乐制作硕士在读。曾获<strong>丹尼奖国际电子音乐大赛</strong>游戏配乐组银奖，国潮音乐提名；2025年7月，管弦乐作品《水乡记忆》由苏州交响乐团首演；深度参与<strong>《逆水寒》</strong><strong>《燕云十六声》</strong>等游戏音乐制作、录音制谱、音乐编辑等工作；致力于融合传统管弦与前沿科技，重塑沉浸式听觉体验。
             </p>
 
             <div class="apple-animate from-left delay-2" style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px;">
                 <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify;">
-                    I am Chen Jun, a graduate student majoring in Film Music Production at the Shanghai Conservatory of Music, studying under Associate Professor Qin Shilue. I won the Silver Prize in the Game Scoring category at the Danny Award International Electronic Music Competition; my orchestral work Memories of the Water Town was premiered by the Suzhou Symphony Orchestra. I have been deeply involved in the audio production for major game titles such as Justice Online and Chen Zhiyi's concerts. I am dedicated to integrating traditional orchestration with cutting-edge technology to reshape immersive auditory experiences.
+                    Jay Chan is a Master’s candidate in Film Music Production at the Shanghai Conservatory of Music. A decorated composer and producer, he was awarded the Silver Prize in the Game Scoring category at the Denny Awards International Electronic Music Competition and received a nomination for "National Style" music.
+
+                    In July 2025, his orchestral work, Memories of the Water Town (水乡·记忆), was premiered by the Suzhou Symphony Orchestra. Chen has also contributed extensively to the audio production of major titles such as Justice Online (逆水寒) and Where Winds Meet (燕云十六声), specializing in scoring, recording management, and music editing. His artistic mission lies at the intersection of traditional orchestration and cutting-edge technology, dedicated to reshaping the boundaries of immersive auditory experiences.
                 </p>
             </div>
         </div>
 
         <div class="about-image-wrapper hover-trigger apple-animate from-right delay-3">
-            <img src="images/profile.jpg" alt="陈俊 Chen Jun" class="about-image">
+            <img src="images/profile.jpg" alt="陈俊 Jay Chan" class="about-image">
         </div>
     </div>
 </section>
 
 <section id="portfolio">
     <div class="apple-animate from-top" style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 2px;">
-        SONIC LAB / 声音实验
+        SOUND LAB / 声音实验
     </div>
 
     <div class="audio-wrapper" style="margin-top: 30px;">
-        <div class="category-title apple-animate from-left">国风 / National Style</div>
+        <div class="category-title apple-animate from-left">国风 / Guofeng Style</div>
 
         <div class="track hover-trigger apple-animate from-bottom delay-1">
             <div class="play-btn">▶</div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">National 1</div>
+                <div style="color:#fff; font-weight:500;">Guofeng 1</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Orchestral Battle Theme</div>
             </div>
             <div class="waveform" data-src="audio/暗夜烛光.mp3"></div>
@@ -701,7 +767,7 @@
         <div class="track hover-trigger apple-animate from-bottom delay-2">
             <div class="play-btn">▶</div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">National 2</div>
+                <div style="color:#fff; font-weight:500;">Guofeng 2</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Emotional Folk</div>
             </div>
             <div class="waveform" data-src="audio/大江湖名胜.mp3"></div>
@@ -709,7 +775,7 @@
         <div class="track hover-trigger apple-animate from-bottom delay-3">
             <div class="play-btn">▶</div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">National 3</div>
+                <div style="color:#fff; font-weight:500;">Guofeng 3</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Emotional Folk</div>
             </div>
             <div class="waveform" data-src="audio/横绝.mp3"></div>
@@ -722,7 +788,7 @@
             <div class="play-btn">▶</div>
             <div class="track-info">
                 <div style="color:#fff; font-weight:500;">Pop 1</div>
-                <div style="color:#666; font-size:12px; margin-top:4px;">Pop Arrangement</div>
+                <div style="color:#666; font-size:12px; margin-top:4px;">Pop / Guofeng</div>
             </div>
             <div class="waveform" data-src="audio/鹊桥仙.mp3"></div>
         </div>
@@ -734,6 +800,14 @@
             </div>
             <div class="waveform" data-src="audio/杭州之江.mp3"></div>
         </div>
+        <div class="track hover-trigger apple-animate from-bottom delay-2">
+            <div class="play-btn">▶</div>
+            <div class="track-info">
+                <div style="color:#fff; font-weight:500;">Pop 3</div>
+                <div style="color:#666; font-size:12px; margin-top:4px;">Pop / Guofeng</div>
+            </div>
+            <div class="waveform" data-src="audio/琴韵缤纷奏新春.mp3"></div>
+        </div>
     </div>
 
     <div class="audio-wrapper" style="margin-top: 40px;">
@@ -742,7 +816,7 @@
             <div class="play-btn">▶</div>
             <div class="track-info">
                 <div style="color:#fff; font-weight:500;">Orchestra 1</div>
-                <div style="color:#666; font-size:12px; margin-top:4px;">J-RPG Fantasy</div>
+                <div style="color:#666; font-size:12px; margin-top:4px;">Guofeng / Orchestra</div>
             </div>
             <div class="waveform" data-src="audio/天问.mp3"></div>
         </div>
@@ -786,7 +860,7 @@
             <div class="play-btn">▶</div>
             <div class="track-info">
                 <div style="color:#fff; font-weight:500;">Electronic 2</div>
-                <div style="color:#666; font-size:12px; margin-top:4px;">Intelligent Dance Music</div>
+                <div style="color:#666; font-size:12px; margin-top:4px;">Trap / Dubstep</div>
             </div>
             <div class="waveform" data-src="audio/黄杨扁担.mp3"></div>
         </div>
@@ -809,7 +883,7 @@
             </div>
             <div class="video-info">
                 <div class="video-title">逆水寒 潮光 CG配乐</div>
-                <div class="video-desc">Orchestral / 管弦配乐</div>
+                <div class="video-desc">Orchestral ｜ 管弦配乐</div>
             </div>
         </div>
 
@@ -822,7 +896,7 @@
             </div>
             <div class="video-info">
                 <div class="video-title">Illuma LUXA广告配乐</div>
-                <div class="video-desc">Orchestral / 管弦配乐</div>
+                <div class="video-desc">Orchestral ｜ 管弦配乐</div>
             </div>
         </div>
 
@@ -835,7 +909,7 @@
             </div>
             <div class="video-info">
                 <div class="video-title">香肠派对 CG配乐</div>
-                <div class="video-desc">Rock/Orchestral / 摇滚/管弦配乐</div>
+                <div class="video-desc">Rock / Orchestral ｜ 摇滚 / 管弦配乐</div>
             </div>
         </div>
 
@@ -847,8 +921,8 @@
                 </video>
             </div>
             <div class="video-info">
-                <div class="video-title">失序 音画同步</div>
-                <div class="video-desc">Electronic / 电子音乐</div>
+                <div class="video-title">失序 电子音乐视觉作品</div>
+                <div class="video-desc">Electronic ｜ 电子音乐</div>
             </div>
         </div>
 
@@ -861,7 +935,7 @@
             </div>
             <div class="video-info">
                 <div class="video-title">《生死一刹》CG 重配乐</div>
-                <div class="video-desc">Cinematic Sound Design / 声音设计与配乐</div>
+                <div class="video-desc">Cinematic Sound Design ｜ 声音设计与配乐</div>
             </div>
         </div>
 
@@ -874,7 +948,7 @@
             </div>
             <div class="video-info">
                 <div class="video-title">《永远的长安城》CG 重配乐</div>
-                <div class="video-desc">Epic Orchestral / 史诗管弦配乐</div>
+                <div class="video-desc">Epic Orchestral ｜ 史诗管弦配乐</div>
             </div>
         </div>
 
@@ -911,9 +985,42 @@
     </div>
 </section>
 
+<section id="contact">
+    <div class="apple-animate from-top" style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 2px;">
+        CONTACTS / 联系方式
+    </div>
+    <h2 class="apple-animate from-left delay-1" style="font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 10px;">
+        Let's Connect.
+    </h2>
+
+    <div class="contact-grid">
+        <div class="contact-item apple-animate from-bottom delay-1">
+            <h4>邮箱 Email</h4>
+            <p><a href="mailto:iptiwbwy4ever@outlook.com" class="hover-trigger">iptiwbwy4ever@outlook.com</a></p>
+        </div>
+
+        <div class="contact-item apple-animate from-bottom delay-2">
+            <h4>哔哩哔哩 Bilibili</h4>
+            <p><a href="https://space.bilibili.com/453424505?spm_id_from=333.1007.0.0" target="_blank" class="hover-trigger">泛夜 ↗</a></p>
+        </div>
+
+        <div class="contact-item apple-animate from-bottom delay-3">
+            <h4>地址 Address</h4>
+            <p>上海市零陵路520号<br>上海音乐学院</p>
+        </div>
+    </div>
+</section>
+
 <footer>
-    <div>© 2026 JAY CHAN</div>
-    <div>SHANGHAI CONSERVATORY OF MUSIC</div>
+<!--    <div class="footer-left hover-trigger">-->
+<!--        <a href="#" style="color: inherit; text-decoration: none;">沪ICP备XXXXXXX号</a>-->
+<!--    </div>-->
+    <div class="footer-center">
+        Copyright © 2026 JAY CHAN. All Rights Reserved.
+    </div>
+    <div class="footer-right">
+        SHANGHAI CONSERVATORY OF MUSIC
+    </div>
 </footer>
 
 <script type="module">
