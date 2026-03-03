@@ -710,6 +710,105 @@
             }
         }
 
+        /* --- 视频弹窗 (Video Modal) 样式 --- */
+        .video-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* z-index 设为 9998，确保覆盖导航栏，但保留在你原本的噪点层(9999)和光标(10000)下方，维持电影质感 */
+            z-index: 9998;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.4s, opacity 0.4s var(--easing);
+        }
+
+        .video-modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1280px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            z-index: 1;
+            /* 苹果风弹窗缩放入场动画 */
+            transform: scale(0.95) translateY(30px);
+            transition: transform 0.5s var(--easing);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .video-modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-content video {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            display: block;
+            background: #000;
+        }
+
+        /* --- 优化视频卡片交互 --- */
+        .video-wrapper {
+            cursor: pointer;
+        }
+
+        /* 隐藏原本的 video 元素，使用封面图替代 */
+        .video-wrapper video {
+            display: none;
+        }
+
+        .video-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--easing), filter 0.6s;
+        }
+
+        .video-card:hover .video-cover {
+            transform: scale(1.05);
+            filter: brightness(0.6); /* 悬停时压暗背景，凸显播放按钮 */
+        }
+
+        .play-indicator {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 64px; height: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #fff; font-size: 24px;
+            padding-left: 6px; /* 视觉修正播放三角的居中 */
+            opacity: 0;
+            transition: all 0.4s var(--easing);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .video-card:hover .play-indicator {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
     </style>
 </head>
 <body>
@@ -911,12 +1010,10 @@
 
     <div class="video-grid">
 
-        <div class="video-card hover-trigger apple-animate from-left delay-1">
+        <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/chao_yin_wan_lai.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/chao_yin_wan_lai.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg" alt="逆水寒 潮光" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">逆水寒 潮光 CG配乐</div>
@@ -924,12 +1021,10 @@
             </div>
         </div>
 
-        <div class="video-card hover-trigger apple-animate from-right delay-2">
+        <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/Illuma_luxa.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/Illuma_luxa.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg" alt="Illuma LUXA" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">Illuma LUXA广告配乐</div>
@@ -937,12 +1032,10 @@
             </div>
         </div>
 
-        <div class="video-card hover-trigger apple-animate from-left delay-1">
+        <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/xiang_chang_pai_dui.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/xiang_chang_pai_dui.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg" alt="香肠派对" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">香肠派对 CG配乐</div>
@@ -950,12 +1043,10 @@
             </div>
         </div>
 
-        <div class="video-card hover-trigger apple-animate from-right delay-2">
+        <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/shi_xu.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/shi_xu.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg" alt="失序" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">失序 电子音乐视觉作品</div>
@@ -963,12 +1054,10 @@
             </div>
         </div>
 
-        <div class="video-card hover-trigger apple-animate from-left delay-1">
+        <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/sheng_si_yi_cha.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/sheng_si_yi_cha.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg" alt="生死一刹" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">《生死一刹》CG 重配乐</div>
@@ -976,12 +1065,10 @@
             </div>
         </div>
 
-        <div class="video-card hover-trigger apple-animate from-right delay-2">
+        <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/yong_yuan_de_chang_an_cheng.mp4">
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg">
-                    <source src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/yong_yuan_de_chang_an_cheng.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg" alt="永远的长安城" class="video-cover">
+                <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
                 <div class="video-title">《永远的长安城》CG 重配乐</div>
@@ -1062,6 +1149,19 @@
         SHANGHAI CONSERVATORY OF MUSIC
     </div>
 </footer>
+
+<div id="videoModal" class="video-modal">
+    <div class="modal-overlay hover-trigger"></div>
+    <button class="modal-close-btn hover-trigger">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+    <div class="modal-content">
+        <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload"></video>
+    </div>
+</div>
 
 <script type="module">
     // 1. 引入 WaveSurfer 核心库
@@ -1207,6 +1307,49 @@
         const animateElements = document.querySelectorAll('.apple-animate');
         animateElements.forEach(el => observer.observe(el));
     });
+
+    // ==========================================
+    // 3. 视频独立弹窗逻辑 (Video Modal)
+    // ==========================================
+    const videoModal = document.getElementById('videoModal');
+    const modalVideoPlayer = document.getElementById('modalVideoPlayer');
+    const closeBtn = document.querySelector('.modal-close-btn');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const videoCards = document.querySelectorAll('.video-card');
+
+    // 监听视频卡片点击
+    videoCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const videoSrc = card.getAttribute('data-video');
+            if (videoSrc) {
+                // 1. 暂停正在播放的音频 (WaveSurfer)
+                if (activeSurfer && activeSurfer.isPlaying()) {
+                    activeSurfer.pause();
+                }
+
+                // 2. 将视频链接赋给弹窗播放器
+                modalVideoPlayer.src = videoSrc;
+
+                // 3. 呼出弹窗并播放
+                videoModal.classList.add('active');
+                modalVideoPlayer.play();
+            }
+        });
+    });
+
+    // 关闭弹窗的公共函数
+    const closeVideoModal = () => {
+        videoModal.classList.remove('active');
+        modalVideoPlayer.pause();
+        // 延迟清除 src，等待淡出动画结束，避免闪烁
+        setTimeout(() => {
+            modalVideoPlayer.src = '';
+        }, 400);
+    };
+
+    // 绑定关闭事件 (点击遮罩层或叉号)
+    closeBtn.addEventListener('click', closeVideoModal);
+    modalOverlay.addEventListener('click', closeVideoModal);
 </script>
 </body>
 </html>
