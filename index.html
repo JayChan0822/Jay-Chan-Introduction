@@ -198,16 +198,6 @@
             position: relative;
         }
 
-        .fade-up {
-            opacity: 0;
-            transform: translateY(60px);
-            transition: all 1s var(--easing);
-        }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* --- About Section (并排布局) --- */
         .about-container {
             display: grid;
@@ -275,7 +265,7 @@
             margin-top: 60px;
             border: 1px solid #222;
             border-radius: 20px;
-            padding: 40px;
+            padding: 25px 40px;
             background: rgba(20,20,20,0.5);
             backdrop-filter: blur(10px);
         }
@@ -645,7 +635,6 @@
         .from-top    { transform: translate3d(0, -60px, 0) scale(0.99); } /* 从上往下 */
         .from-left   { transform: translate3d(-80px, 0, 0) scale(0.99); } /* 从左往右 */
         .from-right  { transform: translate3d(80px, 0, 0) scale(0.99); }  /* 从右往左 */
-        .fade-in     { transform: translate3d(0, 0, 0) scale(0.95); }     /* 原地放大渐显 */
 
         /* --- 3. 激活状态：当滚动到视口时，不管从哪来，都回到原位 --- */
         .apple-animate.animate-active {
@@ -655,6 +644,8 @@
 
         /* --- 针对移动端的优化：减小横向位移，避免出现横向滚动条 --- */
         @media (max-width: 768px) {
+            .nav-base a { opacity: 1; }
+            .nav-bold { display: none; } /* 移动端直接干掉顶层，节省性能 */
             .from-left  { transform: translate3d(-30px, 0, 0) scale(0.995); }
             .from-right { transform: translate3d(30px, 0, 0) scale(0.995); }
         }
@@ -870,14 +861,24 @@
             </h2>
 
             <p class="text-body apple-animate from-left delay-1" style="font-size: 1.05rem; line-height: 1.8; color: #eeeeee; text-align: justify;">
-                我是<span class="highlight">陈俊</span>，上海音乐学院电影音乐制作硕士在读。曾获<strong>丹尼奖国际电子音乐大赛</strong>游戏配乐组银奖，国潮音乐提名；2025年7月，管弦乐作品《水乡记忆》由苏州交响乐团首演；深度参与<strong>《逆水寒》</strong><strong>《燕云十六声》</strong>等游戏音乐制作、录音制谱、音乐编辑等工作；致力于融合传统管弦与前沿科技，重塑沉浸式听觉体验。
+                我是陈俊，上海音乐学院电影音乐制作硕士在读。擅长国风、流行、管弦等风格的音乐。
+            </p>
+            <p class="text-body apple-animate from-left delay-1" style="font-size: 1.05rem; line-height: 1.8; color: #eeeeee; text-align: justify;">
+                曾获丹尼奖国际电子音乐大赛游戏配乐组银奖，国潮音乐提名；深度参与《逆水寒》《燕云十六声》等游戏音乐制作、录音制谱、音乐编辑等工作；
+            </p>
+            <p class="text-body apple-animate from-left delay-1" style="font-size: 1.05rem; line-height: 1.8; color: #eeeeee; text-align: justify;">
+                致力于融合传统管弦与前沿音乐美学，重塑沉浸式听觉体验。
             </p>
 
             <div class="apple-animate from-left delay-2" style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px;">
-                <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify;">
-                    Jay Chan is a Master’s candidate in Film Music Production at the Shanghai Conservatory of Music. A decorated composer and producer, he was awarded the Silver Prize in the Game Scoring category at the Denny Awards International Electronic Music Competition and received a nomination for "National Style" music.
-
-                    In July 2025, his orchestral work, Memories of the Water Town (水乡·记忆), was premiered by the Suzhou Symphony Orchestra. Chen has also contributed extensively to the audio production of major titles such as Justice Online (逆水寒) and Where Winds Meet (燕云十六声), specializing in scoring, recording management, and music editing. His artistic mission lies at the intersection of traditional orchestration and cutting-edge technology, dedicated to reshaping the boundaries of immersive auditory experiences.
+                <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
+                    Jay Chan is a Master’s candidate in Film Music Production at the Shanghai Conservatory of Music. Excels in composing across various genres, particularly Guofeng, Pop, and Orchestral music.
+                </p>
+                <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
+                    A decorated composer and producer, he was awarded the Silver Prize in the Game Scoring category at the Denny Awards International Electronic Music Competition and received a nomination for "National Style" music.
+                </p>
+                <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
+                    His artistic mission lies at the intersection of traditional orchestration and cutting-edge music, dedicated to reshaping the boundaries of immersive auditory experiences.
                 </p>
             </div>
         </div>
@@ -1220,12 +1221,6 @@
             document.body.style.setProperty('--cursor-radius', '10px');
         });
     });
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // ==========================================
     // 2. 全局媒体控制 & 真实波形渲染 (WaveSurfer)
@@ -1259,61 +1254,72 @@
         });
     });
 
-    // --- WaveSurfer 音频逻辑 ---
-    tracks.forEach(track => {
-        const waveformEl = track.querySelector('.waveform');
-        if (!waveformEl) return;
+    // --- WaveSurfer 音频逻辑 (优化版：滚动到可视区域才加载) ---
+    // 创建一个音频波形观察器
+    const audioObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const track = entry.target;
+                const waveformEl = track.querySelector('.waveform');
+                const playBtn = track.querySelector('.play-btn');
+                const audioUrl = waveformEl.getAttribute('data-src');
 
-        const playBtn = track.querySelector('.play-btn');
-        const audioUrl = waveformEl.getAttribute('data-src');
-        if (!audioUrl) return;
+                if (!audioUrl || track.dataset.loaded === 'true') return;
 
-        const wavesurfer = WaveSurfer.create({
-            container: waveformEl,
-            waveColor: '#444444',
-            progressColor: '#ffffff',
-            url: audioUrl,
-            height: 40,
-            barWidth: 2,
-            barGap: 2,
-            barRadius: 2,
-            cursorColor: 'transparent',
-            dragToSeek: true
-        });
+                // 标记为已加载，防止重复初始化
+                track.dataset.loaded = 'true';
 
-        wavesurfer.on('ready', () => {
-            const toggle = () => {
-                // 如果当前准备播放（即目前是暂停状态），则触发全局暂停其他媒体
-                if (!wavesurfer.isPlaying()) {
+                const wavesurfer = WaveSurfer.create({
+                    container: waveformEl,
+                    waveColor: '#444444',
+                    progressColor: '#ffffff',
+                    url: audioUrl,
+                    height: 40,
+                    barWidth: 2,
+                    barGap: 2,
+                    barRadius: 2,
+                    cursorColor: 'transparent',
+                    dragToSeek: true
+                });
+
+                wavesurfer.on('ready', () => {
+                    const toggle = () => {
+                        if (!wavesurfer.isPlaying()) pauseAllMedia(wavesurfer);
+                        wavesurfer.playPause();
+                    };
+                    playBtn.addEventListener('click', toggle);
+                });
+
+                wavesurfer.on('interaction', () => {
                     pauseAllMedia(wavesurfer);
-                }
-                wavesurfer.playPause();
-            };
-            playBtn.addEventListener('click', toggle);
-        });
+                    wavesurfer.play();
+                });
 
-        wavesurfer.on('interaction', () => {
-            // 用户拖动波形时，触发全局暂停，并播放当前音频
-            pauseAllMedia(wavesurfer);
-            wavesurfer.play();
-        });
+                wavesurfer.on('play', () => {
+                    activeSurfer = wavesurfer;
+                    playBtn.innerHTML = '||';
+                    track.classList.add('playing');
+                });
 
-        // 状态监听更新 UI
-        wavesurfer.on('play', () => {
-            activeSurfer = wavesurfer; // 更新当前活动的音频实例
-            playBtn.innerHTML = '||';
-            track.classList.add('playing');
-        });
+                wavesurfer.on('pause', () => {
+                    playBtn.innerHTML = '▶';
+                    track.classList.remove('playing');
+                });
 
-        wavesurfer.on('pause', () => {
-            playBtn.innerHTML = '▶';
-            track.classList.remove('playing');
-        });
+                wavesurfer.on('finish', () => {
+                    playBtn.innerHTML = '▶';
+                    track.classList.remove('playing');
+                });
 
-        wavesurfer.on('finish', () => {
-            playBtn.innerHTML = '▶';
-            track.classList.remove('playing');
+                // 停止观察这个已经加载的轨道
+                observer.unobserve(track);
+            }
         });
+    }, { rootMargin: '100px 0px' }); // 提前 100px 开始加载，让用户无感知
+
+    // 监听所有的 track
+    tracks.forEach(track => {
+        audioObserver.observe(track);
     });
 
     // --- 苹果风格滚动动画触发器 ---
