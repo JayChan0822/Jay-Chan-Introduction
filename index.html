@@ -53,53 +53,71 @@
             border: none;
         }
 
-        /* --- 1. 导航栏 (全宽渐变模糊) --- */
+        /* 在样式表顶部注册一个变量，用于实现光圈缩放的丝滑动画 */
+        @property --cursor-radius {
+            syntax: '<length>';
+            initial-value: 10px;
+            inherits: true;
+        }
+
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120px; /* 增加高度以容纳渐变 */
+            top: 0; left: 0; width: 100%; height: 120px;
             z-index: 1000;
-            display: flex;
-            justify-content: center; /* 居中对齐 */
-            align-items: flex-start; /* 内容靠上 */
-            padding-top: 30px; /* 给文字留出顶部空间 */
-
-            /* [关键修改] 背景渐变：从半透明黑 -> 完全透明 */
             background: linear-gradient(to bottom, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0) 100%);
-
-            /* [关键修改] 模糊渐变：使用 mask-image 让模糊效果也向下淡出 */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-
-            /* 移除之前的胶囊样式和混合模式 */
-            mix-blend-mode: normal;
-            border: none;
         }
 
+        /* 绝对定位让两个 ul 完美重叠，同时坐标系与全屏鼠标完全对齐 */
         nav ul {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
-            gap: 60px; /* 增加间距，让布局更大气 */
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            gap: 60px;
             list-style: none;
+            margin: 0;
+        }
+
+        .nav-base { z-index: 1; }
+        .nav-bold {
+            z-index: 2;
+            pointer-events: none; /* 让鼠标事件穿透到底层 */
+            /* 核心裁剪魔法：只显示光标半径内的加粗区域 */
+            clip-path: circle(var(--cursor-radius, 10px) at var(--mouse-x, -100px) var(--mouse-y, -100px));
+            /* 过渡动画只作用于半径，保证坐标跟随无延迟 */
+            transition: --cursor-radius 0.3s var(--easing);
         }
 
         nav a {
             color: #fff;
             text-decoration: none;
             font-size: 13px;
-            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 2px;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-            /* 增加文字阴影，防止背景变淡后看不清 */
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        nav a:hover { opacity: 1; }
+        /* 底层细体样式 */
+        .nav-base a {
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .nav-base a:hover { opacity: 1; }
+
+        /* 顶层光圈内样式：纯白极粗体（配合光标的反色，会变成纯黑！） */
+        .nav-bold a {
+            font-weight: 500; /* 核心修复：字重必须和底层的 500 完全一致，杜绝任何物理错位 */
+            opacity: 1;
+            text-shadow: none; /* 保持无阴影，防止反色后发糊 */
+            -webkit-text-stroke: 1.4px #fff; /* 用 0.4px 的精准描边来模拟加粗，字体宽度不会改变，边缘绝对锐利 */
+        }
 
         /* --- 2. Hero Section (视差入场) --- */
         .hero {
@@ -817,11 +835,18 @@
 <div class="cursor"></div>
 
 <nav>
-    <ul>
+    <ul class="nav-base">
         <li class="hover-trigger"><a href="#about">PROFILE</a></li>
         <li class="hover-trigger"><a href="#portfolio">SOUND</a></li>
         <li class="hover-trigger"><a href="#visual">VISUAL</a></li>
         <li class="hover-trigger"><a href="#work">PROJECT</a></li>
+    </ul>
+
+    <ul class="nav-bold" aria-hidden="true">
+        <li><a href="#about">PROFILE</a></li>
+        <li><a href="#portfolio">SOUND</a></li>
+        <li><a href="#visual">VISUAL</a></li>
+        <li><a href="#work">PROJECT</a></li>
     </ul>
 </nav>
 
@@ -1166,21 +1191,34 @@
 <script type="module">
     // 1. 引入 WaveSurfer 核心库
     import WaveSurfer from 'https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.esm.js'
-
+    // 初始化 CSS 变量
+    document.body.style.setProperty('--mouse-x', '-100px');
+    document.body.style.setProperty('--mouse-y', '-100px');
+    document.body.style.setProperty('--cursor-radius', '10px');
     // 前面的光标跟随代码保留不动...
     const cursor = document.querySelector('.cursor');
     const triggers = document.querySelectorAll('.hover-trigger');
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
+        document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+        document.body.style.setProperty('--mouse-y', e.clientY + 'px');
         const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
         const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
         const heroBg = document.querySelector('.hero-bg');
         if(heroBg) heroBg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
     });
     triggers.forEach(trigger => {
-        trigger.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-        trigger.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        trigger.addEventListener('mouseenter', () => {
+            cursor.classList.add('hovered');
+            // --- 新增：光标放大到 50px 时，遮罩圆圈半径同步放大到 25px ---
+            document.body.style.setProperty('--cursor-radius', '25px');
+        });
+        trigger.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hovered');
+            // --- 新增：光标恢复到 20px 时，遮罩圆圈半径同步恢复 10px ---
+            document.body.style.setProperty('--cursor-radius', '10px');
+        });
     });
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
