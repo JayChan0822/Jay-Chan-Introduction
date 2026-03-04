@@ -14,7 +14,7 @@
         }
 
         /* --- 0. 全局设置 & 动态噪点质感 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* 隐藏默认光标，使用自定义 */ }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
@@ -22,6 +22,15 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
             overflow-x: hidden;
             position: relative;
+        }
+
+        body.custom-cursor-enabled,
+        body.custom-cursor-enabled * {
+            cursor: none; /* 仅在脚本确认可用时隐藏系统光标 */
+        }
+
+        body.modal-open {
+            overflow: hidden;
         }
 
         /* 电影胶片噪点层 */
@@ -765,6 +774,28 @@
             transform: scale(1) translateY(0);
         }
 
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
         .modal-content video {
             width: 100%;
             height: 100%;
@@ -818,12 +849,47 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        .video-card,
+        .project-card {
+            cursor: pointer;
+        }
+
+        a:focus-visible,
+        .play-btn:focus-visible,
+        .video-card:focus-visible,
+        .project-card:focus-visible,
+        .modal-close-btn:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 3px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
     </style>
 </head>
 <body>
 
-<div class="noise-overlay"></div>
-<div class="cursor"></div>
+<div class="noise-overlay" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
 
 <nav>
     <ul class="nav-base">
@@ -884,7 +950,7 @@
         </div>
 
         <div class="about-image-wrapper hover-trigger apple-animate from-right delay-3">
-            <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/profile.jpg" alt="陈俊 Jay Chan" class="about-image">
+            <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/profile.jpg" alt="陈俊 Jay Chan" class="about-image" loading="lazy" decoding="async">
         </div>
     </div>
 </section>
@@ -1038,7 +1104,7 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/chao_yin_wan_lai.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg" alt="逆水寒 潮光" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg" alt="逆水寒 潮光" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1049,7 +1115,7 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/Illuma_luxa.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg" alt="Illuma LUXA" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg" alt="Illuma LUXA" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1060,7 +1126,7 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/xiang_chang_pai_dui.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg" alt="香肠派对" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg" alt="香肠派对" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1071,7 +1137,7 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/shi_xu.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg" alt="失序" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg" alt="失序" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1082,7 +1148,7 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/sheng_si_yi_cha.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg" alt="生死一刹" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg" alt="生死一刹" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1093,7 +1159,7 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/yong_yuan_de_chang_an_cheng.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg" alt="永远的长安城" class="video-cover">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg" alt="永远的长安城" class="video-cover" loading="lazy" decoding="async">
                 <div class="play-indicator">▶</div>
             </div>
             <div class="video-info">
@@ -1116,8 +1182,11 @@
     <div class="bento-grid">
 
         <div class="bento-card bento-large hover-trigger project-card apple-animate from-left delay-1"
-             onclick="window.open('https://www.midi-visualizer.cn/', '_blank')"
-             style="cursor: pointer; --bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/midi-visualizer.jpg');">
+             data-url="https://www.midi-visualizer.cn/"
+             role="link"
+             tabindex="0"
+             aria-label="打开项目：MIDI Visualizer（新标签页）"
+             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/midi-visualizer.jpg');">
             <span class="bento-year">2025</span>
             <div class="bento-content">
                 <div class="bento-title">MIDI Visualizer</div>
@@ -1126,8 +1195,11 @@
         </div>
 
         <div class="bento-card bento-large hover-trigger project-card apple-animate from-right delay-2"
-             onclick="window.open('https://www.musche.cn/', '_blank')"
-             style="cursor: pointer; --bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/musche.jpg');">
+             data-url="https://www.musche.cn/"
+             role="link"
+             tabindex="0"
+             aria-label="打开项目：Musche（新标签页）"
+             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/musche.jpg');">
             <span class="bento-year">2025</span>
             <div class="bento-content">
                 <div class="bento-title">Musche</div>
@@ -1154,7 +1226,7 @@
 
         <div class="contact-item apple-animate from-bottom delay-2">
             <h4>哔哩哔哩 Bilibili</h4>
-            <p><a href="https://space.bilibili.com/453424505?spm_id_from=333.1007.0.0" target="_blank" class="hover-trigger">泛夜- ↗</a></p>
+            <p><a href="https://space.bilibili.com/453424505?spm_id_from=333.1007.0.0" target="_blank" rel="noopener noreferrer" class="hover-trigger">泛夜- ↗</a></p>
         </div>
 
         <div class="contact-item apple-animate from-bottom delay-3">
@@ -1176,16 +1248,17 @@
     </div>
 </footer>
 
-<div id="videoModal" class="video-modal">
+<div id="videoModal" class="video-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="videoModalTitle">
     <div class="modal-overlay hover-trigger"></div>
-    <button class="modal-close-btn hover-trigger">
+    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭视频弹窗">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
     </button>
     <div class="modal-content">
-        <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload"></video>
+        <h2 id="videoModalTitle" class="sr-only">视频播放器</h2>
+        <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload" aria-label="视频播放器"></video>
     </div>
 </div>
 
@@ -1196,31 +1269,45 @@
     document.body.style.setProperty('--mouse-x', '-100px');
     document.body.style.setProperty('--mouse-y', '-100px');
     document.body.style.setProperty('--cursor-radius', '10px');
-    // 前面的光标跟随代码保留不动...
+
     const cursor = document.querySelector('.cursor');
     const triggers = document.querySelectorAll('.hover-trigger');
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        document.body.style.setProperty('--mouse-x', e.clientX + 'px');
-        document.body.style.setProperty('--mouse-y', e.clientY + 'px');
-        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-        const heroBg = document.querySelector('.hero-bg');
-        if(heroBg) heroBg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
-    });
-    triggers.forEach(trigger => {
-        trigger.addEventListener('mouseenter', () => {
-            cursor.classList.add('hovered');
-            // --- 新增：光标放大到 50px 时，遮罩圆圈半径同步放大到 25px ---
-            document.body.style.setProperty('--cursor-radius', '25px');
+    const heroBg = document.querySelector('.hero-bg');
+    const supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const enableCustomCursor = Boolean(cursor) && supportsFinePointer && !prefersReducedMotion;
+
+    if (enableCustomCursor) {
+        document.body.classList.add('custom-cursor-enabled');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            if (heroBg) heroBg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
         });
-        trigger.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hovered');
-            // --- 新增：光标恢复到 20px 时，遮罩圆圈半径同步恢复 10px ---
-            document.body.style.setProperty('--cursor-radius', '10px');
+
+        triggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => {
+                cursor.classList.add('hovered');
+                document.body.style.setProperty('--cursor-radius', '25px');
+            });
+            trigger.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovered');
+                document.body.style.setProperty('--cursor-radius', '10px');
+            });
         });
-    });
+    } else if (cursor) {
+        cursor.style.display = 'none';
+    }
+
+    const activateOnEnterOrSpace = (event, action) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        action();
+    };
 
     // ==========================================
     // 2. 全局媒体控制 & 真实波形渲染 (WaveSurfer)
@@ -1229,7 +1316,31 @@
     // 获取页面上所有的视频元素
     const videos = document.querySelectorAll('video');
     const tracks = document.querySelectorAll('.track');
+    const projectCards = document.querySelectorAll('.project-card[data-url]');
     let activeSurfer = null; // 记录当前正在播放的音频
+
+    const openExternalLink = (url) => {
+        if (!url) return;
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (newWindow) newWindow.opener = null;
+    };
+
+    projectCards.forEach(card => {
+        const url = card.getAttribute('data-url');
+        const open = () => openExternalLink(url);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, open));
+    });
+
+    tracks.forEach((track, index) => {
+        const playBtn = track.querySelector('.play-btn');
+        const title = track.querySelector('.track-info > div')?.textContent?.trim() || `音频 ${index + 1}`;
+        if (!playBtn) return;
+        playBtn.setAttribute('role', 'button');
+        playBtn.setAttribute('tabindex', '0');
+        playBtn.setAttribute('aria-label', `播放或暂停 ${title}`);
+        playBtn.setAttribute('aria-pressed', 'false');
+    });
 
     // --- 核心：全局暂停函数 ---
     // 传入 currentMedia，暂停除了 currentMedia 之外的所有音频和视频
@@ -1288,6 +1399,7 @@
                         wavesurfer.playPause();
                     };
                     playBtn.addEventListener('click', toggle);
+                    playBtn.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, toggle));
                 });
 
                 wavesurfer.on('interaction', () => {
@@ -1298,16 +1410,19 @@
                 wavesurfer.on('play', () => {
                     activeSurfer = wavesurfer;
                     playBtn.innerHTML = '||';
+                    playBtn.setAttribute('aria-pressed', 'true');
                     track.classList.add('playing');
                 });
 
                 wavesurfer.on('pause', () => {
                     playBtn.innerHTML = '▶';
+                    playBtn.setAttribute('aria-pressed', 'false');
                     track.classList.remove('playing');
                 });
 
                 wavesurfer.on('finish', () => {
                     playBtn.innerHTML = '▶';
+                    playBtn.setAttribute('aria-pressed', 'false');
                     track.classList.remove('playing');
                 });
 
@@ -1360,40 +1475,89 @@
     const closeBtn = document.querySelector('.modal-close-btn');
     const modalOverlay = document.querySelector('.modal-overlay');
     const videoCards = document.querySelectorAll('.video-card');
+    let previousFocusedElement = null;
+
+    const getModalFocusableElements = () => {
+        return Array.from(
+            videoModal.querySelectorAll('button, [href], video, [tabindex]:not([tabindex="-1"])')
+        ).filter(element => !element.hasAttribute('disabled'));
+    };
+
+    const openVideoModal = (videoSrc, triggerElement) => {
+        if (!videoSrc) return;
+
+        if (activeSurfer && activeSurfer.isPlaying()) {
+            activeSurfer.pause();
+        }
+
+        previousFocusedElement = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
+        modalVideoPlayer.src = videoSrc;
+        videoModal.classList.add('active');
+        videoModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        closeBtn.focus();
+        modalVideoPlayer.play().catch(() => {});
+    };
 
     // 监听视频卡片点击
     videoCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const videoSrc = card.getAttribute('data-video');
-            if (videoSrc) {
-                // 1. 暂停正在播放的音频 (WaveSurfer)
-                if (activeSurfer && activeSurfer.isPlaying()) {
-                    activeSurfer.pause();
-                }
+        const title = card.querySelector('.video-title')?.textContent?.trim();
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        if (title) {
+            card.setAttribute('aria-label', `播放视频：${title}`);
+        }
 
-                // 2. 将视频链接赋给弹窗播放器
-                modalVideoPlayer.src = videoSrc;
-
-                // 3. 呼出弹窗并播放
-                videoModal.classList.add('active');
-                modalVideoPlayer.play();
-            }
-        });
+        const open = () => openVideoModal(card.getAttribute('data-video'), card);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, open));
     });
 
     // 关闭弹窗的公共函数
     const closeVideoModal = () => {
+        if (!videoModal.classList.contains('active')) return;
         videoModal.classList.remove('active');
+        videoModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
         modalVideoPlayer.pause();
         // 延迟清除 src，等待淡出动画结束，避免闪烁
         setTimeout(() => {
             modalVideoPlayer.src = '';
         }, 400);
+
+        if (previousFocusedElement instanceof HTMLElement) {
+            previousFocusedElement.focus();
+            previousFocusedElement = null;
+        }
     };
 
     // 绑定关闭事件 (点击遮罩层或叉号)
     closeBtn.addEventListener('click', closeVideoModal);
     modalOverlay.addEventListener('click', closeVideoModal);
+    document.addEventListener('keydown', (event) => {
+        if (!videoModal.classList.contains('active')) return;
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeVideoModal();
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+        const focusableElements = getModalFocusableElements();
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+        }
+    });
 </script>
 </body>
 </html>
