@@ -3,7 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAY CHAN | Sound & Introduction</title>
+    <title>JAY CHAN 陈俊 | 电影配乐 · 游戏音乐制作 Film Scoring & Music Design</title>
+    <meta name="description" content="陈俊 Jay Chan，上海音乐学院电影音乐制作硕士在读。参与《逆水寒》《燕云十六声》《明日之后》等游戏配乐，陈致逸 DG 专辑《漫长的告白》制谱与音乐编辑。国风 / 流行 / 管弦 / 电子作品集。">
+    <meta name="keywords" content="陈俊,Jay Chan,电影配乐,游戏配乐,音乐制作,国风音乐,管弦编曲,上海音乐学院,film scoring,game music">
+    <meta name="author" content="Jay Chan 陈俊">
+    <meta name="theme-color" content="#050505">
+    <link rel="canonical" href="https://www.jaychan.cn/">
+
+    <!-- 分享卡片：微信 / QQ / Twitter 里展开为带封面的卡片 -->
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="JAY CHAN">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:title" content="JAY CHAN 陈俊 | 用声音重塑叙事维度">
+    <meta property="og:description" content="上海音乐学院电影音乐制作硕士在读。国风 / 流行 / 管弦 / 电子。参与《逆水寒》《燕云十六声》等游戏配乐制作。">
+    <meta property="og:url" content="https://www.jaychan.cn/">
+    <!-- 用 OSS 图片处理即时裁出 1200×630，无需另外上传封面图 -->
+    <meta property="og:image" content="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/hero-bg.jpg?x-oss-process=image/resize,m_fill,w_1200,h_630/format,jpg/quality,q_85">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="JAY CHAN — Film Scoring & Music Design">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JAY CHAN 陈俊 | 用声音重塑叙事维度">
+    <meta name="twitter:description" content="上海音乐学院电影音乐制作硕士在读。国风 / 流行 / 管弦 / 电子。">
+    <meta name="twitter:image" content="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/hero-bg.jpg?x-oss-process=image/resize,m_fill,w_1200,h_630/format,jpg/quality,q_85">
+
+    <!-- 内联 SVG 图标，不额外发请求 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23050505'/%3E%3Ctext x='16' y='23' font-family='Helvetica,Arial,sans-serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050505'/%3E%3Ctext x='16' y='23' font-family='Helvetica,Arial,sans-serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+
+    <!-- 提前建连 + 预载 LCP 首屏图，砍掉 DNS/TLS 与「等 CSS 解析完才发现背景图」的串行等待 -->
+    <link rel="preconnect" href="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com" crossorigin>
+    <link rel="dns-prefetch" href="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com">
+    <link rel="preload" as="image" href="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/hero-bg.jpg?x-oss-process=image/resize,w_1920/format,webp/quality,q_80" fetchpriority="high">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "陈俊",
+      "alternateName": "Jay Chan",
+      "url": "https://www.jaychan.cn/",
+      "image": "https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/profile2.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_82",
+      "jobTitle": "Composer / Music Producer",
+      "description": "上海音乐学院电影音乐制作硕士在读，专注电影配乐、游戏音乐与管弦编配。",
+      "knowsAbout": ["Film Scoring", "Game Music", "Orchestration", "Guofeng", "Music Engraving"],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "上海音乐学院 Shanghai Conservatory of Music"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "零陵路 520 号",
+        "addressLocality": "上海",
+        "addressCountry": "CN"
+      },
+      "email": "mailto:iptiwbwy4ever@outlook.com",
+      "sameAs": ["https://space.bilibili.com/453424505"]
+    }
+    </script>
     <style>
         :root {
             --bg: #050505;
@@ -16,12 +73,20 @@
         /* --- 0. 全局设置 & 动态噪点质感 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* overflow-x 必须同时加在 html 上：只写在 body 上时，
+           根元素仍会因为 .hero-bg 的 scale(1.1) 和未揭示元素的 translate 产生横向滚动，
+           部分移动端浏览器会因此整页缩小或能左右拖动 */
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             background-color: var(--bg);
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
             overflow-x: hidden;
             position: relative;
+            width: 100%;
         }
 
         body.custom-cursor-enabled,
@@ -137,13 +202,15 @@
             align-items: center;
             position: relative;
             perspective: 1000px;
+            overflow: hidden; /* 裁掉被放大到 1.1 倍、并随鼠标位移的背景层 */
         }
 
         .hero-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* 替换为新的科技感音乐图片链接 */
-            background-image: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/hero-bg.jpg');
+            /* 原图是 5184×3456 / 1.2MB 的大底片，直接交给 OSS 实时压到 1920 宽的 webp（约 65KB）。
+               注意：这里的 URL 必须和 <head> 里 preload 的完全一致，否则会被当成两个资源、白下一次。 */
+            background-image: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/hero-bg.jpg?x-oss-process=image/resize,w_1920/format,webp/quality,q_80');
             background-size: cover;
             background-position: center;
             /* 保持这个透明度 0.3，配合你的胶片噪点层，文字会非常清晰 */
@@ -203,7 +270,7 @@
         section {
             max-width: 2160px;    /* 设置你想要的最大宽度，通常 1200px - 1440px 比较高级 */
             margin: 0 auto;       /* 关键：让容器在超过 1400px 时自动居中 */
-            padding: 150px 10%;    /* 将原本的 10% 缩小一点，给窄屏留出更多空间 */
+            padding: 180px 10% 100px; /* 顶部留白更大，版块之间更有呼吸感 */
             position: relative;
         }
 
@@ -288,11 +355,6 @@
             color: #fff;
         }
 
-        /* 调整版块间距，使其更具呼吸感 */
-        section {
-            padding: 180px 10% 100px 10%; /* 增加顶部间距 */
-        }
-
         /* --- 替换原有的 .category-title 样式 --- */
         .category-title {
             color: #ffffff;      /* 提亮文字颜色使其更醒目 */
@@ -349,25 +411,32 @@
             100% { box-shadow: 0 0 35px rgba(255,255,255,0.12), inset 0 0 15px rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.3); }
         }
 
-        /* 播放按钮微调 */
+        /* 播放按钮（唯一定义，原先重复声明两次且 transition 互相覆盖） */
         .play-btn {
             width: 40px; height: 40px;
+            flex-shrink: 0;
             border: 1px solid #fff;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; margin-right: 20px;
-            transition: all 0.3s;
+            /* 显式列出属性：既保留按下时的缩放反馈，也让播放态的反色能过渡 */
+            transition: transform 0.2s, background 0.3s, color 0.3s, box-shadow 0.3s;
         }
+        .play-btn:active { transform: scale(0.9); }
         .track.playing .play-btn {
             background: #fff;
             color: #000; /* 播放时按钮反色，视觉更聚焦 */
             box-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
 
-        /* --- Bento Grid (网格化重构) --- */
+        /* --- Bento Grid (网格化重构) ---
+           原先声明了两列，但三张卡片全带 .bento-large（span 2），两列从未真正生效。
+           这里改成单列，与实际呈现一致；
+           以后想做真正的 2-up 布局，把这里换回 repeat(2, 1fr)，
+           并只给需要强调的那张卡片保留 .bento-large 即可。 */
         .bento-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 24px;
         }
 
@@ -407,7 +476,9 @@
 
         .bento-card:hover::before { opacity: 1; }
 
-        .bento-large { grid-column: span 2; } /* 横跨两列的大卡片 */
+        /* 横跨整行的大卡片。用 1 / -1 而不是 span 2：
+           span 2 会在单列网格里凭空撑出一条 0px 的隐式列，1 / -1 则是「占满现有列」 */
+        .bento-large { grid-column: 1 / -1; }
 
         .bento-content { z-index: 1; }
 
@@ -437,36 +508,7 @@
             letter-spacing: 0.5px;
         }
 
-        @media (max-width: 768px) {
-            /* --- 移动端音频播放器布局调整 --- */
-            .track {
-                flex-wrap: wrap; /* 允许子元素换行 */
-                padding: 20px 15px; /* 稍微增加内边距，让视觉更透气 */
-            }
-
-            .track-info {
-                /* 播放按钮宽 40px + 右边距 20px = 60px。
-                   让文字区域占满第一行的剩余空间，从而把波形图自然挤到下一行 */
-                width: calc(100% - 60px);
-            }
-
-            .waveform {
-                flex: 1 1 100%; /* 强制波形图的基准宽度为 100% */
-                margin-left: 0; /* 取消桌面端设置的 30px 左边距 */
-                margin-top: 20px; /* 增加波形与上方曲名之间的垂直间距 */
-            }
-        }
-
-        .play-btn {
-            width: 40px; height: 40px;
-            border: 1px solid #fff;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; margin-right: 20px;
-            transition: transform 0.2s;
-        }
-        .play-btn:active { transform: scale(0.9); }
-        /* 新增：给文字区域一个固定宽度，强制对齐 */
+        /* 给文字区域一个固定宽度，强制对齐（移动端在文件末尾的媒体查询里改为满宽） */
         .track-info {
             width: 220px;   /* 设定固定宽度 */
             flex-shrink: 0; /* 防止屏幕变小时文字被挤压变形 */
@@ -514,16 +556,6 @@
             background: #000;
         }
 
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-bottom: 1px solid #222;
-        }
-
         .video-info {
             padding: 25px;
         }
@@ -542,26 +574,9 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- Footer --- */
-        footer {
-            padding: 100px 10%;
-            border-top: 1px solid #222;
-            display: flex; justify-content: space-between;
-            color: #444; font-size: 14px;
-        }
-
         /* 动画定义 */
         @keyframes textReveal {
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 15vw; }
-            .about-container { grid-template-columns: 1fr; }
-            .project-item { flex-direction: column; gap: 10px; }
-            .project-title { font-size: 1.8rem; }
-            .cursor { display: none; } /* 移动端禁用自定义光标 */
         }
 
         /* 修复：将渐显效果限制在背景图层，不影响文字 */
@@ -594,16 +609,17 @@
             opacity: 0.8;
         }
 
-        /* 修改这一段 */
-        .project-card .bento-content,
+        /* 年份保持绝对定位脱离 flex 流；文案保持相对定位以维持底部对齐。
+           （原先把两者写在同一条规则里设成 absolute，再单独把 content 改回 relative，
+             结果是一条自相矛盾的死规则，这里拆开写清楚） */
         .project-card .bento-year {
-            position: absolute; /* 确保年份依然是绝对定位，脱离 flex 流 */
+            position: absolute;
             z-index: 2;
         }
 
-        /* 同时确保 content 依然是相对定位以维持底部对齐 */
         .project-card .bento-content {
             position: relative;
+            z-index: 2;
         }
 
         /* 悬停交互：文字变亮，图片放大 */
@@ -615,19 +631,6 @@
         .project-card:hover::after {
             transform: scale(1.08); /* 图片放大 */
             opacity: 1; /* 图片变亮 */
-        }
-
-        @media (max-width: 768px) {
-            .project-card::after {
-                width: 100%; /* 移动端占满宽度 */
-                height: 60%; /* 高度只占下半部分 */
-                top: auto;
-                bottom: 0;
-                background-position: center center;
-                /* 移动端改为从上到下的渐显，匹配竖向布局 */
-                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
-                mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
-            }
         }
 
         /* --- 1. 基础动画类：统一控制透明度和过渡节奏 --- */
@@ -649,14 +652,6 @@
         .apple-animate.animate-active {
             opacity: 1;
             transform: translate3d(0, 0, 0) scale(1);
-        }
-
-        /* --- 针对移动端的优化：减小横向位移，避免出现横向滚动条 --- */
-        @media (max-width: 768px) {
-            .nav-base a { opacity: 1; }
-            .nav-bold { display: none; } /* 移动端直接干掉顶层，节省性能 */
-            .from-left  { transform: translate3d(-30px, 0, 0) scale(0.995); }
-            .from-right { transform: translate3d(30px, 0, 0) scale(0.995); }
         }
 
         /* --- 错峰延迟类（用于瀑布流） --- */
@@ -711,22 +706,6 @@
         .footer-left { width: 30%; text-align: left; }
         .footer-center { width: 40%; text-align: center; }
         .footer-right { width: 30%; text-align: right; }
-
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr; /* 移动端变为单列垂直排列 */
-                gap: 30px;
-            }
-            footer {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            .footer-left, .footer-center, .footer-right {
-                width: 100%;
-                text-align: center;
-            }
-        }
 
         /* --- 视频弹窗 (Video Modal) 样式 --- */
         .video-modal {
@@ -809,11 +788,6 @@
             cursor: pointer;
         }
 
-        /* 隐藏原本的 video 元素，使用封面图替代 */
-        .video-wrapper video {
-            display: none;
-        }
-
         .video-cover {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -836,8 +810,9 @@
             border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            color: #fff; font-size: 24px;
-            padding-left: 6px; /* 视觉修正播放三角的居中 */
+            color: #fff;
+            /* 换成 SVG 后图标本身就是居中的，不再需要 padding-left 的偏移补丁；
+               三角形视觉重心略偏左，用 2px 的位移做光学对齐即可 */
             opacity: 0;
             transition: all 0.4s var(--easing);
             z-index: 2;
@@ -848,6 +823,11 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
+
+        /* 三角形的视觉重心偏左，向右推 2px 才是「看起来居中」（光学对齐） */
+        .play-indicator svg { margin-left: 2px; }
+        .play-btn .icon-play { margin-left: 1.5px; }
+        .play-btn .icon-pause { margin-left: 0; }
 
         .video-card,
         .project-card {
@@ -875,6 +855,100 @@
             border: 0;
         }
 
+        /* 降级出来的原生播放器，尽量贴合暗色调 */
+        .waveform.is-fallback { height: auto; cursor: default; }
+        .native-audio-fallback { width: 100%; filter: invert(0.92) hue-rotate(180deg); }
+
+        /* ==========================================================
+           移动端适配（统一收口）
+           原先分散成 4 个 @media (max-width:768px) 块，且有两块写在
+           基础样式之前 —— 同特异度下后写的基础规则反而胜出，
+           导致移动端音频播放器的换行布局从未真正生效。
+           全部合并到样式表末尾，保证移动端规则一定覆盖桌面端。
+           ========================================================== */
+        @media (max-width: 768px) {
+            /* 导航：原先 4 项固定 gap:60px，实测需要 436px 宽，
+               而主流手机只有 360–414px，配合 body 的 overflow-x:hidden
+               两端会被直接裁掉（显示成 "FILE … PROJ"）。
+               这里收紧间距并允许在极窄屏换行。 */
+            nav { height: 96px; }
+            nav ul {
+                gap: 13px;
+                padding-top: 24px;
+                padding-left: 14px;
+                padding-right: 14px;
+                flex-wrap: wrap;
+                row-gap: 6px;
+            }
+            nav a { font-size: 10.5px; letter-spacing: 0.5px; }
+            .nav-base a { opacity: 1; }
+            .nav-bold { display: none; } /* 移动端直接干掉顶层，节省性能 */
+
+            .cursor { display: none; } /* 移动端禁用自定义光标 */
+
+            section { padding: 120px 6% 80px; }
+
+            .hero h1 { font-size: 15vw; }
+            .about-container { grid-template-columns: 1fr; gap: 40px; }
+
+            .section-header { font-size: 2rem; }
+
+            /* 减小横向位移，避免出现横向滚动条 */
+            .from-left  { transform: translate3d(-30px, 0, 0) scale(0.995); }
+            .from-right { transform: translate3d(30px, 0, 0) scale(0.995); }
+
+            /* --- 音频播放器：曲名占满第一行，波形自然挤到第二行 --- */
+            .track {
+                flex-wrap: wrap;
+                padding: 20px 15px;
+            }
+            .track-info {
+                /* 播放按钮宽 40px + 右边距 20px = 60px */
+                width: calc(100% - 60px);
+            }
+            .waveform {
+                flex: 1 1 100%;
+                width: auto;
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            .audio-wrapper { padding: 20px 15px; }
+
+            .project-item { flex-direction: column; gap: 10px; }
+            .project-title { font-size: 1.8rem; }
+
+            /* 项目卡片：竖版布局，配图铺满下半部分 */
+            .bento-card { padding: 28px; min-height: 240px; }
+            .bento-title { font-size: 1.6rem; }
+            .bento-year { font-size: 2.6rem; top: 20px; left: 20px; }
+            .project-card::after {
+                width: 100%;
+                height: 60%;
+                top: auto;
+                bottom: 0;
+                background-position: center center;
+                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
+                mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
+            }
+
+            /* 视频网格：minmax(400px) 在窄屏会溢出，改为单列 */
+            .video-grid { grid-template-columns: 1fr; gap: 24px; }
+
+            .contact-grid {
+                grid-template-columns: 1fr; /* 移动端变为单列垂直排列 */
+                gap: 30px;
+            }
+            footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .footer-left, .footer-center, .footer-right {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -885,6 +959,15 @@
         }
 
     </style>
+
+    <!-- 兜底：禁用 JS 时，滚动揭示动画不会执行，必须让内容直接可见 -->
+    <noscript>
+        <style>
+            .apple-animate { opacity: 1 !important; transform: none !important; }
+            .hero-title, .hero-subtitle, .hero-manifesto { opacity: 1 !important; transform: none !important; animation: none !important; }
+            .waveform { display: none; }
+        </style>
+    </noscript>
 </head>
 <body>
 
@@ -897,13 +980,17 @@
         <li class="hover-trigger"><a href="#portfolio">SOUND</a></li>
         <li class="hover-trigger"><a href="#visual">VISUAL</a></li>
         <li class="hover-trigger"><a href="#work">PROJECT</a></li>
+        <li class="hover-trigger"><a href="#contact">CONTACT</a></li>
     </ul>
 
-    <ul class="nav-bold" aria-hidden="true">
-        <li><a href="#about">PROFILE</a></li>
-        <li><a href="#portfolio">SOUND</a></li>
-        <li><a href="#visual">VISUAL</a></li>
-        <li><a href="#work">PROJECT</a></li>
+    <!-- 纯装饰层（光圈内的描边字）。inert 让它整体退出可访问性树与 Tab 序列，
+         否则这里的 <a> 虽然 aria-hidden 却仍可聚焦，是明确的 a11y 违规 -->
+    <ul class="nav-bold" aria-hidden="true" inert>
+        <li><a href="#about" tabindex="-1">PROFILE</a></li>
+        <li><a href="#portfolio" tabindex="-1">SOUND</a></li>
+        <li><a href="#visual" tabindex="-1">VISUAL</a></li>
+        <li><a href="#work" tabindex="-1">PROJECT</a></li>
+        <li><a href="#contact" tabindex="-1">CONTACT</a></li>
     </ul>
 </nav>
 
@@ -942,7 +1029,7 @@
                 致力于融合传统管弦与前沿音乐美学，重塑沉浸式听觉体验。
             </p>
 
-            <div class="apple-animate from-left delay-2" style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px;">
+            <div lang="en" class="apple-animate from-left delay-2" style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px;">
                 <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
                     I am Jay Chan, an M.A. candidate in Film Music Production at the Shanghai Conservatory of Music, specializing in Chinese Guofeng, pop, and orchestral styles.
                 </p>
@@ -953,16 +1040,16 @@
                     In 2025–2026, I contributed music engraving, recording, and music editing to composer Yu-Peng Chen's solo album The Poem of Life, released on Deutsche Grammophon, and served as arranger and engraver for his concert "Old Friends|New Voices" (旧友·新声).
                 </p>
                 <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
-                    In 2025, my original orchestral work Silk Rian & Willow Shadows (水乡·记忆) was selected for the National Symphony Concert of Original Works by Graduate Students.
+                    In 2025, my original orchestral work <em>Silk Rain &amp; Willow Shadows</em> (水乡·记忆) was selected for the National Symphony Concert of Original Works by Graduate Students.
                 </p>
                 <p style="color: #777; font-size: 0.85rem; line-height: 1.8; letter-spacing: 0.5px; text-align: justify; margin-bottom: 15px;">
-                    His artistic mission lies at the intersection of traditional orchestration and cutting-edge music, dedicated to reshaping the boundaries of immersive auditory experiences.
+                    My artistic mission lies at the intersection of traditional orchestration and cutting-edge music, dedicated to reshaping the boundaries of immersive auditory experiences.
                 </p>
             </div>
         </div>
 
         <div class="about-image-wrapper hover-trigger apple-animate from-right delay-3">
-            <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/profile.jpg" alt="陈俊 Jay Chan" class="about-image" loading="lazy" decoding="async">
+            <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/profile2.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_82" alt="陈俊 Jay Chan" class="about-image" loading="lazy" decoding="async">
         </div>
     </div>
 </section>
@@ -978,25 +1065,25 @@
         <div class="category-title apple-animate from-left">国风 / Guofeng</div>
 
         <div class="track hover-trigger apple-animate from-bottom delay-1">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Guofeng 1</div>
+                <div style="color:#fff; font-weight:500;">暗夜烛光</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Orchestral Battle Theme</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/an_ye_zhu_guang.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Guofeng 2</div>
+                <div style="color:#fff; font-weight:500;">大江湖名胜</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Emotional Folk</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/da_jiang_hu_ming_sheng.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-3">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Guofeng 3</div>
+                <div style="color:#fff; font-weight:500;">横绝</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Emotional Folk</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/heng_jue.mp3"></div>
@@ -1006,41 +1093,41 @@
     <div class="audio-wrapper" style="margin-top: 40px;">
         <div class="category-title apple-animate from-left">流行 / Pop</div>
         <div class="track hover-trigger apple-animate from-bottom delay-1">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Pop 1</div>
+                <div style="color:#fff; font-weight:500;">鹊桥仙</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pop / Guofeng</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/que_qiao_xian.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Pop 2</div>
+                <div style="color:#fff; font-weight:500;">云上</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pop / New-Age</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/hang_zhou_zhi_jiang.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Pop 3</div>
+                <div style="color:#fff; font-weight:500;">苏州年</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pop / R&B / Guofeng</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/su_zhou_nian.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Pop 4</div>
+                <div style="color:#fff; font-weight:500;">蜀中天府</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pop / Guofeng</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/shu_zhong_tian_fu.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Pop 5</div>
+                <div style="color:#fff; font-weight:500;">琴韵缤纷奏新春</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pop / Guofeng</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/qin_yun_bin_fen_zou_xin_chun.mp3"></div>
@@ -1050,33 +1137,33 @@
     <div class="audio-wrapper" style="margin-top: 40px;">
         <div class="category-title apple-animate from-left">管弦 / Orchestral</div>
         <div class="track hover-trigger apple-animate from-bottom delay-1">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Orchestra 1</div>
+                <div style="color:#fff; font-weight:500;">天问</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Guofeng / Orchestral</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/tian_wen.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Orchestra 2</div>
+                <div style="color:#fff; font-weight:500;">RO 大主教</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">J-RPG Fantasy</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/da_zhu_jiao.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-3">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Orchestra 3</div>
+                <div style="color:#fff; font-weight:500;">RO 抽卡界面</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">J-RPG Fantasy</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/ro_chou_ka.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-4">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Orchestra 4</div>
+                <div style="color:#fff; font-weight:500;">水乡·记忆</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Pentatonic Orchestral</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/shui_xiang_ji_yi.mp3"></div>
@@ -1086,17 +1173,17 @@
     <div class="audio-wrapper" style="margin-top: 40px;">
         <div class="category-title apple-animate from-left">电子 / Electronic</div>
         <div class="track hover-trigger apple-animate from-bottom delay-1">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Electronic 1</div>
+                <div style="color:#fff; font-weight:500;">失序</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Intelligent Dance Music</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/shi_xu.mp3"></div>
         </div>
         <div class="track hover-trigger apple-animate from-bottom delay-2">
-            <div class="play-btn">▶</div>
+            <div class="play-btn"><svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="track-info">
-                <div style="color:#fff; font-weight:500;">Electronic 2</div>
+                <div style="color:#fff; font-weight:500;">黄杨扁担</div>
                 <div style="color:#666; font-size:12px; margin-top:4px;">Trap / Dubstep</div>
             </div>
             <div class="waveform" data-src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/audio/huang_yang_bian_dan.mp3"></div>
@@ -1116,8 +1203,8 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/chao_yin_wan_lai.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg" alt="逆水寒 潮光" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster1.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="逆水寒 潮光" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">逆水寒 潮光 CG配乐</div>
@@ -1127,8 +1214,8 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/Illuma_luxa.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg" alt="Illuma LUXA" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster2.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="Illuma LUXA" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">Illuma LUXA广告配乐</div>
@@ -1138,8 +1225,8 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/xiang_chang_pai_dui.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg" alt="香肠派对" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster3.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="香肠派对" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">香肠派对 CG配乐</div>
@@ -1149,8 +1236,8 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/shi_xu.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg" alt="失序" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster4.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="失序" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">失序 电子音乐视觉作品</div>
@@ -1160,8 +1247,8 @@
 
         <div class="video-card hover-trigger apple-animate from-left delay-1" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/sheng_si_yi_cha.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg" alt="生死一刹" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster5.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="生死一刹" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">《生死一刹》CG 重配乐</div>
@@ -1171,8 +1258,8 @@
 
         <div class="video-card hover-trigger apple-animate from-right delay-2" data-video="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/video/yong_yuan_de_chang_an_cheng.mp4">
             <div class="video-wrapper">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg" alt="永远的长安城" class="video-cover" loading="lazy" decoding="async">
-                <div class="play-indicator">▶</div>
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/poster6.jpg?x-oss-process=image/resize,w_800/format,webp/quality,q_80" alt="永远的长安城" class="video-cover" loading="lazy" decoding="async">
+                <div class="play-indicator"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
             <div class="video-info">
                 <div class="video-title">《永远的长安城》CG 重配乐</div>
@@ -1198,7 +1285,7 @@
              role="link"
              tabindex="0"
              aria-label="打开项目：MIDI Visualizer（新标签页）"
-             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/midi-visualizer.jpg');">
+             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/midi-visualizer.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
             <span class="bento-year">2025</span>
             <div class="bento-content">
                 <div class="bento-title">MIDI Visualizer</div>
@@ -1211,7 +1298,7 @@
              role="link"
              tabindex="0"
              aria-label="打开项目：Musche（新标签页）"
-             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/musche.jpg');">
+             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/musche.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
             <span class="bento-year">2025</span>
             <div class="bento-content">
                 <div class="bento-title">Musche</div>
@@ -1224,7 +1311,7 @@
              role="link"
              tabindex="0"
              aria-label="打开项目：Score Scroll（新标签页）"
-             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/score-scroll.png');">
+             style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/score-scroll.png?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
             <span class="bento-year">2026</span>
             <div class="bento-content">
                 <div class="bento-title">Score Scroll</div>
@@ -1288,8 +1375,33 @@
 </div>
 
 <script type="module">
-    // 1. 引入 WaveSurfer 核心库
-    import WaveSurfer from 'https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.esm.js'
+    // 1. WaveSurfer 改为「动态引入 + 多源兜底」。
+    //    原本是顶层静态 import：CDN 一挂，整个模块一行都不执行，
+    //    而全站内容默认 opacity:0，结果就是首屏以下全白。
+    //    现在换成 import()，失败只影响波形，其余交互不受牵连。
+    const WAVESURFER_SOURCES = [
+        // 阿里云 npm 镜像放在第一位：国内解析快且稳定，和你的 OSS 同属一张网
+        'https://registry.npmmirror.com/wavesurfer.js/7.12.11/files/dist/wavesurfer.esm.js',
+        'https://cdn.jsdelivr.net/npm/wavesurfer.js@7.12.11/dist/wavesurfer.esm.js'
+    ];
+
+    let waveSurferPromise = null;
+    const loadWaveSurfer = () => {
+        if (waveSurferPromise) return waveSurferPromise;
+        waveSurferPromise = (async () => {
+            for (const src of WAVESURFER_SOURCES) {
+                try {
+                    const mod = await import(/* @vite-ignore */ src);
+                    return mod.default;
+                } catch (err) {
+                    console.warn('[audio] WaveSurfer 源加载失败，尝试下一个：', src, err);
+                }
+            }
+            throw new Error('所有 WaveSurfer 源均不可用');
+        })();
+        return waveSurferPromise;
+    };
+
     // 初始化 CSS 变量
     document.body.style.setProperty('--mouse-x', '-100px');
     document.body.style.setProperty('--mouse-y', '-100px');
@@ -1327,6 +1439,12 @@
     } else if (cursor) {
         cursor.style.display = 'none';
     }
+
+    // 播放/暂停图标用内联 SVG，不用 ▶ 和 || 这类字符：
+    // 字体栈里（-apple-system / SF Pro / Helvetica Neue）根本没有 U+25B6 这个字形，
+    // 只能回退到别的字体，实际渲染出来是个细长的 ">"，而且天然不居中。
+    const ICON_PLAY  = '<svg class="icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>';
+    const ICON_PAUSE = '<svg class="icon-pause" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6.5 5h3.5v14H6.5zM14 5h3.5v14H14z"/></svg>';
 
     const activateOnEnterOrSpace = (event, action) => {
         if (event.key !== 'Enter' && event.key !== ' ') return;
@@ -1370,7 +1488,7 @@
     // --- 核心：全局暂停函数 ---
     // 传入 currentMedia，暂停除了 currentMedia 之外的所有音频和视频
     const pauseAllMedia = (currentMedia) => {
-        // 1. 暂停其他音频
+        // 1. 暂停其他波形音频
         if (activeSurfer && activeSurfer !== currentMedia && activeSurfer.isPlaying()) {
             activeSurfer.pause();
         }
@@ -1378,6 +1496,12 @@
         videos.forEach(video => {
             if (video !== currentMedia && !video.paused) {
                 video.pause();
+            }
+        });
+        // 3. 暂停降级出来的原生播放器（这些是运行时才插入的，不在上面的静态集合里）
+        document.querySelectorAll('audio.native-audio-fallback').forEach(audio => {
+            if (audio !== currentMedia && !audio.paused) {
+                audio.pause();
             }
         });
     };
@@ -1390,10 +1514,51 @@
         });
     });
 
+    // --- 降级方案：波形库彻底不可用时，退回原生 audio，至少音乐还能听 ---
+    const renderNativeAudioFallback = (track, waveformEl, playBtn, audioUrl) => {
+        const audio = document.createElement('audio');
+        audio.controls = true;
+        audio.preload = 'none';
+        audio.src = audioUrl;
+        audio.className = 'native-audio-fallback';
+        waveformEl.replaceChildren(audio);
+        waveformEl.classList.add('is-fallback');
+        if (playBtn) playBtn.style.display = 'none';
+        audio.addEventListener('play', () => {
+            pauseAllMedia(audio);
+            track.classList.add('playing');
+        });
+        audio.addEventListener('pause', () => track.classList.remove('playing'));
+        audio.addEventListener('ended', () => track.classList.remove('playing'));
+    };
+
     // --- WaveSurfer 音频逻辑 (优化版：滚动到可视区域才加载) ---
+    // --- 预生成的波形数据 ---
+    // WaveSurfer 要画波形，默认得把整首 mp3 下载下来再 decodeAudioData，
+    // 14 首合计 102MB，访客只要滑过 SOUND 区就会被全部拉走——一次都没点播放也一样。
+    // 改成读离线算好的 peaks.json（70KB），mp3 只在真正点播放时才流式加载。
+    // peaks.json 由 scripts/gen_peaks.py 生成，换曲子后重跑一次即可。
+    let peaksPromise = null;
+    const loadPeaks = () => {
+        if (!peaksPromise) {
+            peaksPromise = fetch('peaks.json')
+                .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+                .catch(err => {
+                    console.warn('[audio] peaks.json 读取失败，退回逐首下载解码', err);
+                    return {}; // 拿不到就返回空表，下面会退回原来的 url 模式
+                });
+        }
+        return peaksPromise;
+    };
+
+    const stemOf = (url) => {
+        const file = url.split('/').pop().split('?')[0];
+        return file.replace(/\.mp3$/i, '');
+    };
+
     // 创建一个音频波形观察器
     const audioObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
+        entries.forEach(async (entry) => {
             if (entry.isIntersecting) {
                 const track = entry.target;
                 const waveformEl = track.querySelector('.waveform');
@@ -1404,12 +1569,35 @@
 
                 // 标记为已加载，防止重复初始化
                 track.dataset.loaded = 'true';
+                // 先停止观察，避免等待网络期间重复进入
+                observer.unobserve(track);
+
+                let WaveSurfer, peaksTable;
+                try {
+                    [WaveSurfer, peaksTable] = await Promise.all([loadWaveSurfer(), loadPeaks()]);
+                } catch (err) {
+                    console.warn('[audio] 波形库不可用，已降级为原生播放器', err);
+                    renderNativeAudioFallback(track, waveformEl, playBtn, audioUrl);
+                    return;
+                }
+
+                const cached = peaksTable[stemOf(audioUrl)];
+
+                // 自己造 audio 元素并设 preload="none"，
+                // 这样在用户按下播放之前，浏览器一个字节的 mp3 都不会去取
+                const mediaEl = new Audio();
+                mediaEl.preload = 'none';
+                mediaEl.src = audioUrl;
 
                 const wavesurfer = WaveSurfer.create({
                     container: waveformEl,
                     waveColor: '#444444',
                     progressColor: '#ffffff',
-                    url: audioUrl,
+                    // 有预算好的峰值就走 media + peaks + duration（不下载 mp3）；
+                    // 没有就退回老路子，让 WaveSurfer 自己去 fetch 整首
+                    ...(cached
+                        ? { media: mediaEl, peaks: [cached.peaks], duration: cached.duration }
+                        : { url: audioUrl }),
                     height: 40,
                     barWidth: 2,
                     barGap: 2,
@@ -1418,14 +1606,14 @@
                     dragToSeek: true
                 });
 
-                wavesurfer.on('ready', () => {
-                    const toggle = () => {
-                        if (!wavesurfer.isPlaying()) pauseAllMedia(wavesurfer);
-                        wavesurfer.playPause();
-                    };
-                    playBtn.addEventListener('click', toggle);
-                    playBtn.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, toggle));
-                });
+                // 立即绑定播放键，不再等 'ready'：
+                // 用预生成峰值时波形是同步画出来的，ready 可能在监听器注册前就已经发过了
+                const toggle = () => {
+                    if (!wavesurfer.isPlaying()) pauseAllMedia(wavesurfer);
+                    wavesurfer.playPause();
+                };
+                playBtn.addEventListener('click', toggle);
+                playBtn.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, toggle));
 
                 wavesurfer.on('interaction', () => {
                     pauseAllMedia(wavesurfer);
@@ -1434,25 +1622,30 @@
 
                 wavesurfer.on('play', () => {
                     activeSurfer = wavesurfer;
-                    playBtn.innerHTML = '||';
+                    playBtn.innerHTML = ICON_PAUSE;
                     playBtn.setAttribute('aria-pressed', 'true');
                     track.classList.add('playing');
                 });
 
                 wavesurfer.on('pause', () => {
-                    playBtn.innerHTML = '▶';
+                    playBtn.innerHTML = ICON_PLAY;
                     playBtn.setAttribute('aria-pressed', 'false');
                     track.classList.remove('playing');
                 });
 
                 wavesurfer.on('finish', () => {
-                    playBtn.innerHTML = '▶';
+                    playBtn.innerHTML = ICON_PLAY;
                     playBtn.setAttribute('aria-pressed', 'false');
                     track.classList.remove('playing');
                 });
 
-                // 停止观察这个已经加载的轨道
-                observer.unobserve(track);
+                // 音频文件本身取不到时（403 / 断网 / 跨域），同样退回原生播放器
+                wavesurfer.on('error', (err) => {
+                    console.warn('[audio] 波形解码失败，已降级为原生播放器', audioUrl, err);
+                    try { wavesurfer.destroy(); } catch (_) {}
+                    if (playBtn) playBtn.style.display = '';
+                    renderNativeAudioFallback(track, waveformEl, playBtn, audioUrl);
+                });
             }
         });
     }, { rootMargin: '100px 0px' }); // 提前 100px 开始加载，让用户无感知
@@ -1463,7 +1656,9 @@
     });
 
     // --- 苹果风格滚动动画触发器 ---
-    document.addEventListener("DOMContentLoaded", () => {
+    // 注意：本脚本是 type="module"（自带 defer），执行时机可能已在 DOMContentLoaded 之后，
+    // 那样监听器就永远等不到事件、全站停留在 opacity:0。所以改为「已就绪则立即执行」。
+    const initRevealAnimations = () => {
         // 创建一个观察器选项
         const options = {
             root: null, // 使用浏览器视口作为根
@@ -1490,7 +1685,13 @@
         // 选取所有带有 .apple-animate 类的元素，开始观察它们
         const animateElements = document.querySelectorAll('.apple-animate');
         animateElements.forEach(el => observer.observe(el));
-    });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRevealAnimations, { once: true });
+    } else {
+        initRevealAnimations();
+    }
 
     // ==========================================
     // 3. 视频独立弹窗逻辑 (Video Modal)

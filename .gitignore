@@ -1,0 +1,33 @@
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# --- 编辑器 / IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- Node ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- 构建 / 部署产物 ---
+dist/
+build/
+.vercel/
+.cache/
+
+# --- 环境变量 ---
+.env
+.env.local
+.env.*.local
+.mp3-cache/
