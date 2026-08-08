@@ -974,30 +974,48 @@
             .project-item { flex-direction: column; gap: 10px; }
             .project-title { font-size: 1.8rem; }
 
-            /* 项目卡片：竖版布局，配图铺在下半部分。
-               桌面端图在右侧 60%、文字沉在左下角互不干扰；
-               窄屏图片改为铺满宽度后，文字若仍沉底就会正好压在图上看不清，
-               所以这里把文字整体挪到右上角的干净区域，与左上角的年份水印错开。 */
-            .bento-card {
-                padding: 24px;
-                /* 280px 而非 260px：320px 窄屏上副标题会折成两行，
-                   多留一行的余量，避免末行贴到配图上沿 */
-                min-height: 280px;
-                justify-content: flex-start; /* 由底部对齐改为顶部对齐 */
+            /* 项目卡片：窄屏一行两个，与上方视频板块保持一致的节奏 */
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
             }
-            .bento-title { font-size: 1.5rem; }
-            .bento-tags { font-size: 0.85rem; }
-            .bento-year { font-size: 2.2rem; top: 18px; left: 20px; }
-            /* 主标题与左上角的年份水印同处一行：
-               年份 top:18px / 2.2rem，标题从 padding-top 24px 起、1.5rem，
-               两者的垂直中心几乎重合，视觉上就是左右平齐 */
+            /* 必须撤掉跨列，否则三张卡都占满整行，又变回一行一个 */
+            .bento-card.bento-large { grid-column: auto; }
+
+            /* 卡片宽度降到 130~176px。此时年份水印和标题再也塞不进同一行
+               （"2025" 约 52px + "MIDI Visualizer" 约 120px，远超可用的 130px），
+               所以改为纵向堆叠：年份在上做水印，标题与副标题依次排在下面。
+               对应地文字改左对齐——窄栏里右对齐会出现大片参差的左边界。 */
+            .bento-card {
+                padding: 14px;
+                /* 205px：320px 窄屏上副标题会折到三行、文字底边落在 111px，
+                   配下面 42% 的配图（顶边 119px）刚好留出余量又不显空 */
+                min-height: 205px;
+                justify-content: flex-start;
+            }
+            .bento-year {
+                font-size: 1.4rem;
+                top: 11px;
+                left: 14px;
+            }
             .bento-content {
-                text-align: right;
-                margin-top: 0;
+                text-align: left;
+                margin-top: 26px; /* 让开上方的年份水印 */
+            }
+            .bento-title {
+                font-size: 0.9rem;
+                line-height: 1.3;
+                letter-spacing: 0;
+                margin-bottom: 5px;
+            }
+            .bento-tags {
+                font-size: 0.6rem;
+                line-height: 1.45;
+                letter-spacing: 0;
             }
             .project-card::after {
                 width: 100%;
-                height: 48%;      /* 图片区域再往下压，给顶部文字留出干净背景 */
+                height: 42%;      /* 配图退到底部，给上方文字留出干净背景 */
                 top: auto;
                 bottom: 0;
                 background-position: center center;
