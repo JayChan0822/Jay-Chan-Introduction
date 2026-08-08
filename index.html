@@ -543,8 +543,37 @@
             position: relative;
             cursor: pointer;
         }
-        /* 当音频还没加载出来时，隐藏原生 audio 标签 */
-        .track audio { display: none; }
+        /* 波形就绪前的骨架占位：一排等高细条，节奏与真实波形一致（2px 条 + 2px 间隙），
+           这样从占位切到波形时不会有"跳一下"的感觉。
+           正常情况下峰值是本地同步绘制的，这层几乎看不到；
+           它兜的是 peaks.json 慢/失败、或退回逐首解码那几种情况。 */
+        .waveform::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 12px;
+            transform: translateY(-50%);
+            background: repeating-linear-gradient(to right,
+                rgba(255, 255, 255, 0.13) 0 2px,
+                transparent 2px 4px);
+            animation: waveformSkeleton 1.6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* 波形画好后撤掉占位 */
+        .waveform.is-ready::before { content: none; }
+
+        @keyframes waveformSkeleton {
+            0%, 100% { opacity: 0.4; }
+            50%      { opacity: 0.85; }
+        }
+
+        /* 隐藏 WaveSurfer 内部生成的 audio 标签。
+           注意排除 .native-audio-fallback —— 那是降级时唯一能播放的控件，
+           被这条规则连带隐藏的话，降级路径上页面会一片空白、彻底没法听。 */
+        .track audio:not(.native-audio-fallback) { display: none; }
 
         /* --- Video Showcase (影像配乐板块) --- */
         .video-grid {
@@ -1591,104 +1620,133 @@
         return file.replace(/\.mp3$/i, '');
     };
 
-    // 创建一个音频波形观察器
+    // 初始化单条曲目的波形与播放控制
+    const initTrack = (track, WaveSurfer, peaksTable) => {
+        const waveformEl = track.querySelector('.waveform');
+        const playBtn = track.querySelector('.play-btn');
+        const audioUrl = waveformEl?.getAttribute('data-src');
+
+        if (!audioUrl || track.dataset.loaded === 'true') return;
+        track.dataset.loaded = 'true';
+
+        const cached = peaksTable[stemOf(audioUrl)];
+
+        // 自己造 audio 元素并设 preload="none"，
+        // 这样在用户按下播放之前，浏览器一个字节的 mp3 都不会去取
+        const mediaEl = new Audio();
+        mediaEl.preload = 'none';
+        mediaEl.src = audioUrl;
+
+        const wavesurfer = WaveSurfer.create({
+            container: waveformEl,
+            waveColor: '#444444',
+            progressColor: '#ffffff',
+            // 有预算好的峰值就走 media + peaks + duration（不下载 mp3）；
+            // 没有就退回老路子，让 WaveSurfer 自己去 fetch 整首
+            ...(cached
+                ? { media: mediaEl, peaks: [cached.peaks], duration: cached.duration }
+                : { url: audioUrl }),
+            height: 40,
+            barWidth: 2,
+            barGap: 2,
+            barRadius: 2,
+            cursorColor: 'transparent',
+            dragToSeek: true
+        });
+
+        // 波形画出来了就撤掉骨架占位
+        const markReady = () => waveformEl.classList.add('is-ready');
+        if (cached) markReady();          // 用预生成峰值时是同步绘制，可以立刻撤
+        else wavesurfer.on('ready', markReady);
+
+        // 立即绑定播放键，不再等 'ready'：
+        // 用预生成峰值时波形是同步画出来的，ready 可能在监听器注册前就已经发过了
+        const toggle = () => {
+            if (!wavesurfer.isPlaying()) pauseAllMedia(wavesurfer);
+            wavesurfer.playPause();
+        };
+        playBtn.addEventListener('click', toggle);
+        playBtn.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, toggle));
+
+        wavesurfer.on('interaction', () => {
+            pauseAllMedia(wavesurfer);
+            wavesurfer.play();
+        });
+
+        wavesurfer.on('play', () => {
+            activeSurfer = wavesurfer;
+            playBtn.innerHTML = ICON_PAUSE;
+            playBtn.setAttribute('aria-pressed', 'true');
+            track.classList.add('playing');
+        });
+
+        wavesurfer.on('pause', () => {
+            playBtn.innerHTML = ICON_PLAY;
+            playBtn.setAttribute('aria-pressed', 'false');
+            track.classList.remove('playing');
+        });
+
+        wavesurfer.on('finish', () => {
+            playBtn.innerHTML = ICON_PLAY;
+            playBtn.setAttribute('aria-pressed', 'false');
+            track.classList.remove('playing');
+        });
+
+        // 音频文件本身取不到时（403 / 断网 / 跨域），同样退回原生播放器
+        wavesurfer.on('error', (err) => {
+            console.warn('[audio] 波形解码失败，已降级为原生播放器', audioUrl, err);
+            try { wavesurfer.destroy(); } catch (_) {}
+            if (playBtn) playBtn.style.display = '';
+            markReady();
+            renderNativeAudioFallback(track, waveformEl, playBtn, audioUrl);
+        });
+    };
+
+    // 滚动到附近才初始化——只在「没有预生成峰值」时才需要，
+    // 因为那种情况下每条波形都要现下载整首 mp3 来解码，绝不能一次性全开。
     const audioObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(async (entry) => {
-            if (entry.isIntersecting) {
-                const track = entry.target;
+            if (!entry.isIntersecting) return;
+            const track = entry.target;
+            observer.unobserve(track);
+            try {
+                const [WaveSurfer, peaksTable] = await Promise.all([loadWaveSurfer(), loadPeaks()]);
+                initTrack(track, WaveSurfer, peaksTable);
+            } catch (err) {
+                console.warn('[audio] 波形库不可用，已降级为原生播放器', err);
                 const waveformEl = track.querySelector('.waveform');
-                const playBtn = track.querySelector('.play-btn');
-                const audioUrl = waveformEl.getAttribute('data-src');
-
-                if (!audioUrl || track.dataset.loaded === 'true') return;
-
-                // 标记为已加载，防止重复初始化
-                track.dataset.loaded = 'true';
-                // 先停止观察，避免等待网络期间重复进入
-                observer.unobserve(track);
-
-                let WaveSurfer, peaksTable;
-                try {
-                    [WaveSurfer, peaksTable] = await Promise.all([loadWaveSurfer(), loadPeaks()]);
-                } catch (err) {
-                    console.warn('[audio] 波形库不可用，已降级为原生播放器', err);
-                    renderNativeAudioFallback(track, waveformEl, playBtn, audioUrl);
-                    return;
-                }
-
-                const cached = peaksTable[stemOf(audioUrl)];
-
-                // 自己造 audio 元素并设 preload="none"，
-                // 这样在用户按下播放之前，浏览器一个字节的 mp3 都不会去取
-                const mediaEl = new Audio();
-                mediaEl.preload = 'none';
-                mediaEl.src = audioUrl;
-
-                const wavesurfer = WaveSurfer.create({
-                    container: waveformEl,
-                    waveColor: '#444444',
-                    progressColor: '#ffffff',
-                    // 有预算好的峰值就走 media + peaks + duration（不下载 mp3）；
-                    // 没有就退回老路子，让 WaveSurfer 自己去 fetch 整首
-                    ...(cached
-                        ? { media: mediaEl, peaks: [cached.peaks], duration: cached.duration }
-                        : { url: audioUrl }),
-                    height: 40,
-                    barWidth: 2,
-                    barGap: 2,
-                    barRadius: 2,
-                    cursorColor: 'transparent',
-                    dragToSeek: true
-                });
-
-                // 立即绑定播放键，不再等 'ready'：
-                // 用预生成峰值时波形是同步画出来的，ready 可能在监听器注册前就已经发过了
-                const toggle = () => {
-                    if (!wavesurfer.isPlaying()) pauseAllMedia(wavesurfer);
-                    wavesurfer.playPause();
-                };
-                playBtn.addEventListener('click', toggle);
-                playBtn.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, toggle));
-
-                wavesurfer.on('interaction', () => {
-                    pauseAllMedia(wavesurfer);
-                    wavesurfer.play();
-                });
-
-                wavesurfer.on('play', () => {
-                    activeSurfer = wavesurfer;
-                    playBtn.innerHTML = ICON_PAUSE;
-                    playBtn.setAttribute('aria-pressed', 'true');
-                    track.classList.add('playing');
-                });
-
-                wavesurfer.on('pause', () => {
-                    playBtn.innerHTML = ICON_PLAY;
-                    playBtn.setAttribute('aria-pressed', 'false');
-                    track.classList.remove('playing');
-                });
-
-                wavesurfer.on('finish', () => {
-                    playBtn.innerHTML = ICON_PLAY;
-                    playBtn.setAttribute('aria-pressed', 'false');
-                    track.classList.remove('playing');
-                });
-
-                // 音频文件本身取不到时（403 / 断网 / 跨域），同样退回原生播放器
-                wavesurfer.on('error', (err) => {
-                    console.warn('[audio] 波形解码失败，已降级为原生播放器', audioUrl, err);
-                    try { wavesurfer.destroy(); } catch (_) {}
-                    if (playBtn) playBtn.style.display = '';
-                    renderNativeAudioFallback(track, waveformEl, playBtn, audioUrl);
-                });
+                waveformEl?.classList.add('is-ready');
+                renderNativeAudioFallback(track, waveformEl, track.querySelector('.play-btn'),
+                    waveformEl?.getAttribute('data-src'));
             }
         });
-    }, { rootMargin: '100px 0px' }); // 提前 100px 开始加载，让用户无感知
+    }, { rootMargin: '100px 0px' });
 
-    // 监听所有的 track
-    tracks.forEach(track => {
-        audioObserver.observe(track);
-    });
+    // 启动音频模块
+    (async () => {
+        let WaveSurfer, peaksTable;
+        try {
+            [WaveSurfer, peaksTable] = await Promise.all([loadWaveSurfer(), loadPeaks()]);
+        } catch (err) {
+            console.warn('[audio] 波形库不可用，全部降级为原生播放器', err);
+            tracks.forEach(track => {
+                const waveformEl = track.querySelector('.waveform');
+                waveformEl?.classList.add('is-ready');
+                renderNativeAudioFallback(track, waveformEl, track.querySelector('.play-btn'),
+                    waveformEl?.getAttribute('data-src'));
+            });
+            return;
+        }
+
+        if (Object.keys(peaksTable).length > 0) {
+            // 有预生成峰值：绘制是纯本地运算、不产生任何网络请求，
+            // 所以一次性全部画出来，避免用户滚到之前看到空框。
+            tracks.forEach(track => initTrack(track, WaveSurfer, peaksTable));
+        } else {
+            // 没有峰值表：退回懒加载，否则 14 首会一次性拉走上百 MB
+            tracks.forEach(track => audioObserver.observe(track));
+        }
+    })();
 
     // --- 苹果风格滚动动画触发器 ---
     // 注意：本脚本是 type="module"（自带 defer），执行时机可能已在 DOMContentLoaded 之后，
