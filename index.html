@@ -449,14 +449,12 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
 
-        /* --- Bento Grid (网格化重构) ---
-           原先声明了两列，但三张卡片全带 .bento-large（span 2），两列从未真正生效。
-           这里改成单列，与实际呈现一致；
-           以后想做真正的 2-up 布局，把这里换回 repeat(2, 1fr)，
-           并只给需要强调的那张卡片保留 .bento-large 即可。 */
+        /* --- Bento Grid ---
+           桌面一行三个（此前是整行大卡，一行只放得下一个）。
+           卡片保持原本的样式：左上角年份、右上角项目名、配图垫在下半部。 */
         .bento-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
@@ -465,15 +463,17 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            padding: 40px;
-            min-height: 280px;
+            border-radius: 22px;
+            padding: 24px;
+            /* 330px：1024px 平板档卡片只有 253px 宽，副标题会折到三行、
+               文字底边落在 138px，配下面 52% 的配图（顶边 158px）才不会打架 */
+            min-height: 330px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start; /* 文案靠上，下半部留给配图 */
             position: relative;
             overflow: hidden;
-            transition: all 0.5s var(--easing);
+            transition: transform 0.5s var(--easing), border-color 0.4s, box-shadow 0.5s, background 0.5s;
         }
 
         /* 苹果风光泽悬浮效果：使用径向渐变模拟光源 */
@@ -484,11 +484,12 @@
             background: radial-gradient(circle at top right, rgba(255,255,255,0.15), transparent 60%);
             opacity: 0;
             transition: opacity 0.5s ease;
-            z-index: 0;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .bento-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px);
             border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,0.05);
             background: rgba(30, 30, 30, 0.6);
@@ -496,36 +497,47 @@
 
         .bento-card:hover::before { opacity: 1; }
 
-        /* 横跨整行的大卡片。用 1 / -1 而不是 span 2：
-           span 2 会在单列网格里凭空撑出一条 0px 的隐式列，1 / -1 则是「占满现有列」 */
-        .bento-large { grid-column: 1 / -1; }
+        .bento-content {
+            position: relative;
+            z-index: 2;
+        }
 
-        .bento-content { z-index: 1; }
+        /* 年份靠左、项目名靠右，同处一行并按基线对齐 —— 这才是真的「平齐」。
+           用 flex 而不是绝对定位：标题过长时会在自己的格子里换行，
+           年份依然锚在首行不跑位，任何宽度下都不会撞在一起。 */
+        .project-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
 
         .bento-year {
-            position: absolute;
-            top: 30px;
-            left: 30px;
             font-family: "SF Mono", "Menlo", monospace;
-            color: rgba(255,255,255,0.05); /* 进一步降低透明度，更显高级 */
-            font-size: 4rem; /* 放大字号，做出苹果官网那种大水印感 */
+            color: rgba(255, 255, 255, 0.16);
+            font-size: 2rem;
             font-weight: 800;
-            z-index: 1; /* 放在标题 (z-index: 2) 下方 */
-            pointer-events: none; /* 防止遮挡点击 */
+            flex-shrink: 0;   /* 年份不参与压缩，永远完整显示 */
+            line-height: 1;
+            pointer-events: none;
         }
 
         .bento-title {
-            font-size: 2.2rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            line-height: 1.25;
+            text-align: right; /* 靠右，与左侧年份形成呼应 */
         }
 
         .bento-tags {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             letter-spacing: 0.5px;
+            line-height: 1.5;
+            text-align: right;
         }
 
         /* 给文字区域一个固定宽度，强制对齐（移动端在文件末尾的媒体查询里改为满宽） */
@@ -636,34 +648,29 @@
             transition: all 0.5s var(--easing);
         }
 
+        /* 配图垫在卡片下半部，向上渐隐。
+           一行三个之后卡片接近方形，原先「图占右侧 60%」会把图挤成一条竖带，
+           所以统一改为铺满宽度、压在下半部——和文案的上下分区正好错开。 */
         .project-card::after {
             content: '';
             position: absolute;
-            top: 0;
+            left: 0;
             right: 0;
-            width: 60%; /* [关键修改1] 强制图片层只占卡片右侧 60% 的宽度，保证所有项目宽度绝对统一 */
-            height: 100%;
+            bottom: 0;
+            height: 52%;
 
             background-repeat: no-repeat;
-            background-position: center left; /* 配合 cover，让图片主体靠左居中显示 */
-            background-size: cover; /* [关键修改2] 保证图片填满这个 60% 的区域，无视原图比例差异 */
+            background-position: center center;
+            background-size: cover;
             background-image: var(--bg-img);
 
-            /* [关键修改3] 遮罩从这个 60% 区域的最左侧开始，完美消除硬切线 */
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 50%);
-            mask-image: linear-gradient(to right, transparent 0%, black 50%);
+            /* 顶端完全透明、向下渐显，彻底消除硬切线 */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
 
             z-index: 0;
             transition: transform 0.6s var(--easing), opacity 0.6s;
-            opacity: 0.8;
-        }
-
-        /* 年份保持绝对定位脱离 flex 流；文案保持相对定位以维持底部对齐。
-           （原先把两者写在同一条规则里设成 absolute，再单独把 content 改回 relative，
-             结果是一条自相矛盾的死规则，这里拆开写清楚） */
-        .project-card .bento-year {
-            position: absolute;
-            z-index: 2;
+            opacity: 0.85;
         }
 
         .project-card .bento-content {
@@ -974,54 +981,34 @@
             .project-item { flex-direction: column; gap: 10px; }
             .project-title { font-size: 1.8rem; }
 
-            /* 项目卡片：窄屏一行两个，与上方视频板块保持一致的节奏 */
+            /* 项目卡片：窄屏一行两个。
+               布局与桌面端完全一致（左上角年份、右上角项目名、配图垫在下半部），
+               只是等比缩小字号与内边距。 */
             .bento-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
-            /* 必须撤掉跨列，否则三张卡都占满整行，又变回一行一个 */
-            .bento-card.bento-large { grid-column: auto; }
-
-            /* 卡片宽度降到 130~176px。此时年份水印和标题再也塞不进同一行
-               （"2025" 约 52px + "MIDI Visualizer" 约 120px，远超可用的 130px），
-               所以改为纵向堆叠：年份在上做水印，标题与副标题依次排在下面。
-               对应地文字改左对齐——窄栏里右对齐会出现大片参差的左边界。 */
             .bento-card {
                 padding: 14px;
-                /* 205px：320px 窄屏上副标题会折到三行、文字底边落在 111px，
-                   配下面 42% 的配图（顶边 119px）刚好留出余量又不显空 */
-                min-height: 205px;
-                justify-content: flex-start;
+                min-height: 200px;
+                border-radius: 16px;
             }
-            .bento-year {
-                font-size: 1.4rem;
-                top: 11px;
-                left: 14px;
+            .project-head {
+                gap: 6px;
+                margin-bottom: 6px;
             }
-            .bento-content {
-                text-align: left;
-                margin-top: 26px; /* 让开上方的年份水印 */
-            }
+            .bento-year { font-size: 1.05rem; }
             .bento-title {
-                font-size: 0.9rem;
+                font-size: 0.88rem;
                 line-height: 1.3;
                 letter-spacing: 0;
-                margin-bottom: 5px;
             }
             .bento-tags {
                 font-size: 0.6rem;
                 line-height: 1.45;
                 letter-spacing: 0;
             }
-            .project-card::after {
-                width: 100%;
-                height: 42%;      /* 配图退到底部，给上方文字留出干净背景 */
-                top: auto;
-                bottom: 0;
-                background-position: center center;
-                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
-                mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
-            }
+            .project-card::after { height: 52%; }
 
             /* 视频网格：窄屏一行两个。
                桌面端的 minmax(400px) 在这里会溢出，必须显式写死两列。
@@ -1403,41 +1390,47 @@
 
     <div class="bento-grid">
 
-        <div class="bento-card bento-large hover-trigger project-card apple-animate from-left delay-1"
+        <div class="bento-card hover-trigger project-card apple-animate from-left delay-1"
              data-url="https://www.midi-visualizer.cn/"
              role="link"
              tabindex="0"
              aria-label="打开项目：MIDI Visualizer（新标签页）"
              style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/midi-visualizer.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
-            <span class="bento-year">2025</span>
             <div class="bento-content">
-                <div class="bento-title">MIDI Visualizer</div>
+                <div class="project-head">
+                    <span class="bento-year">2025</span>
+                    <div class="bento-title">MIDI Visualizer</div>
+                </div>
                 <div class="bento-tags">Web Application / MIDI可视化在线工具 ↗</div>
             </div>
         </div>
 
-        <div class="bento-card bento-large hover-trigger project-card apple-animate from-right delay-2"
+        <div class="bento-card hover-trigger project-card apple-animate from-right delay-2"
              data-url="https://www.musche.cn/"
              role="link"
              tabindex="0"
              aria-label="打开项目：Musche（新标签页）"
              style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/musche.jpg?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
-            <span class="bento-year">2025</span>
             <div class="bento-content">
-                <div class="bento-title">Musche</div>
+                <div class="project-head">
+                    <span class="bento-year">2025</span>
+                    <div class="bento-title">Musche</div>
+                </div>
                 <div class="bento-tags">Web Application / 录音日程排期管理系统 ↗</div>
             </div>
         </div>
 
-        <div class="bento-card bento-large hover-trigger project-card apple-animate from-left delay-3"
+        <div class="bento-card hover-trigger project-card apple-animate from-left delay-3"
              data-url="https://score-scroll.cn/"
              role="link"
              tabindex="0"
              aria-label="打开项目：Score Scroll（新标签页）"
              style="--bg-img: url('https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/score-scroll.png?x-oss-process=image/resize,w_1200/format,webp/quality,q_80');">
-            <span class="bento-year">2026</span>
             <div class="bento-content">
-                <div class="bento-title">Score Scroll</div>
+                <div class="project-head">
+                    <span class="bento-year">2026</span>
+                    <div class="bento-title">Score Scroll</div>
+                </div>
                 <div class="bento-tags">Web Application / 智能乐谱滚动工具 ↗</div>
             </div>
         </div>
