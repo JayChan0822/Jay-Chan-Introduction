@@ -682,12 +682,15 @@
             opacity: 1; /* 图片变亮 */
         }
 
-        /* --- 1. 基础动画类：统一控制透明度和过渡节奏 --- */
+        /* --- 1. 基础动画类：统一控制透明度和过渡节奏 ---
+           这一条同时是「飞出」时的过渡：移除 .animate-active 后元素回到本状态，
+           用的就是这里声明的时长。飞出比飞入快一些（0.55s vs 1.0s），
+           因为退出动画拖太久会让人觉得页面黏手。 */
         .apple-animate {
             opacity: 0;
-            /* 保持你原本丝滑的苹果风贝塞尔曲线 */
-            transition: opacity 1.0s cubic-bezier(0.2, 0.8, 0.2, 1),
-            transform 1.0s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: opacity 0.55s cubic-bezier(0.4, 0, 0.6, 1),
+            transform 0.55s cubic-bezier(0.4, 0, 0.6, 1);
+            transition-delay: 0s; /* 飞出不错峰，立刻开始 */
             will-change: opacity, transform; /* 开启硬件加速，防止滚动掉帧 */
         }
 
@@ -697,18 +700,23 @@
         .from-left   { transform: translate3d(-80px, 0, 0) scale(0.99); } /* 从左往右 */
         .from-right  { transform: translate3d(80px, 0, 0) scale(0.99); }  /* 从右往左 */
 
-        /* --- 3. 激活状态：当滚动到视口时，不管从哪来，都回到原位 --- */
+        /* --- 3. 激活状态：当滚动到视口时，不管从哪来，都回到原位 ---
+           这一条是「飞入」时的过渡，保留原本丝滑的苹果风曲线与 1.0s 时长 --- */
         .apple-animate.animate-active {
             opacity: 1;
             transform: translate3d(0, 0, 0) scale(1);
+            transition: opacity 1.0s cubic-bezier(0.2, 0.8, 0.2, 1),
+            transform 1.0s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* --- 错峰延迟类（用于瀑布流） --- */
-        .delay-1 { transition-delay: 0.15s; }
-        .delay-2 { transition-delay: 0.3s; }
-        .delay-3 { transition-delay: 0.45s; }
-        .delay-4 { transition-delay: 0.6s; }  /* 新增 */
-        .delay-5 { transition-delay: 0.75s; } /* 新增 */
+        /* --- 错峰延迟类（用于瀑布流） ---
+           只在飞入时生效：写成 .animate-active.delay-N 而不是裸的 .delay-N。
+           否则飞出也要等 0.15~0.75s 才开始，元素早滑出屏幕了动画还没走完。 */
+        .animate-active.delay-1 { transition-delay: 0.15s; }
+        .animate-active.delay-2 { transition-delay: 0.3s; }
+        .animate-active.delay-3 { transition-delay: 0.45s; }
+        .animate-active.delay-4 { transition-delay: 0.6s; }
+        .animate-active.delay-5 { transition-delay: 0.75s; }
 
         /* --- Contact & Footer Section (联系方式与页脚) --- */
         .contact-grid {
@@ -1752,23 +1760,22 @@
     // 注意：本脚本是 type="module"（自带 defer），执行时机可能已在 DOMContentLoaded 之后，
     // 那样监听器就永远等不到事件、全站停留在 opacity:0。所以改为「已就绪则立即执行」。
     const initRevealAnimations = () => {
-        // 创建一个观察器选项
+        // 观察器选项：上下都内缩，制造「进入」与「退出」两条不同的判定线。
+        //   进入：元素顶部越过「视口底部上方 12%」处 -> 飞入
+        //   退出：元素底部越过「视口顶部下方 5%」处   -> 飞出
+        // 两条线之间隔着差不多一整屏，元素停在边界上反复横跳时也不会闪。
+        // 若上下都用 0，元素卡在边界会疯狂 toggle。
         const options = {
             root: null, // 使用浏览器视口作为根
-            rootMargin: '0px 0px -15% 0px', // 核心技巧：让元素进入视口底部 15% 的位置时才触发，避免过早显示
-            threshold: 0.1 // 只要元素有 10% 进入了设定的区域就触发
+            rootMargin: '-5% 0px -12% 0px',
+            threshold: 0 // 双向切换用 0 更可预期：高元素永远到不了固定比例阈值
         };
 
-        // 定义观察器的回调函数
-        const observerCallback = (entries, observer) => {
+        // 定义观察器的回调函数：进入加类、离开去类，双向都有动画。
+        // 注意不能再 unobserve —— 那样只会触发一次。
+        const observerCallback = (entries) => {
             entries.forEach(entry => {
-                // 如果元素进入了视口
-                if (entry.isIntersecting) {
-                    // 添加激活类，触发 CSS 动画
-                    entry.target.classList.add('animate-active');
-                    // 动画触发后就停止观察该元素，确保动画只执行一次，提高性能
-                    observer.unobserve(entry.target);
-                }
+                entry.target.classList.toggle('animate-active', entry.isIntersecting);
             });
         };
 
