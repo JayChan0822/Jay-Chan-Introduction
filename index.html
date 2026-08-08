@@ -1005,8 +1005,41 @@
                 mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
             }
 
-            /* 视频网格：minmax(400px) 在窄屏会溢出，改为单列 */
-            .video-grid { grid-template-columns: 1fr; gap: 24px; }
+            /* 视频网格：窄屏一行两个。
+               桌面端的 minmax(400px) 在这里会溢出，必须显式写死两列。
+               卡片宽度骤降到 130~160px，所以内边距、字号、播放键都要同步缩，
+               否则 25px 的 padding 会把文字挤成一列竖排。 */
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin-top: 20px;
+            }
+            .video-card { border-radius: 14px; }
+            .video-info { padding: 12px 11px 14px; }
+            .video-title {
+                font-size: 0.82rem;
+                line-height: 1.35;
+                letter-spacing: 0;
+                margin-bottom: 4px;
+            }
+            .video-desc {
+                font-size: 0.66rem;
+                line-height: 1.4;
+                letter-spacing: 0;
+            }
+            /* 悬停态在触屏上没有意义，播放键常驻显示，并缩到与卡片相称的尺寸。
+               桌面端那档 blur(8px) 盖在小缩略图上会糊成一整块灰盘，这里减到 3px。 */
+            .play-indicator {
+                width: 34px;
+                height: 34px;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                background: rgba(0, 0, 0, 0.28);
+                border-color: rgba(255, 255, 255, 0.55);
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
+            }
+            .play-indicator svg { width: 15px; height: 15px; margin-left: 1.5px; }
 
             .contact-grid {
                 grid-template-columns: 1fr; /* 移动端变为单列垂直排列 */
