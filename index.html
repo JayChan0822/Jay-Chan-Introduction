@@ -952,6 +952,17 @@
             }
         }
 
+        /* 超宽屏（≥1300px）锁 3 列：auto-fill 在容器能放下 4×320+3×32=1376px
+           （约 1720px 视口）时会排 4 列，卡片被压窄；需求是桌面最多一行三个。
+           3 列需容器 ≥ 3×320+2×32=1024px，即视口 ≥ ~1297px，所以阈值取 1300px
+           与 auto-fill 的自然 3 列区间平滑衔接，不会出现跳变。 */
+        @media (min-width: 1300px) {
+            .video-grid,
+            .bento-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             /* 导航：原先 4 项固定 gap:60px，实测需要 436px 宽，
                而主流手机只有 360–414px，配合 body 的 overflow-x:hidden
