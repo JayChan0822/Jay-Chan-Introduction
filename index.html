@@ -917,18 +917,35 @@
             .project-item { flex-direction: column; gap: 10px; }
             .project-title { font-size: 1.8rem; }
 
-            /* 项目卡片：竖版布局，配图铺满下半部分 */
-            .bento-card { padding: 28px; min-height: 240px; }
-            .bento-title { font-size: 1.6rem; }
-            .bento-year { font-size: 2.6rem; top: 20px; left: 20px; }
+            /* 项目卡片：竖版布局，配图铺在下半部分。
+               桌面端图在右侧 60%、文字沉在左下角互不干扰；
+               窄屏图片改为铺满宽度后，文字若仍沉底就会正好压在图上看不清，
+               所以这里把文字整体挪到右上角的干净区域，与左上角的年份水印错开。 */
+            .bento-card {
+                padding: 24px;
+                /* 280px 而非 260px：320px 窄屏上副标题会折成两行，
+                   多留一行的余量，避免末行贴到配图上沿 */
+                min-height: 280px;
+                justify-content: flex-start; /* 由底部对齐改为顶部对齐 */
+            }
+            .bento-title { font-size: 1.5rem; }
+            .bento-tags { font-size: 0.85rem; }
+            .bento-year { font-size: 2.2rem; top: 18px; left: 20px; }
+            /* 主标题与左上角的年份水印同处一行：
+               年份 top:18px / 2.2rem，标题从 padding-top 24px 起、1.5rem，
+               两者的垂直中心几乎重合，视觉上就是左右平齐 */
+            .bento-content {
+                text-align: right;
+                margin-top: 0;
+            }
             .project-card::after {
                 width: 100%;
-                height: 60%;
+                height: 48%;      /* 图片区域再往下压，给顶部文字留出干净背景 */
                 top: auto;
                 bottom: 0;
                 background-position: center center;
-                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
-                mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
+                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
+                mask-image: linear-gradient(to bottom, transparent 0%, black 55%);
             }
 
             /* 视频网格：minmax(400px) 在窄屏会溢出，改为单列 */
