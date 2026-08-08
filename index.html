@@ -205,6 +205,26 @@
             overflow: hidden; /* 裁掉被放大到 1.1 倍、并随鼠标位移的背景层 */
         }
 
+        /* 首屏图与下方内容的衔接：底部叠一层渐变到页面底色，消除硬切边。
+           不直接给 .hero-bg 加 mask —— 它带 scale(1.1) 且随鼠标位移，
+           遮罩会跟着一起缩放偏移，渐变根本落不到可视边缘上。
+           这层独立的叠加层不受变换影响，接缝始终干净。 */
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 40%;
+            background: linear-gradient(to bottom,
+                rgba(5, 5, 5, 0) 0%,
+                rgba(5, 5, 5, 0.55) 55%,
+                rgba(5, 5, 5, 0.88) 80%,
+                var(--bg) 100%);
+            pointer-events: none;
+            z-index: 1; /* 压住背景图，但在 .hero-content (z-index: 2) 之下 */
+        }
+
         .hero-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
