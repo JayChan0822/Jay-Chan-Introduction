@@ -452,10 +452,21 @@
         /* --- Bento Grid ---
            桌面一行三个（此前是整行大卡，一行只放得下一个）。
            卡片保持原本的样式：左上角年份、右上角项目名、配图垫在下半部。 */
+        /* 影像板块与项目板块共用同一套网格轨道，列数与卡片宽度在任何宽度下都一致。
+           以前视频是 auto-fit minmax(400px)（会随宽度自动降列），
+           项目却写死 repeat(3, 1fr)，于是窗口一窄就出现「视频两个、项目三个」的脱节。
+
+           用 auto-fill 而不是 auto-fit：auto-fit 会折叠空轨道，
+           项目只有 3 个、视频有 6 个，超宽屏下项目会撑开去填满多余的列，
+           两边卡片宽度就对不上了（实测 1920 下 353px vs 482px）。
+           auto-fill 保留空轨道，代价是行尾可能留空位，但宽度严格一致。
+
+           最小轨道取 320px：1440 宽下两边都是三列，1024 下都退到两列。 */
+        .video-grid,
         .bento-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
         }
 
         .bento-card {
@@ -587,11 +598,11 @@
            被这条规则连带隐藏的话，降级路径上页面会一片空白、彻底没法听。 */
         .track audio:not(.native-audio-fallback) { display: none; }
 
-        /* --- Video Showcase (影像配乐板块) --- */
+        /* --- Video Showcase (影像配乐板块) ---
+           网格轨道在上面与 .bento-grid 一起定义，这里只留本板块独有的间距。
+           注意别在这里重复声明 grid-template-columns：同特异度下后写的会覆盖共用规则，
+           两个板块就又脱节了。 */
         .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
             margin-top: 30px;
         }
 
@@ -930,6 +941,17 @@
            导致移动端音频播放器的换行布局从未真正生效。
            全部合并到样式表末尾，保证移动端规则一定覆盖桌面端。
            ========================================================== */
+        /* 769~839px 是桌面 auto-fill 的降列空洞：
+           容器 = 视口 − 两侧 10% padding，< 2×320 + 32 = 672px 时 auto-fill 退到 1 列；
+           而 ≤768px 的移动端断点又是固定 2 列 —— 缩窗会 2列→1列→2列 来回跳。
+           这里显式锁 2 列补上空洞（840px 起容器恰好 ≥672，桌面规则自会排两列）。 */
+        @media (max-width: 839px) and (min-width: 769px) {
+            .video-grid,
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             /* 导航：原先 4 项固定 gap:60px，实测需要 436px 宽，
                而主流手机只有 360–414px，配合 body 的 overflow-x:hidden
@@ -981,13 +1003,16 @@
             .project-item { flex-direction: column; gap: 10px; }
             .project-title { font-size: 1.8rem; }
 
-            /* 项目卡片：窄屏一行两个。
-               布局与桌面端完全一致（左上角年份、右上角项目名、配图垫在下半部），
-               只是等比缩小字号与内边距。 */
+            /* 窄屏两个板块同样共用轨道，避免又出现列数不一致。
+               此处必须显式写死两列：桌面的 minmax(320px) 在手机上只排得下一列。 */
+            .video-grid,
             .bento-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
+
+            /* 项目卡片：布局与桌面端完全一致
+               （左上角年份、右上角项目名、配图垫在下半部），只是等比缩小 */
             .bento-card {
                 padding: 14px;
                 min-height: 200px;
@@ -1010,15 +1035,9 @@
             }
             .project-card::after { height: 52%; }
 
-            /* 视频网格：窄屏一行两个。
-               桌面端的 minmax(400px) 在这里会溢出，必须显式写死两列。
-               卡片宽度骤降到 130~160px，所以内边距、字号、播放键都要同步缩，
-               否则 25px 的 padding 会把文字挤成一列竖排。 */
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                margin-top: 20px;
-            }
+            /* 视频卡片：宽度骤降到 130~160px，内边距、字号、播放键都要同步缩，
+               否则 25px 的 padding 会把文字挤成一列竖排 */
+            .video-grid { margin-top: 20px; }
             .video-card { border-radius: 14px; }
             .video-info { padding: 12px 11px 14px; }
             .video-title {
