@@ -1601,7 +1601,7 @@
             <div class="score-info">
                 <div class="score-title">水乡·记忆</div>
                 <div class="score-meta">Concert Score · 管弦总谱</div>
-                <div class="score-role">作曲 &amp; 制谱 · 2024</div>
+                <div class="score-role">制谱 · 2024</div>
             </div>
         </div>
 
@@ -1614,7 +1614,7 @@
             <div class="score-info">
                 <div class="score-title">登山</div>
                 <div class="score-meta">Full Score · 室内乐总谱</div>
-                <div class="score-role">制谱 · 秦若惟 作曲 · 2025</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
@@ -1627,7 +1627,7 @@
             <div class="score-info">
                 <div class="score-title">Mistbenders</div>
                 <div class="score-meta">Full Score · CG 配乐总谱</div>
-                <div class="score-role">制谱 · 邱亦扬 作曲 · 2026</div>
+                <div class="score-role">制谱 · 2026</div>
             </div>
         </div>
 
@@ -1640,7 +1640,7 @@
             <div class="score-info">
                 <div class="score-title">元素</div>
                 <div class="score-meta">Full Score · 木管五重奏</div>
-                <div class="score-role">制谱 · 周月玄 作曲 · 2026</div>
+                <div class="score-role">制谱 · 2026</div>
             </div>
         </div>
 
@@ -1653,7 +1653,7 @@
             <div class="score-info">
                 <div class="score-title">Green Tea Farm</div>
                 <div class="score-meta">Full Score · 钢琴独奏</div>
-                <div class="score-role">扒谱制谱 · Hiromi Uehara 原作 · 2024</div>
+                <div class="score-role">扒谱制谱 · 2024</div>
             </div>
         </div>
 
@@ -1666,7 +1666,7 @@
             <div class="score-info">
                 <div class="score-title">不由己</div>
                 <div class="score-meta">Full Score (A3) · 民族管弦</div>
-                <div class="score-role">制谱 · 翟锦彦 作曲 · 2025</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
@@ -1679,7 +1679,7 @@
             <div class="score-info">
                 <div class="score-title">寻空</div>
                 <div class="score-meta">Full Score · 管弦总谱</div>
-                <div class="score-role">制谱 · 周月玄 作曲 · 2025</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
@@ -1692,7 +1692,7 @@
             <div class="score-info">
                 <div class="score-title">遥望</div>
                 <div class="score-meta">Full Score · 总谱</div>
-                <div class="score-role">制谱 · 秦诗乐 作曲 · 2025</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
@@ -1705,7 +1705,7 @@
             <div class="score-info">
                 <div class="score-title">武则天</div>
                 <div class="score-meta">Full Score · 游戏配乐总谱</div>
-                <div class="score-role">制谱 · 秦诗乐 作曲 · 2025</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
@@ -2296,9 +2296,9 @@
     let scorePageIndex = 0;
     let scoreTouchStartX = null;
 
-    // 按 data-full 的 slug 前缀分组：同一作品的所有页
+    // 按 data-full 的 slug 前缀分组：同一作品的所有页（文件名形如 slug-p1.jpg）
     const groupScorePages = (imgSrc) => {
-        const base = (imgSrc || '').split('/').pop().replace(/-\d+\.jpg$/, '');
+        const base = (imgSrc || '').split('/').pop().replace(/-p?\d+\.jpg$/, '');
         return [...scorePages]
             .map(page => page.getAttribute('data-full'))
             .filter(src => src && src.split('/').pop().startsWith(base + '-'));
