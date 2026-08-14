@@ -31,3 +31,10 @@ build/
 .env.local
 .env.*.local
 .mp3-cache/
+
+# --- OSS 静态资源（已上传到阿里云 OSS，不纳入 git） ---
+images/
+pdfs/
+
+# --- Hermes 桌面附件 ---
+.hermes/

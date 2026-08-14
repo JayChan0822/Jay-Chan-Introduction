@@ -909,6 +909,140 @@
             cursor: pointer;
         }
 
+        /* --- 制谱作品栏 (NOTATION) --- */
+        .score-card {
+            background: rgba(20, 20, 20, 0.5);
+            border: 1px solid #222;
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.4s var(--easing), border-color 0.4s;
+            cursor: pointer;
+        }
+
+        .score-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .score-thumb {
+            position: relative;
+            width: 100%;
+            padding-top: 133%;   /* 3:4 竖版，适配竖排总谱 */
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        .score-thumb img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: top;   /* 展示谱面标题与起始段 */
+            transition: transform 0.6s var(--easing), filter 0.6s;
+        }
+
+        .score-card:hover .score-thumb img {
+            transform: scale(1.04);
+            filter: brightness(0.85);
+        }
+
+        .score-zoom-indicator {
+            position: absolute;
+            top: 14px; right: 14px;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            display: flex; justify-content: center; align-items: center;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.4s var(--easing);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .score-card:hover .score-zoom-indicator { opacity: 1; }
+
+        .score-info {
+            padding: 16px 18px 18px;
+        }
+
+        .score-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .score-meta {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        .score-role {
+            margin-top: 8px;
+            color: #888;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 8px;
+        }
+
+        .score-card:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 3px;
+        }
+
+        /* --- 制谱作品 PDF 预览 lightbox（复用 .video-modal 骨架，覆盖内容容器为竖版 PDF 适配） --- */
+        .score-modal .modal-content {
+            aspect-ratio: auto;
+            width: min(1000px, 92vw);
+            height: 88vh;
+            max-width: none;
+            max-height: none;
+            background: #525659;   /* PDF 阅读器灰底 */
+            border-radius: 12px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .score-modal .modal-content iframe {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: #525659;
+        }
+
+        .score-download {
+            flex: none;
+            display: block;
+            padding: 13px 16px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.65);
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background 0.3s ease;
+        }
+
+        .score-download:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+        }
+
         a:focus-visible,
         .play-btn:focus-visible,
         .video-card:focus-visible,
@@ -1102,6 +1236,13 @@
             }
         }
 
+        /* --- NOTATION 固定每行 3 列（桌面端 ≥769px；移动端继承 video-grid 的 2 列） --- */
+        @media (min-width: 769px) {
+            .score-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
     </style>
 
     <!-- 兜底：禁用 JS 时，滚动揭示动画不会执行，必须让内容直接可见 -->
@@ -1123,6 +1264,7 @@
         <li class="hover-trigger"><a href="#about">PROFILE</a></li>
         <li class="hover-trigger"><a href="#portfolio">SOUND</a></li>
         <li class="hover-trigger"><a href="#visual">VISUAL</a></li>
+        <li class="hover-trigger"><a href="#notation">NOTATION</a></li>
         <li class="hover-trigger"><a href="#work">PROJECT</a></li>
     </ul>
 
@@ -1132,6 +1274,7 @@
         <li><a href="#about" tabindex="-1">PROFILE</a></li>
         <li><a href="#portfolio" tabindex="-1">SOUND</a></li>
         <li><a href="#visual" tabindex="-1">VISUAL</a></li>
+        <li><a href="#notation" tabindex="-1">NOTATION</a></li>
         <li><a href="#work" tabindex="-1">PROJECT</a></li>
     </ul>
 </nav>
@@ -1412,6 +1555,127 @@
     </div>
 </section>
 
+<section id="notation">
+    <h2 class="apple-animate from-left section-header">
+        NOTATION.
+    </h2>
+    <p class="apple-animate from-left delay-1" style="color: var(--text-muted); margin-bottom: 40px; letter-spacing: 1px;">
+        MUSIC ENGRAVING &amp; COPYING / 制谱 · 音乐编辑
+    </p>
+
+    <div class="video-grid score-grid">
+
+        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/silk-rain-willow-shadows.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows.jpg" alt="水乡·记忆 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">水乡·记忆</div>
+                <div class="score-meta">Concert Score · 管弦总谱</div>
+                <div class="score-role">作曲 &amp; 制谱 · 2024</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/climbing-mountain.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain.jpg" alt="登山 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">登山</div>
+                <div class="score-meta">Full Score · 室内乐总谱</div>
+                <div class="score-role">制谱 · 秦若惟 作曲 · 2025</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/mistbenders.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/mistbenders.jpg" alt="Mistbenders 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">Mistbenders</div>
+                <div class="score-meta">Full Score · CG 配乐总谱</div>
+                <div class="score-role">制谱 · 邱亦扬 作曲 · 2026</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/element.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element.jpg" alt="元素 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">元素</div>
+                <div class="score-meta">Full Score · 木管五重奏</div>
+                <div class="score-role">制谱 · 周月玄 作曲 · 2026</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/green-tea-farm.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/green-tea-farm.jpg" alt="Green Tea Farm 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">Green Tea Farm</div>
+                <div class="score-meta">Full Score · 钢琴独奏</div>
+                <div class="score-role">扒谱制谱 · Hiromi Uehara 原作 · 2024</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/buyouji.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/buyouji.jpg" alt="不由己 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">不由己</div>
+                <div class="score-meta">Full Score (A3) · 民族管弦</div>
+                <div class="score-role">制谱 · 翟锦彦 作曲 · 2025</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/seek-void.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void.jpg" alt="寻空 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">寻空</div>
+                <div class="score-meta">Full Score · 管弦总谱</div>
+                <div class="score-role">制谱 · 周月玄 作曲 · 2025</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/yaowang.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang.jpg" alt="遥望 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">遥望</div>
+                <div class="score-meta">Full Score · 总谱</div>
+                <div class="score-role">制谱 · 秦诗乐 作曲 · 2025</div>
+            </div>
+        </div>
+
+        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/pdfs/wu-zetian.pdf">
+            <div class="score-thumb">
+                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian.jpg" alt="武则天 总谱" loading="lazy" decoding="async">
+                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+            </div>
+            <div class="score-info">
+                <div class="score-title">武则天</div>
+                <div class="score-meta">Full Score · 游戏配乐总谱</div>
+                <div class="score-role">制谱 · 秦诗乐 作曲 · 2025</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 <section id="work">
     <h2 class="apple-animate from-left section-header">
         VIBE CODING<br>PROJECTS.
@@ -1519,6 +1783,21 @@
     <div class="modal-content">
         <h2 id="videoModalTitle" class="sr-only">视频播放器</h2>
         <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload" aria-label="视频播放器"></video>
+    </div>
+</div>
+
+<div id="scoreModal" class="video-modal score-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="scoreModalTitle">
+    <div class="modal-overlay hover-trigger"></div>
+    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭制谱预览">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+    <div class="modal-content">
+        <h2 id="scoreModalTitle" class="sr-only">制谱作品 PDF 预览</h2>
+        <iframe id="scoreModalFrame" title="制谱作品 PDF 预览" loading="lazy"></iframe>
+        <a id="scoreDownloadLink" class="score-download" href="#" target="_blank" rel="noopener noreferrer">在新标签页打开 / 下载 PDF ↗</a>
     </div>
 </div>
 
@@ -1958,6 +2237,60 @@
         } else if (!event.shiftKey && document.activeElement === lastElement) {
             event.preventDefault();
             firstElement.focus();
+        }
+    });
+
+    // 制谱作品 PDF 预览 lightbox
+    const scoreModal = document.getElementById('scoreModal');
+    const scoreModalFrame = document.getElementById('scoreModalFrame');
+    const scoreDownloadLink = document.getElementById('scoreDownloadLink');
+    const scoreCloseBtn = scoreModal.querySelector('.modal-close-btn');
+    const scoreOverlay = scoreModal.querySelector('.modal-overlay');
+    const scoreCards = document.querySelectorAll('.score-card');
+    let scorePrevFocus = null;
+
+    const openScoreModal = (pdfSrc, triggerElement) => {
+        if (!pdfSrc) return;
+        if (activeSurfer && activeSurfer.isPlaying()) activeSurfer.pause();
+        scorePrevFocus = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
+        scoreModalFrame.src = pdfSrc;
+        scoreDownloadLink.href = pdfSrc;
+        scoreModal.classList.add('active');
+        scoreModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        scoreCloseBtn.focus();
+    };
+
+    const closeScoreModal = () => {
+        if (!scoreModal.classList.contains('active')) return;
+        scoreModal.classList.remove('active');
+        scoreModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        // 延迟清空 iframe，等淡出动画结束，释放 PDF 渲染
+        setTimeout(() => { scoreModalFrame.src = 'about:blank'; }, 400);
+        if (scorePrevFocus instanceof HTMLElement) {
+            scorePrevFocus.focus();
+            scorePrevFocus = null;
+        }
+    };
+
+    scoreCards.forEach(card => {
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        const title = card.querySelector('.score-title')?.textContent?.trim();
+        if (title) card.setAttribute('aria-label', `查看制谱作品：${title}`);
+        const open = () => openScoreModal(card.getAttribute('data-pdf'), card);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, open));
+    });
+
+    scoreCloseBtn.addEventListener('click', closeScoreModal);
+    scoreOverlay.addEventListener('click', closeScoreModal);
+    document.addEventListener('keydown', (event) => {
+        if (!scoreModal.classList.contains('active')) return;
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeScoreModal();
         }
     });
 </script>
