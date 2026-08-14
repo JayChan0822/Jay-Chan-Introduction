@@ -918,7 +918,6 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             transition: transform 0.4s var(--easing), border-color 0.4s;
-            cursor: pointer;
         }
 
         .score-card:hover {
@@ -929,12 +928,22 @@
         .score-thumb {
             position: relative;
             width: 100%;
-            padding-top: 133%;   /* 3:4 竖版，适配竖排总谱 */
+            aspect-ratio: 16 / 9;   /* 与视频卡片一致 */
             background: #0a0a0a;
             overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
         }
 
-        .score-thumb img {
+        .score-page {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: #111;
+        }
+
+        .score-page img {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -943,29 +952,13 @@
             transition: transform 0.6s var(--easing), filter 0.6s;
         }
 
-        .score-card:hover .score-thumb img {
-            transform: scale(1.04);
-            filter: brightness(0.85);
+        .score-card:hover .score-page img {
+            filter: brightness(0.82);
         }
 
-        .score-zoom-indicator {
-            position: absolute;
-            top: 14px; right: 14px;
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            display: flex; justify-content: center; align-items: center;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.4s var(--easing);
-            z-index: 2;
-            pointer-events: none;
+        .score-page:hover img {
+            transform: scale(1.06);
         }
-
-        .score-card:hover .score-zoom-indicator { opacity: 1; }
 
         .score-info {
             padding: 16px 18px 18px;
@@ -995,52 +988,33 @@
             padding-top: 8px;
         }
 
-        .score-card:focus-visible {
+        .score-page:focus-visible {
             outline: 2px solid #fff;
             outline-offset: 3px;
         }
 
-        /* --- 制谱作品 PDF 预览 lightbox（复用 .video-modal 骨架，覆盖内容容器为竖版 PDF 适配） --- */
+        /* --- 制谱作品页放大 lightbox（复用 .video-modal 骨架，覆盖内容容器为竖版乐谱适配） --- */
         .score-modal .modal-content {
             aspect-ratio: auto;
-            width: min(1000px, 92vw);
-            height: 88vh;
-            max-width: none;
-            max-height: none;
-            background: #525659;   /* PDF 阅读器灰底 */
+            width: auto;
+            max-width: 92vw;
+            height: auto;
+            max-height: 88vh;
+            background: transparent;
             border-radius: 12px;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+        .score-modal .modal-content img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 92vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 8px;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .score-modal .modal-content iframe {
-            flex: 1;
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-            background: #525659;
-        }
-
-        .score-download {
-            flex: none;
-            display: block;
-            padding: 13px 16px;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.65);
-            text-align: center;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            text-decoration: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            transition: background 0.3s ease;
-        }
-
-        .score-download:hover {
-            background: rgba(255, 255, 255, 0.14);
-            color: #fff;
         }
 
         a:focus-visible,
@@ -1565,10 +1539,11 @@
 
     <div class="video-grid score-grid">
 
-        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="pdfs/silk-rain-willow-shadows.pdf">
+        <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows.jpg" alt="水乡·记忆 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p1.jpg" alt="水乡·记忆 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p2.jpg" alt="水乡·记忆 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p3.jpg" alt="水乡·记忆 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">水乡·记忆</div>
@@ -1577,10 +1552,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="pdfs/climbing-mountain.pdf">
+        <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain.jpg" alt="登山 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p1.jpg" alt="登山 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p2.jpg" alt="登山 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p3.jpg" alt="登山 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">登山</div>
@@ -1589,10 +1565,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="pdfs/mistbenders.pdf">
+        <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/mistbenders.jpg" alt="Mistbenders 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/mistbenders-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/mistbenders-p1.jpg" alt="Mistbenders 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/mistbenders-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/mistbenders-p2.jpg" alt="Mistbenders 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/mistbenders-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/mistbenders-p3.jpg" alt="Mistbenders 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">Mistbenders</div>
@@ -1601,10 +1578,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="pdfs/element.pdf">
+        <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element.jpg" alt="元素 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p1.jpg" alt="元素 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p2.jpg" alt="元素 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p3.jpg" alt="元素 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">元素</div>
@@ -1613,10 +1591,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="pdfs/green-tea-farm.pdf">
+        <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/green-tea-farm.jpg" alt="Green Tea Farm 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/green-tea-farm-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/green-tea-farm-p1.jpg" alt="Green Tea Farm 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/green-tea-farm-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/green-tea-farm-p2.jpg" alt="Green Tea Farm 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/green-tea-farm-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/green-tea-farm-p3.jpg" alt="Green Tea Farm 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">Green Tea Farm</div>
@@ -1625,10 +1604,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="pdfs/buyouji.pdf">
+        <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/buyouji.jpg" alt="不由己 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/buyouji-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/buyouji-p1.jpg" alt="不由己 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/buyouji-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/buyouji-p2.jpg" alt="不由己 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/buyouji-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/buyouji-p3.jpg" alt="不由己 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">不由己</div>
@@ -1637,10 +1617,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="pdfs/seek-void.pdf">
+        <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void.jpg" alt="寻空 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p1.jpg" alt="寻空 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p2.jpg" alt="寻空 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p3.jpg" alt="寻空 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">寻空</div>
@@ -1649,10 +1630,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-right delay-2" data-pdf="pdfs/yaowang.pdf">
+        <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang.jpg" alt="遥望 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p1.jpg" alt="遥望 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p2.jpg" alt="遥望 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p3.jpg" alt="遥望 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">遥望</div>
@@ -1661,10 +1643,11 @@
             </div>
         </div>
 
-        <div class="score-card hover-trigger apple-animate from-left delay-1" data-pdf="pdfs/wu-zetian.pdf">
+        <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian.jpg" alt="武则天 总谱" loading="lazy" decoding="async">
-                <div class="score-zoom-indicator"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p1.jpg" alt="武则天 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p2.jpg" alt="武则天 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p3.jpg" alt="武则天 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
                 <div class="score-title">武则天</div>
@@ -1788,16 +1771,15 @@
 
 <div id="scoreModal" class="video-modal score-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="scoreModalTitle">
     <div class="modal-overlay hover-trigger"></div>
-    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭制谱预览">
+    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭制谱页预览">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
     </button>
     <div class="modal-content">
-        <h2 id="scoreModalTitle" class="sr-only">制谱作品 PDF 预览</h2>
-        <iframe id="scoreModalFrame" title="制谱作品 PDF 预览" loading="lazy"></iframe>
-        <a id="scoreDownloadLink" class="score-download" href="#" target="_blank" rel="noopener noreferrer">在新标签页打开 / 下载 PDF ↗</a>
+        <h2 id="scoreModalTitle" class="sr-only">制谱作品页预览</h2>
+        <img id="scoreModalImg" alt="制谱作品页">
     </div>
 </div>
 
@@ -2240,21 +2222,19 @@
         }
     });
 
-    // 制谱作品 PDF 预览 lightbox
+    // 制谱作品页放大 lightbox
     const scoreModal = document.getElementById('scoreModal');
-    const scoreModalFrame = document.getElementById('scoreModalFrame');
-    const scoreDownloadLink = document.getElementById('scoreDownloadLink');
+    const scoreModalImg = document.getElementById('scoreModalImg');
     const scoreCloseBtn = scoreModal.querySelector('.modal-close-btn');
     const scoreOverlay = scoreModal.querySelector('.modal-overlay');
-    const scoreCards = document.querySelectorAll('.score-card');
+    const scorePages = document.querySelectorAll('.score-page');
     let scorePrevFocus = null;
 
-    const openScoreModal = (pdfSrc, triggerElement) => {
-        if (!pdfSrc) return;
+    const openScoreModal = (imgSrc, triggerElement) => {
+        if (!imgSrc) return;
         if (activeSurfer && activeSurfer.isPlaying()) activeSurfer.pause();
         scorePrevFocus = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
-        scoreModalFrame.src = pdfSrc;
-        scoreDownloadLink.href = pdfSrc;
+        scoreModalImg.src = imgSrc;
         scoreModal.classList.add('active');
         scoreModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
@@ -2266,22 +2246,20 @@
         scoreModal.classList.remove('active');
         scoreModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
-        // 延迟清空 iframe，等淡出动画结束，释放 PDF 渲染
-        setTimeout(() => { scoreModalFrame.src = 'about:blank'; }, 400);
+        // 延迟清空，等淡出动画结束
+        setTimeout(() => { scoreModalImg.src = ''; }, 400);
         if (scorePrevFocus instanceof HTMLElement) {
             scorePrevFocus.focus();
             scorePrevFocus = null;
         }
     };
 
-    scoreCards.forEach(card => {
-        card.setAttribute('role', 'button');
-        card.setAttribute('tabindex', '0');
-        const title = card.querySelector('.score-title')?.textContent?.trim();
-        if (title) card.setAttribute('aria-label', `查看制谱作品：${title}`);
-        const open = () => openScoreModal(card.getAttribute('data-pdf'), card);
-        card.addEventListener('click', open);
-        card.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, open));
+    scorePages.forEach(page => {
+        page.setAttribute('role', 'button');
+        page.setAttribute('tabindex', '0');
+        const open = () => openScoreModal(page.getAttribute('data-full'), page);
+        page.addEventListener('click', open);
+        page.addEventListener('keydown', (event) => activateOnEnterOrSpace(event, open));
     });
 
     scoreCloseBtn.addEventListener('click', closeScoreModal);
