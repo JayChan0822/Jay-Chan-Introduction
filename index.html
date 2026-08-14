@@ -1017,6 +1017,59 @@
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
         }
 
+        /* 制谱 lightbox 翻页按钮 + 页码 */
+        .score-modal .modal-content {
+            position: relative;
+        }
+
+        .score-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .score-nav-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .score-nav-btn:active {
+            transform: translateY(-50%) scale(0.92);
+        }
+
+        .score-nav-prev {
+            left: -18px;
+        }
+
+        .score-nav-next {
+            right: -18px;
+        }
+
+        .score-page-indicator {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
         a:focus-visible,
         .play-btn:focus-visible,
         .video-card:focus-visible,
@@ -1780,6 +1833,13 @@
     <div class="modal-content">
         <h2 id="scoreModalTitle" class="sr-only">制谱作品页预览</h2>
         <img id="scoreModalImg" alt="制谱作品页">
+        <button id="scorePrevBtn" class="score-nav-btn score-nav-prev hover-trigger" type="button" aria-label="上一页">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button id="scoreNextBtn" class="score-nav-btn score-nav-next hover-trigger" type="button" aria-label="下一页">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <span id="scorePageIndicator" class="score-page-indicator" aria-live="polite"></span>
     </div>
 </div>
 
@@ -2227,14 +2287,46 @@
     const scoreModalImg = document.getElementById('scoreModalImg');
     const scoreCloseBtn = scoreModal.querySelector('.modal-close-btn');
     const scoreOverlay = scoreModal.querySelector('.modal-overlay');
+    const scorePrevBtn = document.getElementById('scorePrevBtn');
+    const scoreNextBtn = document.getElementById('scoreNextBtn');
+    const scorePageIndicator = document.getElementById('scorePageIndicator');
     const scorePages = document.querySelectorAll('.score-page');
     let scorePrevFocus = null;
+    let scorePagesGroup = [];
+    let scorePageIndex = 0;
+    let scoreTouchStartX = null;
+
+    // 按 data-full 的 slug 前缀分组：同一作品的所有页
+    const groupScorePages = (imgSrc) => {
+        const base = (imgSrc || '').split('/').pop().replace(/-\d+\.jpg$/, '');
+        return [...scorePages]
+            .map(page => page.getAttribute('data-full'))
+            .filter(src => src && src.split('/').pop().startsWith(base + '-'));
+    };
+
+    const renderScorePage = () => {
+        const src = scorePagesGroup[scorePageIndex];
+        if (!src) return;
+        scoreModalImg.src = src;
+        scorePageIndicator.textContent = `${scorePageIndex + 1} / ${scorePagesGroup.length}`;
+        scorePrevBtn.style.visibility = scorePagesGroup.length > 1 ? 'visible' : 'hidden';
+        scoreNextBtn.style.visibility = scorePagesGroup.length > 1 ? 'visible' : 'hidden';
+        scoreModalImg.alt = `制谱作品页 ${scorePageIndex + 1}`;
+    };
+
+    const goScorePage = (dir) => {
+        if (!scorePagesGroup.length) return;
+        scorePageIndex = (scorePageIndex + dir + scorePagesGroup.length) % scorePagesGroup.length;
+        renderScorePage();
+    };
 
     const openScoreModal = (imgSrc, triggerElement) => {
         if (!imgSrc) return;
         if (activeSurfer && activeSurfer.isPlaying()) activeSurfer.pause();
         scorePrevFocus = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
-        scoreModalImg.src = imgSrc;
+        scorePagesGroup = groupScorePages(imgSrc);
+        scorePageIndex = Math.max(0, scorePagesGroup.indexOf(imgSrc));
+        renderScorePage();
         scoreModal.classList.add('active');
         scoreModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
@@ -2264,13 +2356,33 @@
 
     scoreCloseBtn.addEventListener('click', closeScoreModal);
     scoreOverlay.addEventListener('click', closeScoreModal);
+    scorePrevBtn.addEventListener('click', (event) => { event.stopPropagation(); goScorePage(-1); });
+    scoreNextBtn.addEventListener('click', (event) => { event.stopPropagation(); goScorePage(1); });
     document.addEventListener('keydown', (event) => {
         if (!scoreModal.classList.contains('active')) return;
         if (event.key === 'Escape') {
             event.preventDefault();
             closeScoreModal();
+        } else if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            goScorePage(-1);
+        } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            goScorePage(1);
         }
     });
+    // 触摸滑动翻页（手机）
+    scoreModalImg.addEventListener('touchstart', (event) => {
+        scoreTouchStartX = event.touches[0].clientX;
+    }, { passive: true });
+    scoreModalImg.addEventListener('touchend', (event) => {
+        if (scoreTouchStartX == null) return;
+        const deltaX = event.changedTouches[0].clientX - scoreTouchStartX;
+        scoreTouchStartX = null;
+        if (Math.abs(deltaX) > 48) {
+            goScorePage(deltaX > 0 ? -1 : 1);
+        }
+    }, { passive: true });
 </script>
 </body>
 </html>
