@@ -2317,31 +2317,42 @@
     const scorePageIndicator = document.getElementById('scorePageIndicator');
     const scorePages = document.querySelectorAll('.score-page');
     let scorePrevFocus = null;
-    let scorePagesGroup = [];
-    let scorePageIndex = 0;
+    let scoreGlobalIndex = 0;
     let scoreTouchStartX = null;
 
-    // 按 data-full 的 slug 前缀分组：同一作品的所有页（文件名形如 slug-p1.jpg）
-    const groupScorePages = (imgSrc) => {
+    // 全局有序页列表：按卡片顺序展平 9 作品 × 3 页 = 27 页，
+    // 左右切换可跨作品浏览（第 3 页 → 下一作品第 1 页，循环）
+    const scoreAllPages = [...document.querySelectorAll('.score-card')].flatMap(card =>
+        [...card.querySelectorAll('.score-page')].map(page => ({
+            full: page.getAttribute('data-full'),
+            title: card.querySelector('.score-title')?.textContent?.trim() || '',
+        }))
+    );
+
+    // 找到某个 data-full 所在作品的首页（全局索引）——点任意页缩略图都从该作品第 1 页开始
+    const indexOfWorkFirstPage = (imgSrc) => {
         const base = (imgSrc || '').split('/').pop().replace(/-p?\d+\.jpg$/, '');
-        return [...scorePages]
-            .map(page => page.getAttribute('data-full'))
-            .filter(src => src && src.split('/').pop().startsWith(base + '-'));
+        const i = scoreAllPages.findIndex(p => p.full && p.full.split('/').pop().startsWith(base + '-'));
+        return i >= 0 ? i : 0;
     };
 
     const renderScorePage = () => {
-        const src = scorePagesGroup[scorePageIndex];
-        if (!src) return;
-        scoreModalImg.src = src;
-        scorePageIndicator.textContent = `${scorePageIndex + 1} / ${scorePagesGroup.length}`;
-        scorePrevBtn.style.visibility = scorePagesGroup.length > 1 ? 'visible' : 'hidden';
-        scoreNextBtn.style.visibility = scorePagesGroup.length > 1 ? 'visible' : 'hidden';
-        scoreModalImg.alt = `制谱作品页 ${scorePageIndex + 1}`;
+        const page = scoreAllPages[scoreGlobalIndex];
+        if (!page || !page.full) return;
+        scoreModalImg.src = page.full;
+        // 页内序号 = 当前页在全列表中相对该作品第一页的位置 + 1
+        const base = page.full.split('/').pop().replace(/-p?\d+\.jpg$/, '');
+        const first = indexOfWorkFirstPage(page.full);
+        const inWork = scoreGlobalIndex - first + 1;
+        scorePageIndicator.textContent = `${page.title} · 第 ${inWork} 页`;
+        scorePrevBtn.style.visibility = scoreAllPages.length > 1 ? 'visible' : 'hidden';
+        scoreNextBtn.style.visibility = scoreAllPages.length > 1 ? 'visible' : 'hidden';
+        scoreModalImg.alt = `${page.title} 第 ${inWork} 页`;
     };
 
     const goScorePage = (dir) => {
-        if (!scorePagesGroup.length) return;
-        scorePageIndex = (scorePageIndex + dir + scorePagesGroup.length) % scorePagesGroup.length;
+        if (!scoreAllPages.length) return;
+        scoreGlobalIndex = (scoreGlobalIndex + dir + scoreAllPages.length) % scoreAllPages.length;
         renderScorePage();
     };
 
@@ -2349,9 +2360,8 @@
         if (!imgSrc) return;
         if (activeSurfer && activeSurfer.isPlaying()) activeSurfer.pause();
         scorePrevFocus = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
-        scorePagesGroup = groupScorePages(imgSrc);
-        // 总是从该作品第 1 页开始（用户点任意页缩略图，期望看到从首页起）
-        scorePageIndex = 0;
+        // 总是从该作品第 1 页开始（点任意页缩略图，期望看到从首页起）
+        scoreGlobalIndex = indexOfWorkFirstPage(imgSrc);
         renderScorePage();
         scoreModal.classList.add('active');
         scoreModal.setAttribute('aria-hidden', 'false');
