@@ -94,6 +94,7 @@
             cursor: none; /* 仅在脚本确认可用时隐藏系统光标 */
         }
 
+        html.modal-open,
         body.modal-open {
             overflow: hidden;
         }
@@ -2218,6 +2219,7 @@
         videoModal.classList.add('active');
         videoModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
         closeBtn.focus();
         modalVideoPlayer.play().catch(() => {});
     };
@@ -2242,6 +2244,7 @@
         videoModal.classList.remove('active');
         videoModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
         modalVideoPlayer.pause();
         // 延迟清除 src，等待淡出动画结束，避免闪烁
         setTimeout(() => {
@@ -2325,11 +2328,13 @@
         if (activeSurfer && activeSurfer.isPlaying()) activeSurfer.pause();
         scorePrevFocus = triggerElement instanceof HTMLElement ? triggerElement : document.activeElement;
         scorePagesGroup = groupScorePages(imgSrc);
-        scorePageIndex = Math.max(0, scorePagesGroup.indexOf(imgSrc));
+        // 总是从该作品第 1 页开始（用户点任意页缩略图，期望看到从首页起）
+        scorePageIndex = 0;
         renderScorePage();
         scoreModal.classList.add('active');
         scoreModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
         scoreCloseBtn.focus();
     };
 
@@ -2338,6 +2343,7 @@
         scoreModal.classList.remove('active');
         scoreModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
         // 延迟清空，等淡出动画结束
         setTimeout(() => { scoreModalImg.src = ''; }, 400);
         if (scorePrevFocus instanceof HTMLElement) {
