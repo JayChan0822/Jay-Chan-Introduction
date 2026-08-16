@@ -17,7 +17,7 @@ STEMS = [
     "hang_zhou_zhi_jiang", "su_zhou_nian",
     "shu_zhong_tian_fu", "qin_yun_bin_fen_zou_xin_chun",
     "tian_wen", "da_zhu_jiao", "chong_shi_xing_yuan", "shui_xiang_ji_yi",
-    "shi_xu", "huang_yang_bian_dan",
+    "shi_xu", "huang_yang_bian_dan", "guo_shan_che",
 ]
 
 BUCKETS = 400   # 波形柱子数：barWidth 2 + barGap 2，约 800px 宽最多用到 200 根，400 够用且有余量
