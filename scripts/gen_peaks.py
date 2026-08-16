@@ -14,7 +14,7 @@ CACHE.mkdir(exist_ok=True)
 
 STEMS = [
     "an_ye_zhu_guang", "da_jiang_hu_ming_sheng", "heng_jue",
-    "que_qiao_xian", "hang_zhou_zhi_jiang", "su_zhou_nian",
+    "hang_zhou_zhi_jiang", "su_zhou_nian",
     "shu_zhong_tian_fu", "qin_yun_bin_fen_zou_xin_chun",
     "tian_wen", "da_zhu_jiao", "chong_shi_xing_yuan", "shui_xiang_ji_yi",
     "shi_xu", "huang_yang_bian_dan",
