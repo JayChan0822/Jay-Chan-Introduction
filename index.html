@@ -1024,7 +1024,7 @@
         }
 
         .score-nav-btn {
-            position: absolute;
+            position: fixed;
             top: 50%;
             transform: translateY(-50%);
             z-index: 5;
@@ -1052,16 +1052,16 @@
         }
 
         .score-nav-prev {
-            left: -18px;
+            left: 24px;
         }
 
         .score-nav-next {
-            right: -18px;
+            right: 24px;
         }
 
         .score-page-indicator {
-            position: absolute;
-            bottom: -30px;
+            position: fixed;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.85);
@@ -1856,14 +1856,14 @@
     <div class="modal-content">
         <h2 id="scoreModalTitle" class="sr-only">制谱作品页预览</h2>
         <img id="scoreModalImg" alt="制谱作品页">
-        <button id="scorePrevBtn" class="score-nav-btn score-nav-prev hover-trigger" type="button" aria-label="上一页">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button id="scoreNextBtn" class="score-nav-btn score-nav-next hover-trigger" type="button" aria-label="下一页">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-        <span id="scorePageIndicator" class="score-page-indicator" aria-live="polite"></span>
     </div>
+    <button id="scorePrevBtn" class="score-nav-btn score-nav-prev hover-trigger" type="button" aria-label="上一页">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button id="scoreNextBtn" class="score-nav-btn score-nav-next hover-trigger" type="button" aria-label="下一页">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+    <span id="scorePageIndicator" class="score-page-indicator" aria-live="polite"></span>
 </div>
 
 <script type="module">
