@@ -13,7 +13,7 @@ JOBS = [
     ("Shui Xiang Ji Yi.pdf", "silk-rain-willow-shadows", [3, 4, 5]),
     ("Deng Shan.pdf", "climbing-mountain", [3, 4, 5]),
     ("Mistbenders.pdf", "mistbenders", [3, 4, 5]),
-    ("Yuan Su.pdf", "element", [1, 2, 3]),
+    ("Yuan Su.pdf", "element", [3, 4, 5]),
     ("Green Tea Farm.pdf", "green-tea-farm", [1, 2, 3]),
     ("Bu You Ji.pdf", "buyouji", [1, 2, 3]),
     ("Xun Kong.pdf", "seek-void", [4, 5, 6]),
