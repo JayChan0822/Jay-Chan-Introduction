@@ -12,10 +12,7 @@ os.makedirs(OUT_THUMBS, exist_ok=True)
 JOBS = [
     ("Shui Xiang Ji Yi.pdf", "silk-rain-willow-shadows", [3, 4, 5]),
     ("Deng Shan.pdf", "climbing-mountain", [3, 4, 5]),
-    ("Mistbenders.pdf", "mistbenders", [3, 4, 5]),
     ("Yuan Su.pdf", "element", [3, 4, 5]),
-    ("Green Tea Farm.pdf", "green-tea-farm", [1, 2, 3]),
-    ("Bu You Ji.pdf", "buyouji", [1, 2, 3]),
     ("Xun Kong.pdf", "seek-void", [4, 5, 6]),
     ("Yao Wang.pdf", "yaowang", [1, 2, 3]),
     ("Wu Ze Tian.pdf", "wu-zetian", [1, 2, 3]),
@@ -142,4 +139,4 @@ for src, slug, pages in JOBS:
     doc.close()
     print(f"✓ {slug}  p{pages[0]}/{pages[1]}/{pages[2]}")
 
-print(f"\n完成 27 页。大图总计 {total_big//1024}KB")
+print(f"\n完成 {sum(len(pages) for _, _, pages in JOBS)} 页。大图总计 {total_big//1024}KB")
