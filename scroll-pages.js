@@ -72,7 +72,13 @@ if (sections.length) {
         clearTimeout(navigationTimer);
         navigating = true;
         activate(page, push);
-        const top = page === 'home' ? 0 : scrollY + section.getBoundingClientRect().top - 110;
+        // Align the content, rather than the section's padded outer edge.
+        // Measure the navigation links so wrapped mobile menus remain clear.
+        const navBottom = Math.max(0, ...[...document.querySelectorAll('.nav-base a')]
+            .map(link => link.getBoundingClientRect().bottom));
+        const contentTop = scrollY + section.getBoundingClientRect().top
+            + parseFloat(getComputedStyle(section).paddingTop);
+        const top = page === 'home' ? 0 : contentTop - navBottom - 32;
         window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion || instant ? 'instant' : 'smooth' });
         navigationTimer = setTimeout(() => { navigating = false; updateFromScroll(); }, reducedMotion || instant ? 0 : 1200);
     };

@@ -251,7 +251,7 @@
             border-radius: 4px;
         }
         .about-image {
-            width: 100%; display: block;
+            width: 100%; height: auto; display: block;
             /* 压暗亮度(0.6)，微降饱和度(0.8)，增强对比度，拒绝黑白 */
             filter: brightness(0.6) saturate(0.8) contrast(1.1);
             transition: filter 0.5s, transform 0.5s;
