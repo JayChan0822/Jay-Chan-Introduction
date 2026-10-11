@@ -1149,16 +1149,42 @@
             /* 视频卡片：宽度骤降到 130~160px，内边距、字号、播放键都要同步缩，
                否则 25px 的 padding 会把文字挤成一列竖排 */
             .video-grid { margin-top: 20px; }
-            .video-card { border-radius: 14px; }
-            .video-info { padding: 12px 11px 14px; }
-            .video-title {
+            .video-card,
+            .score-card { border-radius: 14px; }
+            .video-info,
+            .score-info {
+                padding: 12px 11px 14px;
+                height: 6rem;
+            }
+            .video-title,
+            .score-title {
                 font-size: 0.82rem;
                 line-height: 1.35;
                 letter-spacing: 0;
                 margin-bottom: 4px;
             }
-            .video-desc {
+            .video-desc,
+            .score-meta {
                 font-size: 0.66rem;
+                line-height: 1.4;
+                letter-spacing: 0;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+            .video-title,
+            .score-title {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+            .score-role {
+                margin-top: 4px;
+                padding-top: 0;
+                border-top: 0;
+                font-size: 0.625rem;
                 line-height: 1.4;
                 letter-spacing: 0;
             }
