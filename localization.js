@@ -1,6 +1,20 @@
 // Paired copy for the Chinese and English versions of the portfolio.
 (() => {
     const copy = {
+    "homeLabel": ["Jay Chan · 首页", "Jay Chan · Home"],
+    "mainNav": ["主导航", "Main navigation"],
+    "backHome": ["← 返回首页", "← Back to home"],
+    "discussProject": ["联系合作 ↗", "Discuss a project ↗"],
+    "homeHeading": ["声音、影像与创作。", "Sound, picture & creation."],
+    "viewProfile": ["了解我的经历 ↗", "Explore my profile ↗"],
+    "profileIntro": ["音乐制作、配乐与管弦编配经历。", "Background in music production, scoring and orchestration."],
+    "musicIntro": ["国风 / 流行 / 管弦 / 电子，在线试听。", "Listen to Guofeng, pop, orchestral and electronic music."],
+    "scoringIntro": ["影像配乐、CG 重配乐与声音设计。", "Scoring for picture, CG rescoring and sound design."],
+    "notationIntro": ["管弦、游戏配乐与室内乐乐谱预览。", "Preview orchestral, game music and chamber music scores."],
+    "projectsIntro": ["探索音乐创作与科技的交汇。", "Explore where music creation meets technology."],
+    "featuredWorks": ["精选作品。", "Selected works."],
+    "allMusic": ["聆听全部音乐 ↗", "Listen to all music ↗"],
+    "allScoring": ["查看全部配乐 ↗", "Explore all scoring ↗"],
     "navScoring": ["配乐", "SCORING"],
     "text0": [
         "个人介绍",
@@ -496,7 +510,7 @@
         ? text(`播放或暂停 ${title}`, `Play or pause ${title}`)
         : text(`播放视频：${title}`, `Play video: ${title}`);
     const pageLabel = (title, page) => text(`${title} · 第 ${page} 页`, `${title} · Page ${page}`);
-    window.siteI18n = { text, mediaLabel, pageLabel };
+    window.siteI18n = { text, mediaLabel, pageLabel, refresh: () => setLanguage(language) };
 
     const closeMenu = (restoreFocus = false) => {
         menu.hidden = true;
@@ -533,13 +547,28 @@
         document.getElementById('languageLabel').textContent = text('中', 'Eng');
         toggle.setAttribute('aria-label', text('选择语言，当前：中文', 'Choose language, current: English'));
         options.forEach(option => option.setAttribute('aria-pressed', String(option.dataset.language === language)));
-        document.title = text('JAY CHAN 陈俊 | 电影配乐 · 游戏音乐制作', 'JAY CHAN | Film Scoring & Music Design');
-        const description = text('陈俊 Jay Chan，上海音乐学院电影音乐制作硕士在读。参与《逆水寒》《燕云十六声》《明日之后》等游戏配乐，陈致逸 DG 专辑《漫长的告白》制谱与音乐编辑。国风 / 流行 / 管弦 / 电子作品集。', 'Jay Chan, an M.A. candidate in Film Music Production at the Shanghai Conservatory of Music. Portfolio of Guofeng, pop, orchestral and electronic music.');
+        const page = document.body.dataset;
+        document.title = text(page.titleZh, page.titleEn);
+        const description = text(page.descriptionZh, page.descriptionEn);
+        // Include language in shareable links while retaining clean canonical URLs.
+        document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!/^(?:index|about|music|scoring|notation|projects)\.html(?:[?#]|$)/.test(href)) return;
+            const url = new URL(href, location.href);
+            if (language === 'en' || new URLSearchParams(location.search).get('lang') === 'zh') {
+                url.searchParams.set('lang', language);
+            } else url.searchParams.delete('lang');
+            link.setAttribute('href', url.pathname.split('/').pop() + url.search + url.hash);
+        });
         document.querySelector('meta[name="description"]').content = description;
         ['og:title', 'twitter:title'].forEach(name => document.querySelector(`meta[property="${name}"], meta[name="${name}"]`).content = document.title);
         ['og:description', 'twitter:description'].forEach(name => document.querySelector(`meta[property="${name}"], meta[name="${name}"]`).content = description);
         document.querySelector('meta[property="og:locale"]').content = text('zh_CN', 'en_US');
         if (persist) {
+            const url = new URL(location.href);
+            if (language === 'en') url.searchParams.set('lang', 'en');
+            else url.searchParams.delete('lang');
+            history.replaceState(null, '', url.pathname + url.search + url.hash);
             try { localStorage.setItem('jaychan-language', language); } catch (_) { /* Storage is optional. */ }
         }
         document.dispatchEvent(new CustomEvent('languagechange', { detail: { language } }));
@@ -580,5 +609,6 @@
     });
     let saved = 'zh';
     try { saved = localStorage.getItem('jaychan-language') || 'zh'; } catch (_) { /* Default to Chinese. */ }
-    setLanguage(saved);
+    const requested = new URLSearchParams(location.search).get('lang');
+    setLanguage(['zh', 'en'].includes(requested) ? requested : saved);
 })();
