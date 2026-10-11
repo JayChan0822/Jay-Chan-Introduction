@@ -1275,16 +1275,15 @@
         /* Language controls sit outside the masked navigation so the menu stays visible. */
         .language-switcher { position: fixed; top: 20px; right: 4%; z-index: 1001; }
         .language-toggle {
-            display: flex; align-items: center; gap: 10px; min-width: 106px; height: 42px;
-            padding: 0 16px; border: 1px solid rgba(255,255,255,.18); border-radius: 24px;
-            background: rgba(20,20,20,.65); color: #eee; font: inherit; font-size: 13px;
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            transition: background .25s, border-color .25s;
+            display: flex; align-items: center; gap: 8px; min-width: 96px; height: 42px;
+            padding: 0 12px; border: 0; border-radius: 0;
+            background: transparent; color: rgba(255,255,255,.42); font: inherit; font-size: 12px;
+            transition: color .25s;
         }
-        .language-toggle:hover, .language-toggle[aria-expanded="true"] { background: rgba(55,55,55,.85); border-color: rgba(255,255,255,.4); }
-        .language-globe { width: 21px; height: 21px; flex-shrink: 0; }
+        .language-toggle:hover, .language-toggle[aria-expanded="true"] { color: rgba(255,255,255,.62); }
+        .language-globe { width: 18px; height: 18px; flex-shrink: 0; }
         #languageLabel { flex: 1; text-align: center; }
-        .language-chevron { width: 14px; height: 14px; transition: transform .2s; }
+        .language-chevron { width: 12px; height: 12px; transition: transform .2s; }
         .language-toggle[aria-expanded="true"] .language-chevron { transform: rotate(180deg); }
         .language-menu {
             position: absolute; top: calc(100% + 8px); right: 0; min-width: 132px;
@@ -1311,7 +1310,7 @@
         }
         @media (max-width: 768px) {
             .language-switcher { top: 16px; right: 6%; }
-            .language-toggle { height: 38px; min-width: 100px; padding: 0 13px; }
+            .language-toggle { height: 38px; min-width: 90px; padding: 0 10px; }
             nav { height: 132px; }
             nav ul { padding-top: 72px; gap: clamp(10px, 3vw, 22px); align-content: flex-start; }
             nav a { font-size: 10px; letter-spacing: .6px; }
@@ -1338,7 +1337,7 @@
     <ul class="nav-base">
         <li class="hover-trigger"><a href="#about"><span data-i18n="text0">个人介绍</span></a></li>
         <li class="hover-trigger"><a href="#portfolio"><span data-i18n="text1">音乐</span></a></li>
-        <li class="hover-trigger"><a href="#visual"><span data-i18n="text2">影像</span></a></li>
+        <li class="hover-trigger"><a href="#visual"><span data-i18n="navScoring">配乐</span></a></li>
         <li class="hover-trigger"><a href="#notation"><span data-i18n="text3">制谱</span></a></li>
         <li class="hover-trigger"><a href="#work"><span data-i18n="text4">项目</span></a></li>
     </ul>
@@ -1348,14 +1347,14 @@
     <ul class="nav-bold" aria-hidden="true" inert>
         <li><a href="#about" tabindex="-1"><span data-i18n="text0">个人介绍</span></a></li>
         <li><a href="#portfolio" tabindex="-1"><span data-i18n="text1">音乐</span></a></li>
-        <li><a href="#visual" tabindex="-1"><span data-i18n="text2">影像</span></a></li>
+        <li><a href="#visual" tabindex="-1"><span data-i18n="navScoring">配乐</span></a></li>
         <li><a href="#notation" tabindex="-1"><span data-i18n="text3">制谱</span></a></li>
         <li><a href="#work" tabindex="-1"><span data-i18n="text4">项目</span></a></li>
     </ul>
 </nav>
 
 <div class="language-switcher">
-    <button id="languageToggle" class="language-toggle hover-trigger" type="button" aria-label="选择语言" aria-expanded="false" aria-controls="languageMenu">
+    <button id="languageToggle" class="language-toggle" type="button" aria-label="选择语言" aria-expanded="false" aria-controls="languageMenu">
         <svg class="language-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.5" ry="9.5"/><path d="M2.5 12h19M4 7.5h16M4 16.5h16"/></svg>
         <span id="languageLabel">中</span>
         <svg class="language-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>

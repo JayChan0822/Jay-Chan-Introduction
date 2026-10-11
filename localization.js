@@ -1,6 +1,7 @@
 // Paired copy for the Chinese and English versions of the portfolio.
 (() => {
     const copy = {
+    "navScoring": ["配乐", "SCORING"],
     "text0": [
         "个人介绍",
         "PROFILE"
