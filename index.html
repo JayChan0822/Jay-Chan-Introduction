@@ -172,7 +172,7 @@
         nav a {
             color: #fff;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 18px;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -1299,21 +1299,23 @@
         .language-option[aria-pressed="true"] .language-check { visibility: visible; }
         .language-switcher button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
         .score-page-indicator { max-width: calc(100vw - 40px); width: max-content; text-align: center; line-height: 1.5; }
-        @media (min-width: 769px) and (max-width: 1000px) {
-            nav ul { gap: 20px; }
-            nav a { font-size: 11px; letter-spacing: 1.5px; }
-        }
         html[lang="en"] .hero-manifesto { max-width: 85vw; }
         html[lang="en"] .hero-subtitle { max-width: 88vw; line-height: 1.7; }
         @media (min-width: 769px) {
             nav ul { padding-left: 150px; padding-right: 150px; gap: clamp(20px, 4vw, 60px); }
+        }
+        @media (min-width: 769px) and (max-width: 1000px) {
+            nav ul { gap: 16px; }
+            nav a { font-size: 14px; letter-spacing: 1px; }
         }
         @media (max-width: 768px) {
             .language-switcher { top: 16px; right: 6%; }
             .language-toggle { height: 38px; min-width: 90px; padding: 0 10px; }
             nav { height: 132px; }
             nav ul { padding-top: 72px; gap: clamp(10px, 3vw, 22px); align-content: flex-start; }
-            nav a { font-size: 10px; letter-spacing: .6px; }
+            nav a { font-size: 14px; letter-spacing: .6px; }
+            html[lang="en"] nav ul { gap: 10px; }
+            html[lang="en"] nav a { font-size: 12px; letter-spacing: .4px; }
             .hero-subtitle { letter-spacing: .15em; font-size: .75rem; }
             html[lang="en"] .about-text .text-body { text-align: left !important; }
         }
