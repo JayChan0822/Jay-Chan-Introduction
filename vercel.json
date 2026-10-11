@@ -1,0 +1,57 @@
+{
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/music.html",
+      "destination": "/music",
+      "permanent": true
+    },
+    {
+      "source": "/scoring.html",
+      "destination": "/scoring",
+      "permanent": true
+    },
+    {
+      "source": "/notation.html",
+      "destination": "/notation",
+      "permanent": true
+    },
+    {
+      "source": "/projects.html",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/music",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/scoring",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/notation",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/index.html"
+    }
+  ]
+}

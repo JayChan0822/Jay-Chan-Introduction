@@ -5,7 +5,12 @@ if (sections.length) {
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     history.scrollRestoration = 'manual';
     const entrySections = { about: 'about', portfolio: 'music', visual: 'scoring', notation: 'notation', work: 'projects' };
-    const entryPage = entrySections[location.hash.slice(1)];
+    const pageFromPath = path => {
+        const slug = path.replace(/^\/|\/$/g, '').replace(/\.html$/, '');
+        return !slug || slug === 'index' ? 'home' : slug;
+    };
+    const requestedPage = pageFromPath(location.pathname);
+    const entryPage = entrySections[location.hash.slice(1)] || (byPage.has(requestedPage) ? requestedPage : 'home');
     let activePage = 'home';
     let navigating = false;
     let navigationTimer;
@@ -15,7 +20,7 @@ if (sections.length) {
     history.replaceState({ ...history.state, scrollPage: 'home' }, '', initialUrl.pathname + initialUrl.search + initialUrl.hash);
 
     const pageUrl = page => {
-        const url = new URL(page === 'home' ? 'index.html' : `${page}.html`, location.href);
+        const url = new URL(page === 'home' ? '/' : `/${page}`, location.origin);
         url.search = location.search;
         url.searchParams.delete('lang');
         return url;
@@ -24,7 +29,7 @@ if (sections.length) {
         const section = byPage.get(page);
         if (!section) return;
         const url = pageUrl(page);
-        if (page !== activePage || push) {
+        if (page !== activePage || push || location.pathname !== url.pathname || location.hash) {
             const state = { ...history.state, scrollPage: page };
             history[push ? 'pushState' : 'replaceState'](state, '', url.pathname + url.search);
         }
@@ -32,10 +37,10 @@ if (sections.length) {
         ['title', 'description'].forEach(key => {
             document.body.dataset[key] = section.dataset[key];
         });
-        document.querySelector('link[rel="canonical"]').href = `https://www.jaychan.cn/${page === 'home' ? '' : page + '.html'}`;
-        document.querySelector('meta[property="og:url"]').content = `https://www.jaychan.cn/${page === 'home' ? '' : page + '.html'}`;
+        document.querySelector('link[rel="canonical"]').href = `https://www.jaychan.cn/${page === 'home' ? '' : page}`;
+        document.querySelector('meta[property="og:url"]').content = `https://www.jaychan.cn/${page === 'home' ? '' : page}`;
         document.querySelectorAll('.nav-base a').forEach(link => {
-            const slug = new URL(link.href).pathname.split('/').pop().replace('.html', '');
+            const slug = pageFromPath(new URL(link.href).pathname);
             if (slug === page) link.setAttribute('aria-current', 'page');
             else link.removeAttribute('aria-current');
         });
@@ -76,8 +81,7 @@ if (sections.length) {
         if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return;
         const url = new URL(link.href);
         if (url.origin !== location.origin || url.hash) return;
-        const file = url.pathname.split('/').pop();
-        const page = file === 'index.html' ? 'home' : file.replace('.html', '');
+        const page = pageFromPath(url.pathname);
         if (!byPage.has(page)) return;
         event.preventDefault();
         navigate(page, page !== activePage);
@@ -94,8 +98,7 @@ if (sections.length) {
     window.addEventListener('scrollend', () => { releaseNavigation(); updateFromScroll(); });
     window.addEventListener('resize', updateFromScroll);
     window.addEventListener('popstate', event => {
-        const file = location.pathname.split('/').pop();
-        navigate(event.state?.scrollPage || (file === 'index.html' || !file ? 'home' : file.replace('.html', '')), false);
+        navigate(event.state?.scrollPage || pageFromPath(location.pathname), false);
     });
     if (entryPage) navigate(entryPage, false, true);
     window.addEventListener('pageshow', updateFromScroll);
