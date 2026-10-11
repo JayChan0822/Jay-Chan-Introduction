@@ -1,10 +1,11 @@
-// The home experience scrolls through real page content. Direct HTML links still
-// open standalone pages; refreshing the current URL opens that specific page.
+// Every shared page URL enters the continuous website at its matching section.
 const sections = [...document.querySelectorAll('[data-scroll-page]')];
 if (sections.length) {
     const byPage = new Map(sections.map(section => [section.dataset.scrollPage, section]));
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     history.scrollRestoration = 'manual';
+    const entrySections = { about: 'about', portfolio: 'music', visual: 'scoring', notation: 'notation', work: 'projects' };
+    const entryPage = entrySections[location.hash.slice(1)];
     let activePage = 'home';
     let navigating = false;
     let navigationTimer;
@@ -49,15 +50,15 @@ if (sections.length) {
         }
         if (page !== activePage) activate(page);
     };
-    const navigate = (page, push) => {
+    const navigate = (page, push, instant = false) => {
         const section = byPage.get(page);
         if (!section) return;
         clearTimeout(navigationTimer);
         navigating = true;
         activate(page, push);
         const top = page === 'home' ? 0 : scrollY + section.getBoundingClientRect().top - 110;
-        window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion ? 'instant' : 'smooth' });
-        navigationTimer = setTimeout(() => { navigating = false; updateFromScroll(); }, reducedMotion ? 0 : 1200);
+        window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion || instant ? 'instant' : 'smooth' });
+        navigationTimer = setTimeout(() => { navigating = false; updateFromScroll(); }, reducedMotion || instant ? 0 : 1200);
     };
     document.addEventListener('click', event => {
         const link = event.target.closest('a[href]');
@@ -85,5 +86,6 @@ if (sections.length) {
         const file = location.pathname.split('/').pop();
         navigate(event.state?.scrollPage || (file === 'index.html' || !file ? 'home' : file.replace('.html', '')), false);
     });
+    if (entryPage) navigate(entryPage, false, true);
     window.addEventListener('pageshow', updateFromScroll);
 }

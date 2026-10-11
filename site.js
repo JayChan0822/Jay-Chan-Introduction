@@ -1,9 +1,3 @@
-// Keep existing bookmarks and client links useful after the page split.
-if (document.body.dataset.page === 'home') {
-    const pages = { about: 'about.html', portfolio: 'music.html', visual: 'scoring.html', notation: 'notation.html', work: 'projects.html' };
-    const target = pages[location.hash.slice(1)];
-    if (target) location.replace(target + location.search);
-}
 // 1. WaveSurfer 改为「动态引入 + 多源兜底」。
     //    原本是顶层静态 import：CDN 一挂，整个模块一行都不执行，
     //    而全站内容默认 opacity:0，结果就是首屏以下全白。
