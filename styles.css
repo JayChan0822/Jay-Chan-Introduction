@@ -1208,35 +1208,7 @@
         }
 
 
-        /* Language controls sit outside the masked navigation so the menu stays visible. */
-        .language-switcher { position: fixed; top: 20px; right: 4%; z-index: 1001; }
-        .language-toggle {
-            display: flex; align-items: center; gap: 8px; min-width: 96px; height: 42px;
-            padding: 0 12px; border: 0; border-radius: 0;
-            background: transparent; color: rgba(255,255,255,.42); font: inherit; font-size: 12px;
-            transition: color .25s;
-        }
-        .language-toggle:hover, .language-toggle[aria-expanded="true"] { color: rgba(255,255,255,.62); }
-        .language-globe { width: 18px; height: 18px; flex-shrink: 0; }
-        #languageLabel { flex: 1; text-align: center; }
-        .language-chevron { width: 12px; height: 12px; transition: transform .2s; }
-        .language-toggle[aria-expanded="true"] .language-chevron { transform: rotate(180deg); }
-        .language-menu {
-            position: absolute; top: calc(100% + 8px); right: 0; min-width: 132px;
-            padding: 6px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px;
-            background: rgba(20,20,20,.96); box-shadow: 0 12px 36px rgba(0,0,0,.35);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        }
-        .language-menu[hidden] { display: none; }
-        .language-option { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 12px; border: 0; border-radius: 12px; background: transparent; color: #ddd; font: inherit; font-size: 13px; text-align: left; }
-        .language-option:hover { background: rgba(255,255,255,.07); }
-        .language-option[aria-pressed="true"] { background: rgba(255,255,255,.12); color: white; }
-        .language-check { width: 14px; visibility: hidden; }
-        .language-option[aria-pressed="true"] .language-check { visibility: visible; }
-        .language-switcher button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
         .score-page-indicator { max-width: calc(100vw - 40px); width: max-content; text-align: center; line-height: 1.5; }
-        html[lang="en"] .hero-manifesto { max-width: 85vw; }
-        html[lang="en"] .hero-subtitle { max-width: 88vw; line-height: 1.7; }
         @media (min-width: 769px) {
             nav ul { padding-left: 150px; padding-right: 150px; gap: clamp(20px, 4vw, 60px); }
         }
@@ -1245,15 +1217,10 @@
             nav a { font-size: 14px; letter-spacing: 1px; }
         }
         @media (max-width: 768px) {
-            .language-switcher { top: 16px; right: 6%; }
-            .language-toggle { height: 38px; min-width: 90px; padding: 0 10px; }
             nav { height: 132px; }
             nav ul { padding-top: 72px; gap: clamp(10px, 3vw, 22px); align-content: flex-start; }
             nav a { font-size: 14px; letter-spacing: .6px; }
-            html[lang="en"] nav ul { gap: 10px; }
-            html[lang="en"] nav a { font-size: 12px; letter-spacing: .4px; }
             .hero-subtitle { letter-spacing: .15em; font-size: .75rem; }
-            html[lang="en"] .about-text .text-body { text-align: left !important; }
         }
 
 /* Shared navigation and independent portfolio pages. */
@@ -1280,3 +1247,7 @@ a:focus-visible { outline: 2px solid white; outline-offset: 6px; }
 /* Scroll straight from the cover into the standalone page sequence. */
 .scroll-flow > #about { padding-top: 100px; }
 @media (max-width: 768px) { .scroll-flow > #about { padding-top: 80px; } }
+
+.hero-manifesto > span { display: inline-block; margin-top: 12px; max-width: 85vw; line-height: 1.6; }
+
+@media (max-width: 768px) { nav ul { gap: 10px; } nav a { font-size: 12px; letter-spacing: .4px; } }

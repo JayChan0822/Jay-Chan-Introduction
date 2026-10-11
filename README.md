@@ -20,9 +20,9 @@
 - 各页面内容直接编辑对应 HTML，随后运行 `python3 scripts/sync_scroll_home.py` 同步首页的连续浏览内容。
 - 首页滚动与地址切换在 `scroll-pages.js`；无须服务器路由支持。
 - 共用样式在 `styles.css`，播放器、预览和动画在 `site.js`。
-- 中英文文案在 `localization.js`；各页面标题和简介位于 HTML 的 `body` 数据属性中。
-- 发布时将六个 HTML、`styles.css`、`site.js`、`localization.js` 、`scroll-pages.js`、`page-entry.js` 和 `peaks.json` 一起放到网站根目录。图片和音视频继续引用原来的 OSS 地址。
+- 网站采用固定中英文混排文案，无语言切换；文案直接在各 HTML 中编辑，各页面标题和简介位于 HTML 的 `body` 数据属性中。
+- 发布时将六个 HTML、`styles.css`、`site.js`、`scroll-pages.js`、`page-entry.js` 和 `peaks.json` 一起放到网站根目录。图片和音视频继续引用原来的 OSS 地址。
 - 使用实际 HTML 文件路径，不需要额外配置服务器路由。
-- 英文链接添加 `?lang=en`，指定中文可添加 `?lang=zh`；未指定时沿用浏览器中保存的语言选择。
+- 旧链接中的 `lang` 参数会自动移除，统一展示中英文混排版本。
 - 原来的 `/#about`、`/#portfolio`、`/#visual`、`/#notation`、`/#work` 链接会在 JavaScript 可用时定位到连续浏览中的对应栏目。
 - 栏目切换使用连续滚动，保留播放器状态；直接打开或刷新栏目 HTML 地址，会载入首页的完整内容并定位到该栏目。

@@ -5,7 +5,7 @@ root=Path(__file__).resolve().parent.parent
 p=root/'index.html'; home=p.read_text()
 hero=re.search(r'<section class="hero"[^>]*>.*?</section>',home,re.S).group()
 attrs=re.search(r'<body[^>]*>',home).group()
-meta=' '.join(re.findall(r'data-(?:title|description)-(?:zh|en)="[^"]*"',attrs))
+meta=' '.join(re.findall(r'data-(?:title|description)="[^"]*"',attrs))
 # Home metadata comes from the existing cover, since body metadata is static.
 hero=re.sub(r'<section[^>]*>', '<section class="hero" data-scroll-page="home" '+meta+'>', hero, count=1)
 parts=[hero]
@@ -14,7 +14,7 @@ for slug,id in [('about','about'),('music','portfolio'),('scoring','visual'),('n
     section=re.search(r'<section id="'+id+r'">.*?</section>',text,re.S).group()
     section=re.sub(r'\n<div class="page-intro">.*?</div>','',section,count=1)
     section=section.replace('<h1','<h2').replace('</h1>','</h2>')
-    metadata=' '.join(re.findall(r'data-(?:title|description)-(?:zh|en)="[^"]*"',re.search(r'<body[^>]*>',text).group()))
+    metadata=' '.join(re.findall(r'data-(?:title|description)="[^"]*"',re.search(r'<body[^>]*>',text).group()))
     section=section.replace('<section id="'+id+'">','<section id="'+id+'" data-scroll-page="'+slug+'" '+metadata+'>')
     parts.append(section)
 contact=re.search(r'<section id="contact">.*?</section>',home,re.S).group()

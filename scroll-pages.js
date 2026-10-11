@@ -10,11 +10,14 @@ if (sections.length) {
     let navigating = false;
     let navigationTimer;
     let queued = false;
-    history.replaceState({ ...history.state, scrollPage: 'home' }, '', location.href);
+    const initialUrl = new URL(location.href);
+    initialUrl.searchParams.delete('lang');
+    history.replaceState({ ...history.state, scrollPage: 'home' }, '', initialUrl.pathname + initialUrl.search + initialUrl.hash);
 
     const pageUrl = page => {
         const url = new URL(page === 'home' ? 'index.html' : `${page}.html`, location.href);
         url.search = location.search;
+        url.searchParams.delete('lang');
         return url;
     };
     const activate = (page, push = false) => {
@@ -26,7 +29,7 @@ if (sections.length) {
             history[push ? 'pushState' : 'replaceState'](state, '', url.pathname + url.search);
         }
         activePage = page;
-        ['titleZh', 'titleEn', 'descriptionZh', 'descriptionEn'].forEach(key => {
+        ['title', 'description'].forEach(key => {
             document.body.dataset[key] = section.dataset[key];
         });
         document.querySelector('link[rel="canonical"]').href = `https://www.jaychan.cn/${page === 'home' ? '' : page + '.html'}`;
@@ -36,7 +39,15 @@ if (sections.length) {
             if (slug === page) link.setAttribute('aria-current', 'page');
             else link.removeAttribute('aria-current');
         });
-        window.siteI18n.refresh();
+        document.title = section.dataset.title;
+        const description = section.dataset.description;
+        document.querySelector('meta[name="description"]').content = description;
+        for (const name of ['og:title', 'twitter:title']) {
+            document.querySelector(`meta[property="${name}"], meta[name="${name}"]`).content = document.title;
+        }
+        for (const name of ['og:description', 'twitter:description']) {
+            document.querySelector(`meta[property="${name}"], meta[name="${name}"]`).content = description;
+        }
     };
     const updateFromScroll = () => {
         queued = false;

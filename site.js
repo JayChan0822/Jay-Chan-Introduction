@@ -1,3 +1,8 @@
+// Fixed labels for the mixed Chinese/English portfolio.
+const mediaLabel = (kind, title) => kind === 'audio'
+    ? `播放或暂停 ${title}` : `播放视频：${title}`;
+const pageLabel = (title, page) => `${title} · 第 ${page} 页`;
+
 // 1. WaveSurfer 改为「动态引入 + 多源兜底」。
     //    原本是顶层静态 import：CDN 一挂，整个模块一行都不执行，
     //    而全站内容默认 opacity:0，结果就是首屏以下全白。
@@ -104,7 +109,7 @@
         if (!playBtn) return;
         playBtn.setAttribute('role', 'button');
         playBtn.setAttribute('tabindex', '0');
-        playBtn.setAttribute('aria-label', siteI18n.mediaLabel("audio", title));
+        playBtn.setAttribute('aria-label', mediaLabel("audio", title));
         playBtn.setAttribute('aria-pressed', 'false');
     });
 
@@ -384,7 +389,7 @@
         card.setAttribute('role', 'button');
         card.setAttribute('tabindex', '0');
         if (title) {
-            card.setAttribute('aria-label', siteI18n.mediaLabel("video", title));
+            card.setAttribute('aria-label', mediaLabel("video", title));
         }
 
         const open = () => openVideoModal(card.getAttribute('data-video'), card);
@@ -477,15 +482,12 @@
         const first = indexOfWorkFirstPage(page.full);
         const inWork = scoreGlobalIndex - first + 1;
         const title = page.card.querySelector('.score-title')?.textContent?.trim() || '';
-        scorePageIndicator.textContent = siteI18n.pageLabel(title, inWork);
+        scorePageIndicator.textContent = pageLabel(title, inWork);
         scorePrevBtn.style.visibility = scoreAllPages.length > 1 ? 'visible' : 'hidden';
         scoreNextBtn.style.visibility = scoreAllPages.length > 1 ? 'visible' : 'hidden';
-        scoreModalImg.alt = siteI18n.pageLabel(title, inWork);
+        scoreModalImg.alt = pageLabel(title, inWork);
     };
 
-    document.addEventListener('languagechange', () => {
-        if (scoreModal.classList.contains('active')) renderScorePage();
-    });
 
     const goScorePage = (dir) => {
         if (!scoreAllPages.length) return;

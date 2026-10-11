@@ -68,135 +68,125 @@
         <style>
             .apple-animate { opacity: 1 !important; transform: none !important; }
             .hero-title, .hero-subtitle, .hero-manifesto { opacity: 1 !important; transform: none !important; animation: none !important; }
-            .waveform, .language-switcher { display: none; }
+            .waveform { display: none; }
         </style>
     </noscript>
 </head>
-<body class="inner-page" data-page="notation" data-title-zh="制谱 | JAY CHAN 陈俊" data-title-en="Music Engraving | JAY CHAN" data-description-zh="陈俊 Jay Chan 制谱作品集：管弦总谱、游戏配乐与室内乐乐谱预览。" data-description-en="Preview Jay Chan’s orchestral, game music and chamber music scores.">
+<body class="inner-page" data-page="notation" data-title="制谱 | JAY CHAN 陈俊" data-description="陈俊 Jay Chan 制谱作品集：管弦总谱、游戏配乐与室内乐乐谱预览。">
 <div class="noise-overlay" aria-hidden="true"></div>
 <div class="cursor" aria-hidden="true"></div>
 
-<a class="site-brand hover-trigger" href="index.html" aria-label="Jay Chan · 首页" data-i18n-aria-label="homeLabel">JAY CHAN</a>
-<nav aria-label="主导航" data-i18n-aria-label="mainNav">
+<a class="site-brand hover-trigger" href="index.html" aria-label="Jay Chan · 首页">JAY CHAN</a>
+<nav aria-label="主导航">
     <ul class="nav-base">
-        <li class="hover-trigger"><a href="about.html"><span data-i18n="text0">个人介绍</span></a></li>
-        <li class="hover-trigger"><a href="music.html"><span data-i18n="text1">音乐</span></a></li>
-        <li class="hover-trigger"><a href="scoring.html"><span data-i18n="navScoring">配乐</span></a></li>
-        <li class="hover-trigger"><a href="notation.html" aria-current="page"><span data-i18n="text3">制谱</span></a></li>
-        <li class="hover-trigger"><a href="projects.html"><span data-i18n="text4">项目</span></a></li>
+        <li class="hover-trigger"><a href="about.html">PROFILE</a></li>
+        <li class="hover-trigger"><a href="music.html">SOUND</a></li>
+        <li class="hover-trigger"><a href="scoring.html">VISUAL</a></li>
+        <li class="hover-trigger"><a href="notation.html" aria-current="page">NOTATION</a></li>
+        <li class="hover-trigger"><a href="projects.html">PROJECT</a></li>
     </ul>
 
     <!-- 纯装饰层（光圈内的描边字）。inert 让它整体退出可访问性树与 Tab 序列，
          否则这里的 <a> 虽然 aria-hidden 却仍可聚焦，是明确的 a11y 违规 -->
     <ul class="nav-bold" aria-hidden="true" inert>
-        <li><a href="about.html" tabindex="-1"><span data-i18n="text0">个人介绍</span></a></li>
-        <li><a href="music.html" tabindex="-1"><span data-i18n="text1">音乐</span></a></li>
-        <li><a href="scoring.html" tabindex="-1"><span data-i18n="navScoring">配乐</span></a></li>
-        <li><a href="notation.html" tabindex="-1"><span data-i18n="text3">制谱</span></a></li>
-        <li><a href="projects.html" tabindex="-1"><span data-i18n="text4">项目</span></a></li>
+        <li><a href="about.html" tabindex="-1">PROFILE</a></li>
+        <li><a href="music.html" tabindex="-1">SOUND</a></li>
+        <li><a href="scoring.html" tabindex="-1">VISUAL</a></li>
+        <li><a href="notation.html" tabindex="-1">NOTATION</a></li>
+        <li><a href="projects.html" tabindex="-1">PROJECT</a></li>
     </ul>
 </nav>
 
-<div class="language-switcher">
-    <button id="languageToggle" class="language-toggle" type="button" aria-label="选择语言" aria-expanded="false" aria-controls="languageMenu">
-        <svg class="language-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.5" ry="9.5"/><path d="M2.5 12h19M4 7.5h16M4 16.5h16"/></svg>
-        <span id="languageLabel">中</span>
-        <svg class="language-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
-    </button>
-    <div id="languageMenu" class="language-menu" hidden>
-        <button type="button" class="language-option hover-trigger" data-language="zh" lang="zh-CN" aria-pressed="true"><span class="language-check" aria-hidden="true">✓</span>中文</button>
-        <button type="button" class="language-option hover-trigger" data-language="en" lang="en" aria-pressed="false"><span class="language-check" aria-hidden="true">✓</span>Eng</button>
-    </div>
-</div>
+
 
 
 <main id="main-content">
 <section id="notation">
-<div class="page-intro"><a class="hover-trigger" href="index.html"><span data-i18n="backHome">← 返回首页</span></a><a class="hover-trigger" href="#contact"><span data-i18n="discussProject">联系合作 ↗</span></a></div>
+<div class="page-intro"><a class="hover-trigger" href="index.html">← 返回首页</a><a class="hover-trigger" href="#contact">联系合作 ↗</a></div>
     <h1 class="apple-animate from-left section-header">
-        <span data-i18n="text11">制谱作品。</span>
+        NOTATION.
     </h1>
     <p class="apple-animate from-left delay-1" style="color: var(--text-muted); margin-bottom: 40px; letter-spacing: 1px;">
-        <span data-i18n="text40">乐谱制作与誊写</span>
+        MUSIC ENGRAVING &amp; COPYING / 制谱
     </p>
 
     <div class="video-grid score-grid">
 
 <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p1.jpg" alt="武则天 第1页" data-i18n-alt="attr94" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p2.jpg" alt="武则天 第2页" data-i18n-alt="attr95" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p3.jpg" alt="武则天 第3页" data-i18n-alt="attr96" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p1.jpg" alt="武则天 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p2.jpg" alt="武则天 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/wu-zetian-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/wu-zetian-p3.jpg" alt="武则天 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text74">武则天</span></div>
-                <div class="score-meta"><span data-i18n="text41">游戏配乐总谱</span></div>
-                <div class="score-role"><span data-i18n="text80">制谱 · 2025</span></div>
+                <div class="score-title">武则天</div>
+                <div class="score-meta">Full Score · 游戏配乐总谱</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
 <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p1.jpg" alt="水乡·记忆 第1页" data-i18n-alt="attr97" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p2.jpg" alt="水乡·记忆 第2页" data-i18n-alt="attr98" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p3.jpg" alt="水乡·记忆 第3页" data-i18n-alt="attr99" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p1.jpg" alt="水乡·记忆 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p2.jpg" alt="水乡·记忆 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/silk-rain-willow-shadows-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/silk-rain-willow-shadows-p3.jpg" alt="水乡·记忆 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text71">水乡·记忆</span></div>
-                <div class="score-meta"><span data-i18n="text42">音乐会管弦总谱</span></div>
-                <div class="score-role"><span data-i18n="text79">制谱 · 2024</span></div>
+                <div class="score-title">水乡·记忆</div>
+                <div class="score-meta">Concert Score · 管弦总谱</div>
+                <div class="score-role">制谱 · 2024</div>
             </div>
         </div>
 
 <div class="score-card hover-trigger apple-animate from-left delay-1">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p1.jpg" alt="寻空 第1页" data-i18n-alt="attr100" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p2.jpg" alt="寻空 第2页" data-i18n-alt="attr101" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p3.jpg" alt="寻空 第3页" data-i18n-alt="attr102" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p1.jpg" alt="寻空 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p2.jpg" alt="寻空 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/seek-void-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/seek-void-p3.jpg" alt="寻空 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text75">寻空</span></div>
-                <div class="score-meta"><span data-i18n="text43">管弦总谱</span></div>
-                <div class="score-role"><span data-i18n="text80">制谱 · 2025</span></div>
+                <div class="score-title">寻空</div>
+                <div class="score-meta">Full Score · 管弦总谱</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
 <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p1.jpg" alt="遥望 第1页" data-i18n-alt="attr103" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p2.jpg" alt="遥望 第2页" data-i18n-alt="attr104" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p3.jpg" alt="遥望 第3页" data-i18n-alt="attr105" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p1.jpg" alt="遥望 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p2.jpg" alt="遥望 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/yaowang-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/yaowang-p3.jpg" alt="遥望 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text76">遥望</span></div>
-                <div class="score-meta"><span data-i18n="text44">总谱</span></div>
-                <div class="score-role"><span data-i18n="text80">制谱 · 2025</span></div>
+                <div class="score-title">遥望</div>
+                <div class="score-meta">Full Score · 总谱</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
 <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p1.jpg" alt="登山 第1页" data-i18n-alt="attr106" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p2.jpg" alt="登山 第2页" data-i18n-alt="attr107" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p3.jpg" alt="登山 第3页" data-i18n-alt="attr108" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p1.jpg" alt="登山 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p2.jpg" alt="登山 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/climbing-mountain-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/climbing-mountain-p3.jpg" alt="登山 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text77">登山</span></div>
-                <div class="score-meta"><span data-i18n="text45">室内乐总谱</span></div>
-                <div class="score-role"><span data-i18n="text80">制谱 · 2025</span></div>
+                <div class="score-title">登山</div>
+                <div class="score-meta">Full Score · 室内乐总谱</div>
+                <div class="score-role">制谱 · 2025</div>
             </div>
         </div>
 
 <div class="score-card hover-trigger apple-animate from-right delay-2">
             <div class="score-thumb">
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p1.jpg" alt="元素 第1页" data-i18n-alt="attr109" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p2.jpg" alt="元素 第2页" data-i18n-alt="attr110" loading="lazy" decoding="async"></div>
-                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p3.jpg" alt="元素 第3页" data-i18n-alt="attr111" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p1.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p1.jpg" alt="元素 第1页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p2.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p2.jpg" alt="元素 第2页" loading="lazy" decoding="async"></div>
+                <div class="score-page" data-full="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/pages/element-p3.jpg"><img src="https://jaychan-website.oss-cn-hangzhou.aliyuncs.com/images/scores/thumbs/element-p3.jpg" alt="元素 第3页" loading="lazy" decoding="async"></div>
             </div>
             <div class="score-info">
-                <div class="score-title"><span data-i18n="text78">元素</span></div>
-                <div class="score-meta"><span data-i18n="text46">木管五重奏总谱</span></div>
-                <div class="score-role"><span data-i18n="text81">制谱 · 2026</span></div>
+                <div class="score-title">元素</div>
+                <div class="score-meta">Full Score · 木管五重奏</div>
+                <div class="score-role">制谱 · 2026</div>
             </div>
         </div>
 
@@ -204,26 +194,26 @@
 </section>
 <section id="contact">
     <h2 class="apple-animate from-left delay-1" style="font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 10px;">
-        <span data-i18n="text51">联系我。</span>
+        LET'S CONNECT.
     </h2>
     <div class="apple-animate from-top" style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 2px;">
-        <span data-i18n="text52">联系方式</span>
+        CONTACTS / 联系方式
     </div>
 
     <div class="contact-grid">
         <div class="contact-item apple-animate from-bottom delay-1">
-            <h4><span data-i18n="text53">邮箱</span></h4>
+            <h4>邮箱 Email</h4>
             <p><a href="mailto:iptiwbwy4ever@outlook.com" class="hover-trigger">iptiwbwy4ever@outlook.com</a></p>
         </div>
 
         <div class="contact-item apple-animate from-bottom delay-2">
-            <h4><span data-i18n="text54">哔哩哔哩</span></h4>
-            <p><a href="https://space.bilibili.com/453424505?spm_id_from=333.1007.0.0" target="_blank" rel="noopener noreferrer" class="hover-trigger"><span data-i18n="text56">iptiwbwy4ever ↗</span></a></p>
+            <h4>哔哩哔哩 Bilibili</h4>
+            <p><a href="https://space.bilibili.com/453424505?spm_id_from=333.1007.0.0" target="_blank" rel="noopener noreferrer" class="hover-trigger">iptiwbwy4ever ↗</a></p>
         </div>
 
         <div class="contact-item apple-animate from-bottom delay-3">
-            <h4><span data-i18n="text55">地址</span></h4>
-            <p><span data-i18n="text57">上海市零陵路 520 号</span><br><span data-i18n="text58">上海音乐学院</span></p>
+            <h4>地址 Address</h4>
+            <p>上海市零陵路520号<br>上海音乐学院</p>
         </div>
     </div>
 </section>
@@ -233,49 +223,48 @@
 <!--        <a href="#" style="color: inherit; text-decoration: none;">沪ICP备XXXXXXX号</a>-->
 <!--    </div>-->
     <div class="footer-center">
-        <span data-i18n="text59">© 2026 JAY CHAN。保留所有权利。</span>
+        <span>Copyright © 2026 JAY CHAN. All Rights Reserved.</span>
     </div>
     <div class="footer-right">
-        <span data-i18n="text60">上海音乐学院</span>
+        SHANGHAI CONSERVATORY OF MUSIC
     </div>
 </footer>
 
 <div id="videoModal" class="video-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="videoModalTitle">
     <div class="modal-overlay hover-trigger"></div>
-    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭视频弹窗" data-i18n-aria-label="attr115">
+    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭视频弹窗">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
     </button>
     <div class="modal-content">
-        <h2 id="videoModalTitle" class="sr-only"><span data-i18n="text61">视频播放器</span></h2>
-        <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload" aria-label="视频播放器" data-i18n-aria-label="attr116"></video>
+        <h2 id="videoModalTitle" class="sr-only"><span>视频播放器</span></h2>
+        <video id="modalVideoPlayer" controls preload="none" controlsList="nodownload" aria-label="视频播放器"></video>
     </div>
 </div>
 
 <div id="scoreModal" class="video-modal score-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="scoreModalTitle">
     <div class="modal-overlay hover-trigger"></div>
-    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭制谱页预览" data-i18n-aria-label="attr117">
+    <button class="modal-close-btn hover-trigger" type="button" aria-label="关闭制谱页预览">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
     </button>
     <div class="modal-content">
-        <h2 id="scoreModalTitle" class="sr-only"><span data-i18n="text62">制谱作品页预览</span></h2>
-        <img id="scoreModalImg" alt="制谱作品页" data-i18n-alt="attr118">
+        <h2 id="scoreModalTitle" class="sr-only"><span>制谱作品页预览</span></h2>
+        <img id="scoreModalImg" alt="制谱作品页">
     </div>
-    <button id="scorePrevBtn" class="score-nav-btn score-nav-prev hover-trigger" type="button" aria-label="上一页" data-i18n-aria-label="attr119">
+    <button id="scorePrevBtn" class="score-nav-btn score-nav-prev hover-trigger" type="button" aria-label="上一页">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
-    <button id="scoreNextBtn" class="score-nav-btn score-nav-next hover-trigger" type="button" aria-label="下一页" data-i18n-aria-label="attr120">
+    <button id="scoreNextBtn" class="score-nav-btn score-nav-next hover-trigger" type="button" aria-label="下一页">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
     <span id="scorePageIndicator" class="score-page-indicator" aria-live="polite"></span>
 </div>
 
-<script src="localization.js"></script>
 <script type="module" src="site.js"></script>
 </body>
 </html>
