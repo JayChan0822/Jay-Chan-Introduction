@@ -197,8 +197,8 @@
         "Mobile Legends: Bang Bang · Suyou CG Re-score"
     ],
     "text35": [
-        "AI 视频配乐 ｜ 电影感管弦",
-        "AI Video Score | Cinematic Orchestra"
+        "视频配乐 ｜ 电影感管弦",
+        "Video Score | Cinematic Orchestra"
     ],
     "text31": [
         "《生死一刹》CG 重配乐",

@@ -18,7 +18,7 @@ for slug,id in [('about','about'),('music','portfolio'),('scoring','visual'),('n
     section=section.replace('<section id="'+id+'">','<section id="'+id+'" data-scroll-page="'+slug+'" '+metadata+'>')
     parts.append(section)
 contact=re.search(r'<section id="contact">.*?</section>',home,re.S).group()
-home=re.sub(r'<main id="main-content">.*?</main>','<main id="main-content" class="scroll-flow">\n'+'\n\n'.join(parts)+'\n\n'+contact+'\n</main>',home,flags=re.S)
+home=re.sub(r'<main id="main-content"[^>]*>.*?</main>','<main id="main-content" class="scroll-flow">\n'+'\n\n'.join(parts)+'\n\n'+contact+'\n</main>',home,flags=re.S)
 if 'src="scroll-pages.js"' not in home:
     home=home.replace('<script type="module" src="site.js"></script>','<script type="module" src="site.js"></script>\n<script type="module" src="scroll-pages.js"></script>')
 p.write_text(home)
